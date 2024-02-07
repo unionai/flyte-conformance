@@ -7,7 +7,7 @@ from flytekit import workflow, ImageSpec
 from airflow.utils import trigger_rule
 from airflow.providers.google.cloud.operators.dataproc import DataprocCreateClusterOperator, DataprocDeleteClusterOperator, DataprocSubmitSparkJobOperator
 
-x = (datetime.now(tz=UTC)+timedelta(seconds=20)).time()
+x = (datetime.now(tz=UTC)+timedelta(seconds=21)).time()
 cluster_name = "flyte-dataproc-demo"
 
 image_spec = ImageSpec(
@@ -39,7 +39,7 @@ def airflow_wf():
         project_id="dogfood-gcp-dataplane",
     )
 
-    run_spark = DataprocSubmitSparkJobOperator(
+    spark_on_dataproc = DataprocSubmitSparkJobOperator(
         job_name="spark_pi",
         task_id="run_spark",
         dataproc_jars=["file:///usr/lib/spark/examples/jars/spark-examples.jar"],
@@ -61,4 +61,4 @@ def airflow_wf():
         trigger_rule=trigger_rule.TriggerRule.ALL_DONE
     )
 
-    create_cluster >> run_spark >> delete_cluster
+    create_cluster >> spark_on_dataproc >> delete_cluster
