@@ -16,6 +16,7 @@ def create_flyte_file() -> FlyteFile:
         file.write("hello world")
     return file_path
 
+
 @task()
 def t1():
     print("success")
