@@ -31,4 +31,3 @@ def dynamic_task(f: FlyteFile):
 def sensor_wf():
     f = create_flyte_file()
     dynamic_task(f=f)
-

@@ -63,7 +63,9 @@ def total_pay(df: DataFrame[InSchema]) -> DataFrame[IntermediateSchema]:  # noqa
 
 
 @task(container_image=image_spec)
-def add_ids(df: DataFrame[IntermediateSchema], worker_ids: typing.List[str]) -> DataFrame[OutSchema]:
+def add_ids(
+    df: DataFrame[IntermediateSchema], worker_ids: typing.List[str]
+) -> DataFrame[OutSchema]:
     return df.assign(worker_id=worker_ids)
 
 

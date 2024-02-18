@@ -36,7 +36,9 @@ t2 = ShellTask(
     tar -zcvf {outputs.j} {inputs.y}
     """,
     inputs=kwtypes(x=FlyteFile, y=FlyteDirectory),
-    output_locs=[OutputLocation(var="j", var_type=FlyteFile, location="{inputs.y}.tar.gz")],
+    output_locs=[
+        OutputLocation(var="j", var_type=FlyteFile, location="{inputs.y}.tar.gz")
+    ],
 )
 
 
@@ -74,4 +76,3 @@ def shell_task_wf() -> FlyteFile:
     t2_out = t2(x=t1_out, y=y)
     t3_out = t3(x=x, y=y, z=t2_out)
     return t3_out
-

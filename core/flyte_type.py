@@ -6,7 +6,16 @@ from typing import Annotated, Any, Dict, NamedTuple
 import pandas as pd
 from mashumaro.mixins.json import DataClassJSONMixin
 
-from flytekit import task, workflow, FlyteContext, BatchSize, Resources, ImageSpec, StructuredDataset, kwtypes
+from flytekit import (
+    task,
+    workflow,
+    FlyteContext,
+    BatchSize,
+    Resources,
+    ImageSpec,
+    StructuredDataset,
+    kwtypes,
+)
 from flytekit.types.directory import FlyteDirectory
 
 image_spec = ImageSpec(
@@ -44,7 +53,9 @@ class Pickle:
 
 
 @task(requests=Resources(mem="1500Mi"), container_image=image_spec)
-def create_flyte_directory(num_files: int, filesize_mb: int) -> Annotated[FlyteDirectory, BatchSize(100)]:
+def create_flyte_directory(
+    num_files: int, filesize_mb: int
+) -> Annotated[FlyteDirectory, BatchSize(100)]:
     directory = "/tmp/test"
     os.mkdir(directory)
     for i in range(num_files):
@@ -52,7 +63,9 @@ def create_flyte_directory(num_files: int, filesize_mb: int) -> Annotated[FlyteD
         with open(file_path, "w") as f:
             f.write(str(os.urandom(filesize_mb * 1024 * 1024)))
 
-    remote_dir = FlyteContext.current_context().file_access.get_random_remote_directory()
+    remote_dir = (
+        FlyteContext.current_context().file_access.get_random_remote_directory()
+    )
 
     return FlyteDirectory(path=directory, remote_directory=remote_dir)
 
@@ -77,7 +90,9 @@ def test_pickle(pickle: Any) -> Any:
 
 @task(container_image=image_spec)
 def generate_pandas_df() -> pd.DataFrame:
-    return pd.DataFrame({"Name": ["Tom", "Joseph"], "Age": [21, 22], "Height": [160, 178]})
+    return pd.DataFrame(
+        {"Name": ["Tom", "Joseph"], "Age": [21, 22], "Height": [160, 178]}
+    )
 
 
 @task(container_image=image_spec)

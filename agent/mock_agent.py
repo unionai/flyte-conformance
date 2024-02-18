@@ -1,8 +1,6 @@
-import typing
-
 from flytekit import workflow, task
 from flytekitplugins.mock_agent import MockSpark
-from mock_agent_server.flytekitplugins.mock_agent import MockOpenAITask
+from flytekitplugins.mock_agent import MockOpenAITask
 
 openai_task = MockOpenAITask(name="openai")
 
@@ -13,11 +11,10 @@ def spark_task() -> str:
 
 
 @workflow
-def wf() -> typing.List[str]:
+def wf() -> str:
     question = spark_task()
     return openai_task(prompt=question)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(wf())
-

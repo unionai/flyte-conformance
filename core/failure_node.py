@@ -27,7 +27,10 @@ def clean_up(name: str, err: typing.Optional[FlyteError] = None):
     print(err)
 
 
-@workflow(on_failure=clean_up, failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
+@workflow(
+    on_failure=clean_up,
+    failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE,
+)
 def subwf(name: str = "Flyte"):
     c = create_cluster(name=name)
     t = t1(name="2")
@@ -35,7 +38,10 @@ def subwf(name: str = "Flyte"):
     c >> t >> d
 
 
-@workflow(on_failure=clean_up, failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
+@workflow(
+    on_failure=clean_up,
+    failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE,
+)
 def wf1(name: str = "Flyte"):
     c = create_cluster(name=name)
     subwf(name="Flyte")
@@ -44,7 +50,10 @@ def wf1(name: str = "Flyte"):
     c >> t >> d
 
 
-@workflow(on_failure=clean_up, failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
+@workflow(
+    on_failure=clean_up,
+    failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE,
+)
 def wf2(name: str = "Flyte"):
     c = create_cluster(name=name)
     t = t1(name="2")
@@ -57,7 +66,10 @@ def clean_up_wf(name: str = "Flyte"):
     return create_cluster(name=name)
 
 
-@workflow(on_failure=clean_up_wf, failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
+@workflow(
+    on_failure=clean_up_wf,
+    failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE,
+)
 def wf3(name: str = "Flyte"):
     c = create_cluster(name=name)
     t = t1(name="2")

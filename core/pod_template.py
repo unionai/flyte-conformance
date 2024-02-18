@@ -19,12 +19,11 @@ image_spec = ImageSpec(
     base_image="ghcr.io/flyteorg/flytekit:py3.10-1.10.2",
 )
 
+
 @task(
     task_config=Pod(
         pod_spec=V1PodSpec(
-            containers=[
-                V1Container(name="primary", image=image_spec)
-            ],
+            containers=[V1Container(name="primary", image=image_spec)],
         ),
     ),
     requests=Resources(

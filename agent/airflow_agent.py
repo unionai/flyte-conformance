@@ -5,23 +5,31 @@ from pytz import UTC
 from airflow.sensors.time_sensor import TimeSensor
 from flytekit import workflow, ImageSpec
 from airflow.utils import trigger_rule
-from airflow.providers.google.cloud.operators.dataproc import DataprocCreateClusterOperator, DataprocDeleteClusterOperator, DataprocSubmitSparkJobOperator
+from airflow.providers.google.cloud.operators.dataproc import (
+    DataprocCreateClusterOperator,
+    DataprocDeleteClusterOperator,
+    DataprocSubmitSparkJobOperator,
+)
 
-x = (datetime.now(tz=UTC)+timedelta(seconds=21)).time()
+x = (datetime.now(tz=UTC) + timedelta(seconds=21)).time()
 cluster_name = "flyte-dataproc-demo"
 
 image_spec = ImageSpec(
     registry="ghcr.io/unionai",
-    packages=["apache-airflow[google]", "apache-airflow-providers-apache-beam[google]", "flytekitplugins-airflow"],
+    packages=[
+        "apache-airflow[google]",
+        "apache-airflow-providers-apache-beam[google]",
+        "flytekitplugins-airflow",
+    ],
     env={"AIRFLOW_CONN_GOOGLE_CLOUD_DEFAULT": "google-cloud-platform://"},
-    name="flyte-conformance"
+    name="flyte-conformance",
 )
 
 
 @workflow
 def airflow_wf():
-    TimeSensor(task_id=f"time_sensor", target_time=x)
-    BashOperator(task_id=f"airflow_bash_operator", bash_command="echo hello")
+    TimeSensor(task_id="time_sensor", target_time=x)
+    BashOperator(task_id="airflow_bash_operator", bash_command="echo hello")
 
     create_cluster = DataprocCreateClusterOperator(
         task_id="create_dataproc_cluster1",
@@ -58,7 +66,7 @@ def airflow_wf():
         retries=3,
         retry_delay=timedelta(minutes=5),
         email_on_failure=True,
-        trigger_rule=trigger_rule.TriggerRule.ALL_DONE
+        trigger_rule=trigger_rule.TriggerRule.ALL_DONE,
     )
 
     create_cluster >> spark_on_dataproc >> delete_cluster

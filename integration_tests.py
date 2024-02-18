@@ -10,7 +10,6 @@ from plugins.bigquery_plugin import bigquery_wf
 from plugins.pandera_plugin import pandera_wf
 from plugins.pytorch_plugin import pytorch_wf
 from plugins.ray_plugin import ray_wf
-from plugins.spark_plugin import spark_wf
 
 
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
