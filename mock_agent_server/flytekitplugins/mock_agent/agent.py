@@ -1,29 +1,23 @@
-import json
 import typing
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 
 from flytekit import FlyteContext
-from flytekit.core.type_engine import TypeEngine, dataclass_from_dict
-from flytekit.extend.backend.base_agent import SyncAgentBase, AsyncAgentBase, AgentRegistry
+from flytekit.core.type_engine import TypeEngine
+from flytekit.extend.backend.base_agent import (
+    SyncAgentBase,
+    AsyncAgentBase,
+    AgentRegistry,
+    Resource,
+    ResourceMeta,
+)
 from flytekit.models.literals import LiteralMap
 from flytekit.models.task import TaskTemplate
-from flyteidl.admin.agent_pb2 import ExecuteTaskSyncResponse, ExecuteTaskSyncResponseHeader, Resource, \
-    CreateTaskResponse, GetTaskResponse, DeleteTaskResponse
 from flyteidl.core.execution_pb2 import TaskExecution, TaskLog
-
-from flytekitplugins.spark import DatabricksAgent
 
 
 @dataclass
-class Metadata:
+class SparkMetadata(ResourceMeta):
     job_id: str
-
-    def encode(self) -> bytes:
-        return json.dumps(asdict(self)).encode("utf-8")
-
-    @classmethod
-    def decode(cls, data: bytes) -> "Metadata":
-        return dataclass_from_dict(cls, json.loads(data.decode("utf-8")))
 
 
 class MockSparkAgent(AsyncAgentBase):
@@ -33,20 +27,24 @@ class MockSparkAgent(AsyncAgentBase):
         super().__init__(task_type_name="mock_spark")
 
     def create(
-        self, output_prefix: str, task_template: TaskTemplate, inputs: typing.Optional[LiteralMap] = None, **kwargs
-    ) -> CreateTaskResponse:
-        metadata = Metadata(job_id="test")
-        return CreateTaskResponse(resource_meta=metadata.encode())
+        self,
+        task_template: TaskTemplate,
+        inputs: typing.Optional[LiteralMap] = None,
+        **kwargs,
+    ) -> SparkMetadata:
+        return SparkMetadata(job_id="test")
 
-    def get(self, resource_meta: bytes, **kwargs) -> GetTaskResponse:
-        Metadata.decode(resource_meta)
-        return GetTaskResponse(
-            resource=Resource(phase=TaskExecution.SUCCEEDED),
+    def get(self, resource_meta: SparkMetadata, **kwargs) -> Resource:
+        ctx = FlyteContext.current_context()
+        output = TypeEngine.dict_to_literal_map(ctx, {"o0": "What is Flyte?"})
+        return Resource(
+            phase=TaskExecution.SUCCEEDED,
             log_links=[TaskLog(name="console", uri="localhost:3000")],
+            outputs=output,
         )
 
-    def delete(self, resource_meta: bytes, **kwargs) -> DeleteTaskResponse:
-        return DeleteTaskResponse()
+    def delete(self, resource_meta: SparkMetadata, **kwargs):
+        return
 
 
 class MockOpenAIAgent(SyncAgentBase):
@@ -57,18 +55,17 @@ class MockOpenAIAgent(SyncAgentBase):
 
     def do(
         self,
-        output_prefix: str,
         task_template: TaskTemplate,
-        inputs: typing.Iterable[LiteralMap] = None,
+        inputs: typing.Optional[LiteralMap] = None,
         **kwargs,
-    ) -> typing.Iterator[ExecuteTaskSyncResponse]:
-        header = ExecuteTaskSyncResponseHeader(resource=Resource(phase=TaskExecution.SUCCEEDED))
+    ) -> Resource:
+        print("Running task")
         ctx = FlyteContext.current_context()
-        output1 = TypeEngine.dict_to_literal_map_idl(ctx, {"o0": "Scalable and flexible workflow orchestration platform"})
-        output2 = TypeEngine.dict_to_literal_map_idl(ctx, {"o0": "that seamlessly unifies data, ML and analytics stacks"})
-        yield ExecuteTaskSyncResponse(header=header)
-        yield ExecuteTaskSyncResponse(outputs=output1)
-        yield ExecuteTaskSyncResponse(outputs=output2)
+        output = TypeEngine.dict_to_literal_map(
+            ctx,
+            {"o0": "Flyte is a scalable and flexible workflow orchestration platform"},
+        )
+        return Resource(phase=TaskExecution.SUCCEEDED, outputs=output)
 
 
 AgentRegistry.register(MockOpenAIAgent(), override=True)
