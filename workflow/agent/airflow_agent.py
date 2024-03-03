@@ -14,17 +14,6 @@ from airflow.providers.google.cloud.operators.dataproc import (
 x = (datetime.now(tz=UTC) + timedelta(seconds=21)).time()
 cluster_name = "flyte-dataproc-demo"
 
-image_spec = ImageSpec(
-    registry="ghcr.io/unionai",
-    packages=[
-        "apache-airflow[google]",
-        "apache-airflow-providers-apache-beam[google]",
-        "flytekitplugins-airflow",
-    ],
-    env={"AIRFLOW_CONN_GOOGLE_CLOUD_DEFAULT": "google-cloud-platform://"},
-    name="flyte-conformance",
-)
-
 
 @workflow
 def airflow_wf():

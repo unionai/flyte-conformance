@@ -24,7 +24,7 @@ class MockSparkAgent(AsyncAgentBase):
     name = "Mock Spark Agent"
 
     def __init__(self):
-        super().__init__(task_type_name="mock_spark")
+        super().__init__(task_type_name="mock_spark", metadata_type=SparkMetadata)
 
     def create(
         self,
@@ -35,6 +35,8 @@ class MockSparkAgent(AsyncAgentBase):
         return SparkMetadata(job_id="test")
 
     def get(self, resource_meta: SparkMetadata, **kwargs) -> Resource:
+        print("Getting status of task")
+        assert isinstance(resource_meta, SparkMetadata)
         ctx = FlyteContext.current_context()
         output = TypeEngine.dict_to_literal_map(ctx, {"o0": "What is Flyte?"})
         return Resource(
@@ -44,6 +46,7 @@ class MockSparkAgent(AsyncAgentBase):
         )
 
     def delete(self, resource_meta: SparkMetadata, **kwargs):
+        assert isinstance(resource_meta, SparkMetadata)
         return
 
 
@@ -59,12 +62,12 @@ class MockOpenAIAgent(SyncAgentBase):
         inputs: typing.Optional[LiteralMap] = None,
         **kwargs,
     ) -> Resource:
-        print("Running task")
+        print("Executing task")
         ctx = FlyteContext.current_context()
-        output = TypeEngine.dict_to_literal_map(
-            ctx,
-            {"o0": "Flyte is a scalable and flexible workflow orchestration platform"},
-        )
+        python_inputs = TypeEngine.literal_map_to_kwargs(ctx, inputs, literal_types=task_template.interface.inputs)
+        print(python_inputs)
+        # Openai Call
+        output = {"o0": "Flyte is a scalable and flexible workflow orchestration platform"}
         return Resource(phase=TaskExecution.SUCCEEDED, outputs=output)
 
 
