@@ -17,3 +17,9 @@ setup:
 	pip install pre-commit
 	pip install flytekitplugins-spark flytekitplugins-ray flytekitplugins-bigquery
 	pip install -U flytekit
+
+
+# Build and push the image for the agent
+.PHONY: build_agent
+build_agent:
+	docker build --push --platform linux/amd64 -t ghcr.io/unionai/flyte-conformance-agent:nightly -f mock_agent/Dockerfile .

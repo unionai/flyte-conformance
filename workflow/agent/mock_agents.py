@@ -3,7 +3,7 @@ from flytekitplugins.mock_agent import Spark
 from flytekitplugins.mock_agent import MockOpenAITask
 from flytekitplugins.mock_agent.task import OpenAI
 
-image_spec = ImageSpec(name="openai")
+image_spec = ImageSpec(name="openai", registry="pingsutw")
 openai_task = MockOpenAITask(name="openai", task_config=OpenAI(container_image=image_spec))
 
 
@@ -12,11 +12,11 @@ def spark_task() -> str:
     return "What is Flyte?"
 
 
-@workflow
-def wf() -> str:
+@workflow()
+def mock_agents_wf() -> str:
     question = spark_task()
     return openai_task(prompt=question)
 
 
 if __name__ == "__main__":
-    print(wf())
+    print(mock_agents_wf())
