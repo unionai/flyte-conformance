@@ -9,14 +9,10 @@ RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | tee /usr/share/
 RUN apt-get update && apt-get install google-cloud-cli
 
 RUN pip install prometheus_client jsonpickle grpcio-health-checking
-RUN pip install flytekitplugins-bigquery
 RUN pip install apache-airflow \
                 apache-airflow[slack] \
                 apache-airflow[google] \
-                google-cloud-orchestration-airflow==1.9.1 \
-                apache-beam[gcp] \
-                apache-airflow-providers-apache-beam[google] \
-                apache-airflow-providers-apache-spark
+                google-cloud-orchestration-airflow==1.9.1
 
 From agent-base as agent
 
