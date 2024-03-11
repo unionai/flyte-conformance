@@ -12,7 +12,8 @@ RUN pip install prometheus_client jsonpickle grpcio-health-checking
 RUN pip install apache-airflow \
                 apache-airflow[slack] \
                 apache-airflow[google] \
-                google-cloud-orchestration-airflow==1.9.1
+                google-cloud-orchestration-airflow==1.9.1 \
+                apache-airflow-providers-amazon
 
 From agent-base as agent
 
