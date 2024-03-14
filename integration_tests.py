@@ -22,6 +22,7 @@ from workflow.core.sphinx_docstring_wf import (
     numpy_docstring_wf,
     google_docstring_wf,
 )
+from workflow.core.ephemeral_storage import ephemeral_storage_test
 
 from workflow.plugins.pandera_plugin import pandera_wf
 from workflow.plugins.ray_plugin import ray_wf
@@ -55,10 +56,17 @@ def wf():
     sphinx_docstring_wf()
     numpy_docstring_wf()
     google_docstring_wf()
+    ephemeral_storage_test()
 
     # Plugins
     # spark_wf()  # TODO: support fast-register spark task
     # pytorch_wf() # TODO: Fix pytorch plugin
+    # tensorflow_wf() # TODO: Add tensorflow plugin
+    # hive_wf # TODO: Add hive plugin
+    # modin_wf() # TODO: Add modin plugin
+    # papermill_wf() # TODO: Add papermill plugin
+    # greatexpectations_wf() # TODO: Add greatexpectations plugin
+    # case studies
     ray_wf()
     pandera_wf()
 
