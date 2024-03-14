@@ -58,7 +58,7 @@ file_task_object = GreatExpectationsTask(
 
 @task(limits=Resources(mem="500Mi"), container_image=image_spec)
 def file_task(
-        dataset: CSVFile,
+    dataset: CSVFile,
 ) -> int:
     file_task_object(dataset=dataset)
     return len(pd.read_csv(dataset))
@@ -66,7 +66,7 @@ def file_task(
 
 @workflow
 def file_wf(
-        dataset: CSVFile = DATASET_REMOTE,
+    dataset: CSVFile = DATASET_REMOTE,
 ) -> int:
     return file_task(dataset=dataset)
 
