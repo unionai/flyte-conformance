@@ -24,6 +24,7 @@ def derive_count(freq1: list[int], freq2: list[int]) -> int:
         count += min(freq1[i], freq2[i])
     return count
 
+
 @dynamic
 def count_characters(s1: str, s2: str) -> int:
     # s1 and s2 should be accessible
@@ -94,17 +95,27 @@ def sort_locally(numbers: list[int]) -> list[int]:
 @dynamic
 def merge_sort_remotely(numbers: list[int], run_local_at_count: int) -> list[int]:
     split1, split2, new_count1, new_count2 = split(numbers=numbers)
-    sorted1 = merge_sort(numbers=split1, numbers_count=new_count1, run_local_at_count=run_local_at_count)
-    sorted2 = merge_sort(numbers=split2, numbers_count=new_count2, run_local_at_count=run_local_at_count)
+    sorted1 = merge_sort(
+        numbers=split1, numbers_count=new_count1, run_local_at_count=run_local_at_count
+    )
+    sorted2 = merge_sort(
+        numbers=split2, numbers_count=new_count2, run_local_at_count=run_local_at_count
+    )
     return merge(sorted_list1=sorted1, sorted_list2=sorted2)
 
 
 @workflow
-def merge_sort(numbers: list[int] = [1, 2, 3, 4 ,5], numbers_count: int = 2, run_local_at_count: int = 5) -> list[int]:
+def merge_sort(
+    numbers: list[int] = [1, 2, 3, 4, 5],
+    numbers_count: int = 2,
+    run_local_at_count: int = 5,
+) -> list[int]:
     return (
         conditional("terminal_case")
         .if_(numbers_count <= run_local_at_count)
         .then(sort_locally(numbers=numbers))
         .else_()
-        .then(merge_sort_remotely(numbers=numbers, run_local_at_count=run_local_at_count))
+        .then(
+            merge_sort_remotely(numbers=numbers, run_local_at_count=run_local_at_count)
+        )
     )

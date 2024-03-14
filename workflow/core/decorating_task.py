@@ -6,7 +6,6 @@ from flytekit import task, workflow
 logger = logging.getLogger(__file__)
 
 
-
 def log_io(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
@@ -29,14 +28,15 @@ def validate_output(fn=None, *, floor=0):
     def wrapper(*args, **kwargs):
         out = fn(*args, **kwargs)
         if out <= floor:
-            raise ValueError(f"output of task {fn.__name__} must be a positive number, found {out}")
+            raise ValueError(
+                f"output of task {fn.__name__} must be a positive number, found {out}"
+            )
         return out
 
     if fn is None:
         return partial(validate_output, floor=floor)
 
     return wrapper
-
 
 
 @task

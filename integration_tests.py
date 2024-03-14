@@ -17,6 +17,11 @@ from workflow.core.dynamic_workflow import dynamic_wf, merge_sort
 from workflow.core.flyte_type import test_flyte_type_wf
 from workflow.core.decorating_task import decorating_task_wf
 from workflow.core.decorating_workflow import decorating_workflow
+from workflow.core.sphinx_docstring_wf import (
+    sphinx_docstring_wf,
+    numpy_docstring_wf,
+    google_docstring_wf,
+)
 
 from workflow.plugins.pandera_plugin import pandera_wf
 from workflow.plugins.ray_plugin import ray_wf
@@ -47,6 +52,9 @@ def wf():
     merge_sort()
     decorating_task_wf()
     decorating_workflow()
+    sphinx_docstring_wf()
+    numpy_docstring_wf()
+    google_docstring_wf()
 
     # Plugins
     # spark_wf()  # TODO: support fast-register spark task
