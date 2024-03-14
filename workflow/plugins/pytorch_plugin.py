@@ -34,11 +34,11 @@ custom_image = ImageSpec(
 )
 
 
-cpu_request = "500m"
-mem_request = "500Mi"
-gpu_request = "0"
-mem_limit = "500Mi"
-gpu_limit = "0"
+cpu_request = "2000m"
+mem_request = "2000Mi"
+gpu_request = "1"
+mem_limit = "2000Mi"
+gpu_limit = "1"
 
 
 class Net(nn.Module):
@@ -60,9 +60,6 @@ class Net(nn.Module):
         return F.log_softmax(x, dim=1)
 
 
-# %% [markdown]
-# We define a trainer.
-# %%
 def train(model, device, train_loader, optimizer, epoch, writer, log_interval):
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
@@ -160,7 +157,7 @@ TrainingOutputs = typing.NamedTuple(
 @task(
     task_config=PyTorch(worker=Worker(replicas=2)),
     retries=2,
-    cache=True,
+    cache=False,
     cache_version="0.1",
     requests=Resources(cpu=cpu_request, mem=mem_request, gpu=gpu_request),
     limits=Resources(mem=mem_limit, gpu=gpu_limit),
