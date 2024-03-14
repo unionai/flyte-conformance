@@ -3,6 +3,7 @@ from workflow.agent.agent_workflows import agent_wf
 from workflow.core.map_task import map_task_wf
 from workflow.core.pod_template import pod_template_workflow
 from workflow.core.shell_task import shell_task_wf
+from workflow.core.chaining import chain_tasks_wf
 from workflow.core.condictional import (
     shape_properties,
     shape_properties_with_multiple_branches,
@@ -33,6 +34,7 @@ def wf():
     boolean_input_wf()
     nested_conditions()
     consume_task_output()
+    chain_tasks_wf()
 
     # Plugins
     # spark_wf()  # TODO: support fast-register spark task

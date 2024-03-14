@@ -3,7 +3,7 @@ from flytekitplugins.mock_agent import Spark
 from flytekitplugins.mock_agent import MockOpenAITask
 from flytekitplugins.mock_agent.task import OpenAI
 
-image_spec = ImageSpec(name="openai", registry="pingsutw")
+image_spec = ImageSpec(name="flyte-conformance", registry="ghcr.io/unionai")
 openai_task = MockOpenAITask(
     name="openai", task_config=OpenAI(container_image=image_spec)
 )
