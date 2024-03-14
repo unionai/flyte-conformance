@@ -17,7 +17,7 @@ def spark_task() -> str:
 @workflow()
 def mock_agents_wf() -> str:
     question = spark_task()
-    return "openai_task(prompt=question)"
+    return openai_task(prompt=question)
 
 
 if __name__ == "__main__":
