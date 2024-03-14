@@ -48,8 +48,7 @@ image = ImageSpec(base_image="pingsutw/databricks:v4", registry="pingsutw")
     ),
     limits=Resources(mem="2000M"),
     # container_image=imageee,
-    container_image="pingsutw/databricks:v12"
-
+    container_image="pingsutw/databricks:v12",
 )
 def hello_spark(partitions: int) -> float:
     print("Starting Spark with Partitions: {}".format(partitions))
@@ -67,7 +66,7 @@ def hello_spark(partitions: int) -> float:
 def f(_):
     x = random.random() * 2 - 1
     y = random.random() * 2 - 1
-    return 1 if x ** 2 + y ** 2 <= 1 else 0
+    return 1 if x**2 + y**2 <= 1 else 0
 
 
 @task(cache_version="1")
@@ -78,7 +77,7 @@ def print_every_time(value_to_print: float, date_triggered: datetime.datetime) -
 
 @workflow
 def wf(
-        triggered_date: datetime.datetime = datetime.datetime.now(),
+    triggered_date: datetime.datetime = datetime.datetime.now(),
 ) -> float:
     """
     Using the workflow is still as any other workflow. As image is a property of the task, the workflow does not care
@@ -89,12 +88,16 @@ def wf(
     return pi
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     runner = CliRunner()
-    result = runner.invoke(pyflyte.main,
-                           ["run",
-                            "--raw-output-data-prefix",
-                            "s3://flyte-batch/spark/",
-                            "/Users/kevin/git/flytekit/flyte-example/databricks_wf",
-                            "wf"])
+    result = runner.invoke(
+        pyflyte.main,
+        [
+            "run",
+            "--raw-output-data-prefix",
+            "s3://flyte-batch/spark/",
+            "/Users/kevin/git/flytekit/flyte-example/databricks_wf",
+            "wf",
+        ],
+    )
     print(result.output)

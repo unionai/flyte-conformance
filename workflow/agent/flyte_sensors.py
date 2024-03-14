@@ -1,4 +1,4 @@
-from flytekit import task, workflow, dynamic
+from flytekit import task, workflow
 from flytekit.sensor.file_sensor import FileSensor
 
 sensor = FileSensor(name="test_file_sensor")

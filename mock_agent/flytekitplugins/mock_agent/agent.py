@@ -64,10 +64,14 @@ class MockOpenAIAgent(SyncAgentBase):
     ) -> Resource:
         print("Executing task")
         ctx = FlyteContext.current_context()
-        python_inputs = TypeEngine.literal_map_to_kwargs(ctx, inputs, literal_types=task_template.interface.inputs)
+        python_inputs = TypeEngine.literal_map_to_kwargs(
+            ctx, inputs, literal_types=task_template.interface.inputs
+        )
         print(python_inputs)
         # Openai Call
-        output = {"o0": "Flyte is a scalable and flexible workflow orchestration platform"}
+        output = {
+            "o0": "Flyte is a scalable and flexible workflow orchestration platform"
+        }
         return Resource(phase=TaskExecution.SUCCEEDED, outputs=output)
 
 
