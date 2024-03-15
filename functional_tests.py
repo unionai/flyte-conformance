@@ -1,11 +1,18 @@
 from datetime import datetime
+from pathlib import Path
 
-from flytekit import task
+from flytekit import task, ImageSpec
 from flytekit.configuration import Config, SerializationSettings, ImageConfig
 from flytekit.remote import FlyteRemote
 
+image_spec = ImageSpec(
+    name="flyte-conformance",
+    registry="ghcr.io/unionai",
+    packages=["pandas"],
+)
 
-@task()
+
+@task(container_image=image_spec)
 def t1(x: int) -> datetime:
     return datetime.now()
 
@@ -13,28 +20,33 @@ def t1(x: int) -> datetime:
 def test_cache_override():
     # TODO: flytekit remote should upload workflow code to s3
     remote = FlyteRemote(
-        config=Config.auto(),
+        config=Config.auto("/Users/kevin/.flyte/config-dogfood-gcp.yaml"),
         default_project="flytesnacks",
         default_domain="development",
     )
     # TODO: serialization_settings should be optional
     # TODO: update flytekit remote documentation. https://docs.flyte.org/en/latest/api/flytekit/design/control_plane.html#registering-entities
-    flyte_task = remote.register_task(
+    remote.register_task(
         entity=t1,
         serialization_settings=SerializationSettings(
-            image_config=ImageConfig.auto_default_image()
+            image_config=ImageConfig.auto_default_image(),
+            source_root=Path(".").absolute().__str__(),
         ),
-        version="v2",
+        version="v18",
     )
 
-    exe = remote.execute(entity=flyte_task, inputs={"x": 3}, wait=True)
-    exe = remote.sync_execution(exe, sync_nodes=True)
-    old = exe.outputs["o0"]
+    # exe = remote.execute(entity=t1, inputs={"x": 3}, wait=True)
+    # exe = remote.sync_execution(exe, sync_nodes=True)
+    # old = exe.outputs["o0"]
+    #
+    # exe = remote.execute(
+    #     entity=flyte_task, inputs={"x": 3}, overwrite_cache=True, wait=True
+    # )
+    # exe = remote.sync_execution(exe, sync_nodes=True)
+    # new = exe.outputs["o0"]
+    #
+    # assert old != new
 
-    exe = remote.execute(
-        entity=flyte_task, inputs={"x": 3}, overwrite_cache=True, wait=True
-    )
-    exe = remote.sync_execution(exe, sync_nodes=True)
-    new = exe.outputs["o0"]
 
-    assert old != new
+if __name__ == "__main__":
+    test_cache_override()

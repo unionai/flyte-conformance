@@ -20,7 +20,7 @@ if custom_image.is_container():
     from flytekitplugins.kftensorflow import PS, Chief, TfJob, Worker
 
 
-MODEL_FILE_PATH = "saved_model/"
+MODEL_FILE_PATH = "model.keras"
 
 
 @dataclass_json
@@ -84,7 +84,7 @@ def get_compiled_model(strategy: tf.distribute.Strategy) -> tf.keras.Model:
 def decay(epoch: int):
     if epoch < 3:
         return 1e-3
-    elif epoch >= 3 and epoch < 7:
+    elif 3 <= epoch < 7:
         return 1e-4
     else:
         return 1e-5
@@ -99,7 +99,7 @@ def train_model(
     checkpoint_dir = "/tmp/training_checkpoints"
 
     # Define the name of the checkpoint files
-    checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt_{epoch}.weights.h5")
+    checkpoint_prefix = os.path.join(checkpoint_dir, "model.keras")
 
     # Define a callback for printing the learning rate at the end of each epoch
     class PrintLR(tf.keras.callbacks.Callback):
@@ -113,9 +113,7 @@ def train_model(
     # Put all the callbacks together
     callbacks = [
         tf.keras.callbacks.TensorBoard(log_dir="./logs"),
-        tf.keras.callbacks.ModelCheckpoint(
-            filepath=checkpoint_prefix, save_weights_only=True
-        ),
+        tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_prefix),
         tf.keras.callbacks.LearningRateScheduler(decay),
         PrintLR(),
     ]
@@ -126,13 +124,13 @@ def train_model(
     # Save the model
     model.save(MODEL_FILE_PATH)
 
-    return model, checkpoint_dir
+    return model, checkpoint_prefix
 
 
 def test_model(
-    model: tf.keras.Model, checkpoint_dir: str, eval_dataset: tf.data.Dataset
+    model: tf.keras.Model, checkpoint_path: str, eval_dataset: tf.data.Dataset
 ) -> Tuple[float, float]:
-    model.load_weights(tf.train.latest_checkpoint(checkpoint_dir))
+    model.load_weights(tf.train.latest_checkpoint(checkpoint_path))
 
     eval_loss, eval_acc = model.evaluate(eval_dataset)
 
@@ -161,11 +159,11 @@ resources = Resources(gpu="1", mem="2Gi", ephemeral_storage="500Mi")
 def mnist_tensorflow_job(hyperparameters: Hyperparameters) -> training_outputs:
     train_dataset, eval_dataset, strategy = load_data(hyperparameters=hyperparameters)
     model = get_compiled_model(strategy=strategy)
-    model, checkpoint_dir = train_model(
+    model, checkpoint_path = train_model(
         model=model, train_dataset=train_dataset, hyperparameters=hyperparameters
     )
     eval_loss, eval_accuracy = test_model(
-        model=model, checkpoint_dir=checkpoint_dir, eval_dataset=eval_dataset
+        model=model, checkpoint_path=checkpoint_path, eval_dataset=eval_dataset
     )
     return training_outputs(
         accuracy=eval_accuracy, loss=eval_loss, model_state=MODEL_FILE_PATH
