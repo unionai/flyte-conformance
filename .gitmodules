@@ -1,0 +1,3 @@
+[submodule "flytesnacks"]
+	path = flytesnacks
+	url = git@github.com:flyteorg/flytesnacks.git
