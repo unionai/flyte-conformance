@@ -6,7 +6,6 @@ from workflow.core.flyte_type import test_flyte_type_wf
 
 from workflow.core.ephemeral_storage import ephemeral_storage_test
 
-from workflow.plugins.tensorflow_plugin import tensorflow_wf
 from workflow.plugins.pytorch_plugin import pytorch_wf
 from workflow.plugins.pandera_plugin import pandera_wf
 from workflow.plugins.ray_plugin import ray_wf
@@ -58,18 +57,32 @@ from flytesnacks.examples.basics.basics.documenting_workflows import (
 from flytesnacks.examples.basics.basics.hello_world import hello_world_wf
 from flytesnacks.examples.basics.basics.imperative_workflow import imperative_wf
 from flytesnacks.examples.basics.basics.launch_plan import simple_wf_lp_fixed_inputs
-from flytesnacks.examples.basics.basics.named_outputs import simple_wf_with_named_outputs
+from flytesnacks.examples.basics.basics.named_outputs import (
+    simple_wf_with_named_outputs,
+)
 from flytesnacks.examples.basics.basics.shell_task import shell_task_wf
 from flytesnacks.examples.basics.basics.task import slope
-from flytesnacks.examples.basics.basics.workflow import simple_wf, simple_wf_with_partial
+from flytesnacks.examples.basics.basics.workflow import (
+    simple_wf,
+    simple_wf_with_partial,
+)
 
 from flytesnacks.examples.blast.blast.blastx_example import blast_wf
 
-from flytesnacks.examples.development_lifecycle.development_lifecycle.failure_node import wf1, wf2
-from flytesnacks.examples.development_lifecycle.development_lifecycle.task_cache import cached_dataframe_wf
-from flytesnacks.examples.development_lifecycle.development_lifecycle.task_cache_serialize import square
+from flytesnacks.examples.development_lifecycle.development_lifecycle.failure_node import (
+    wf1,
+    wf2,
+)
+from flytesnacks.examples.development_lifecycle.development_lifecycle.task_cache import (
+    cached_dataframe_wf,
+)
+from flytesnacks.examples.development_lifecycle.development_lifecycle.task_cache_serialize import (
+    square,
+)
 
-from flytesnacks.examples.extending.extending.custom_types import wf as test_custom_type_wf
+from flytesnacks.examples.extending.extending.custom_types import (
+    wf as test_custom_type_wf,
+)
 
 from flytesnacks.examples.k8s_pod_plugin.k8s_pod_plugin.pod import dynamic_pod_workflow
 from flytesnacks.examples.mlflow_plugin.mlflow_plugin.mlflow_example import ml_pipeline
