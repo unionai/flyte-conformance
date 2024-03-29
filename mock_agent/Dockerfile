@@ -17,8 +17,8 @@ RUN pip install apache-airflow \
 
 From agent-base as agent
 
-ARG FLYTEKIT_VERSION=ee38bcf780f1a86128da925f3103896da3229528
-ARG FLYTE_VERSION=f448a0358d8706a09b65b96543134f629327d755
+ARG FLYTEKIT_VERSION=8ab9a3c7c3ad2064296b6d1282953c77cbc26728
+ARG FLYTE_VERSION=c61d976c6f1d934d38afc3097a64f45f36b7c7ad
 
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION"
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-airflow"
@@ -26,6 +26,7 @@ RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSI
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-snowflake"
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-bigquery"
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-spark"
+RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-aws-sagemaker"
 RUN pip install -U "git+https://github.com/flyteorg/flyte.git@$FLYTE_VERSION#subdirectory=flyteidl"
 
 COPY mock_agent /root/mock_agent
