@@ -1,4 +1,4 @@
-FROM python:3.9-slim-buster as agent-base
+FROM python:3.10-slim-buster as agent-base
 
 MAINTAINER Flyte Team <users@flyte.org>
 LABEL org.opencontainers.image.source=https://github.com/flyteorg/flytekit
