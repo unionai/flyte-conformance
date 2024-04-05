@@ -15,25 +15,28 @@ from flytekit.models.literals import LiteralMap
 
 
 @dataclass
-class Spark(object):
-    worker: int
+class Sleep(object):
+    duration: int
 
 
-class MockSparkTask(AsyncAgentExecutorMixin, PythonFunctionTask[Spark]):
+class SleepTask(AsyncAgentExecutorMixin, PythonFunctionTask[Sleep]):
     def __init__(
         self,
-        task_config: Spark,
+        task_config: Sleep,
         task_function: Callable,
         container_image: Optional[Union[str, ImageSpec]] = None,
         **kwargs,
     ):
         super().__init__(
-            task_type="mock_spark",
+            task_type="sleep",
             container_image="dummy",
             task_config=task_config,
             task_function=task_function,
             **kwargs,
         )
+
+    def get_custom(self, settings: SerializationSettings) -> Optional[Dict[str, Any]]:
+        return {"duration": self.task_config.duration}
 
     def execute(self, **kwargs) -> LiteralMap:
         return AsyncAgentExecutorMixin.execute(self, **kwargs)
@@ -60,4 +63,4 @@ class MockOpenAITask(SyncAgentExecutorMixin, PythonTask):
         return {"container_image": self.task_config.container_image}
 
 
-TaskPlugins.register_pythontask_plugin(Spark, MockSparkTask)
+TaskPlugins.register_pythontask_plugin(Sleep, SleepTask)

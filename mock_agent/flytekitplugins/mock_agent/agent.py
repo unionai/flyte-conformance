@@ -1,7 +1,9 @@
+import random
 import typing
 from dataclasses import dataclass
+from time import sleep
 
-from flytekit import FlyteContext
+from flytekit import FlyteContext, logger
 from flytekit.core.type_engine import TypeEngine
 from flytekit.extend.backend.base_agent import (
     SyncAgentBase,
@@ -16,37 +18,41 @@ from flyteidl.core.execution_pb2 import TaskExecution, TaskLog
 
 
 @dataclass
-class SparkMetadata(ResourceMeta):
-    job_id: str
+class SleepMetadata(ResourceMeta):
+    duration: int
 
 
-class MockSparkAgent(AsyncAgentBase):
-    name = "Mock Spark Agent"
+class SleepAgent(AsyncAgentBase):
+    name = "Sleep Agent"
 
     def __init__(self):
-        super().__init__(task_type_name="mock_spark", metadata_type=SparkMetadata)
+        super().__init__(task_type_name="sleep", metadata_type=SleepMetadata)
 
     def create(
         self,
         task_template: TaskTemplate,
         inputs: typing.Optional[LiteralMap] = None,
         **kwargs,
-    ) -> SparkMetadata:
-        return SparkMetadata(job_id="test")
+    ) -> SleepMetadata:
+        duration = task_template.custom["duration"]
+        return SleepMetadata(duration=duration)
 
-    def get(self, resource_meta: SparkMetadata, **kwargs) -> Resource:
-        print("Getting status of task")
-        assert isinstance(resource_meta, SparkMetadata)
+    def get(self, resource_meta: SleepMetadata, **kwargs) -> Resource:
+        logger.info("Sleep agent is getting the status of the task.")
+        assert isinstance(resource_meta, SleepMetadata)
+        sleep(random.random())
         ctx = FlyteContext.current_context()
         output = TypeEngine.dict_to_literal_map(ctx, {"o0": "What is Flyte?"})
         return Resource(
             phase=TaskExecution.SUCCEEDED,
-            log_links=[TaskLog(name="console", uri="localhost:3000")],
+            log_links=[
+                TaskLog(name="Flyte Console", uri="https://github.com/flyteorg/flyte")
+            ],
             outputs=output,
         )
 
-    def delete(self, resource_meta: SparkMetadata, **kwargs):
-        assert isinstance(resource_meta, SparkMetadata)
+    def delete(self, resource_meta: SleepMetadata, **kwargs):
+        assert isinstance(resource_meta, SleepMetadata)
         return
 
 
@@ -76,4 +82,4 @@ class MockOpenAIAgent(SyncAgentBase):
 
 
 AgentRegistry.register(MockOpenAIAgent(), override=True)
-AgentRegistry.register(MockSparkAgent(), override=True)
+AgentRegistry.register(SleepAgent(), override=True)

@@ -1,5 +1,5 @@
 from flytekit import workflow, task, ImageSpec
-from flytekitplugins.mock_agent import Spark
+from flytekitplugins.mock_agent import Sleep
 from flytekitplugins.mock_agent import MockOpenAITask
 from flytekitplugins.mock_agent.task import OpenAI
 
@@ -9,7 +9,7 @@ openai_task = MockOpenAITask(
 )
 
 
-@task(task_config=Spark(worker=2))
+@task(task_config=Sleep(duration=1))
 def spark_task() -> str:
     return "What is Flyte?"
 

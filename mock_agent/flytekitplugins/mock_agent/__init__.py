@@ -1,2 +1,2 @@
-from .agent import MockSparkAgent, MockOpenAIAgent  # noqa: F401
-from .task import MockOpenAITask, Spark  # noqa: F401
+from .agent import SleepAgent, MockOpenAIAgent  # noqa: F401
+from .task import MockOpenAITask, Sleep  # noqa: F401
