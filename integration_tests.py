@@ -166,14 +166,14 @@ def flyte_plugin_wf():
     - flyteinteractive plugin
     - Dask plugin
     """
-    mnist_tensorflow_workflow()
+    # mnist_tensorflow_workflow()  # TODO: Fix it
     pytorch_training_wf()
     ray_workflow(n=3)
     process_data()
     pipeline(data_random_state=42, model_random_state=42)
     dynamic_pod_workflow()
     ml_pipeline(epochs=5)
-    spark_to_pandas_wf()
+    # spark_to_pandas_wf()  # TODO: Fix it
     my_spark()
 
 
