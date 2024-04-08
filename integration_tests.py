@@ -77,12 +77,23 @@ from flytesnacks.examples.extending.extending.custom_types import (
 
 from flytesnacks.examples.k8s_pod_plugin.k8s_pod_plugin.pod import dynamic_pod_workflow
 from flytesnacks.examples.mlflow_plugin.mlflow_plugin.mlflow_example import ml_pipeline
-from flytesnacks.examples.pandera_plugin.pandera_plugin.basic_schema_example import process_data
-from flytesnacks.examples.pandera_plugin.pandera_plugin.validating_and_testing_ml_pipelines import pipeline
-from flytesnacks.examples.kfpytorch_plugin.kfpytorch_plugin.pytorch_mnist import pytorch_training_wf
-from flytesnacks.examples.kftensorflow_plugin.kftensorflow_plugin.tf_mnist import mnist_tensorflow_workflow
+from flytesnacks.examples.pandera_plugin.pandera_plugin.basic_schema_example import (
+    process_data,
+)
+from flytesnacks.examples.pandera_plugin.pandera_plugin.validating_and_testing_ml_pipelines import (
+    pipeline,
+)
+from flytesnacks.examples.kfpytorch_plugin.kfpytorch_plugin.pytorch_mnist import (
+    pytorch_training_wf,
+)
+from flytesnacks.examples.kftensorflow_plugin.kftensorflow_plugin.tf_mnist import (
+    mnist_tensorflow_workflow,
+)
 from flytesnacks.examples.ray_plugin.ray_plugin.ray_example import ray_workflow
-
+from flytesnacks.examples.k8s_spark_plugin.k8s_spark_plugin.dataframe_passing import (
+    spark_to_pandas_wf,
+)
+from flytesnacks.examples.k8s_spark_plugin.k8s_spark_plugin.pyspark_pi import my_spark
 
 
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
@@ -141,7 +152,6 @@ def flytesnacks_wf():
 def flyte_plugin_wf():
     """
     TODO:
-    - Spark
     - MPI
     - Hive
     - Modin
@@ -163,6 +173,8 @@ def flyte_plugin_wf():
     pipeline(data_random_state=42, model_random_state=42)
     dynamic_pod_workflow()
     ml_pipeline(epochs=5)
+    spark_to_pandas_wf()
+    my_spark()
 
 
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
@@ -180,9 +192,7 @@ def flyte_agent_wf():
 
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
 def flyte_conformance_wf():
-    # Core
     test_flyte_type_wf()
     pod_template_workflow()
     map_task_wf()
     ephemeral_storage_test()
-

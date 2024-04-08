@@ -43,6 +43,7 @@ pyflyte run --remote integration_tests.py flytesnacks_wf
 ```
 
 ### FlyteConformance Integration Tests
+Any tests that cannot be added to Flytesnacks will be included in the flyte-conformance tests.
 ```bash
 pyflyte run --remote integration_tests.py flyte_conformance_wf
 ```
