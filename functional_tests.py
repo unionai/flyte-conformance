@@ -1,15 +1,15 @@
 from datetime import datetime
 
 from flytekit import task, ImageSpec
-from flytekit.configuration import Config, SerializationSettings, ImageConfig
+from flytekit.configuration import Config
 from flytekit.remote import FlyteRemote
 from flytekit.tools.script_mode import hash_file
 
 remote = FlyteRemote(
-        config=Config.auto(),
-        default_project="flyte-conformance",
-        default_domain="development",
-    )
+    config=Config.auto(),
+    default_project="flyte-conformance",
+    default_domain="development",
+)
 
 image_spec = ImageSpec(
     name="flyte-conformance",
