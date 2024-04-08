@@ -32,5 +32,6 @@ RUN pip install -U "git+https://github.com/flyteorg/flyte.git@$FLYTE_VERSION#sub
 COPY mock_agent /root/mock_agent
 RUN pip install /root/mock_agent
 
+ENV FLYTE_SDK_LOGGING_LEVEL 30
 
 CMD pyflyte serve agent --port 8000

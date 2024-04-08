@@ -21,7 +21,7 @@ def test_cache_override():
     # TODO: flytekit remote should upload workflow code to s3
     # TODO: update flytekit remote documentation. https://docs.flyte.org/en/latest/api/flytekit/design/control_plane.html#registering-entities
     remote = FlyteRemote(
-        config=Config.auto("/Users/kevin/.flyte/config-dogfood-gcp.yaml"),
+        config=Config.auto(),
         default_project="flytesnacks",
         default_domain="development",
     )

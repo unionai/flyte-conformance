@@ -45,3 +45,41 @@ jobs:
           file: mock_agent/Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  build-and-push-ci-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: "0"
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to GitHub Container Registry
+        if: ${{ github.event_name == 'push' }}
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare CI Image Names
+        id: image-names
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            ghcr.io/${{ github.repository_owner }}/flyte-conformance-ci
+          tags: |
+            latest
+            ${{ github.sha }}
+      - name: Build & Push flyte agent Docker Image to Github Registry
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          platforms: linux/amd64
+          push: ${{ github.event_name == 'push' }}
+          tags: ${{ steps.image-names.outputs.tags }}
+          file: Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

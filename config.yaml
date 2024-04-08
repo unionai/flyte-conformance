@@ -1,0 +1,8 @@
+admin:
+  # For GRPC endpoints you might want to use dns:///flyte.myexample.com
+  endpoint: dns:///dogfood-gcp.cloud-staging.union.ai
+  authType: Pkce
+  insecure: False
+logger:
+  show-source: true
+  level: 2
