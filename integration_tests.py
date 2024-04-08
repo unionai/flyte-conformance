@@ -3,12 +3,7 @@ from flytekit import workflow, WorkflowFailurePolicy
 from workflow.core.map_task import map_task_wf
 from workflow.core.pod_template import pod_template_workflow
 from workflow.core.flyte_type import test_flyte_type_wf
-
 from workflow.core.ephemeral_storage import ephemeral_storage_test
-
-from workflow.plugins.pytorch_plugin import pytorch_wf
-from workflow.plugins.pandera_plugin import pandera_wf
-from workflow.plugins.ray_plugin import ray_wf
 
 from workflow.agent.airflow_agent import airflow_wf
 from workflow.agent.bigquery_agent import bigquery_wf
@@ -69,10 +64,6 @@ from flytesnacks.examples.basics.basics.workflow import (
 
 from flytesnacks.examples.blast.blast.blastx_example import blast_wf
 
-from flytesnacks.examples.development_lifecycle.development_lifecycle.failure_node import (
-    wf1,
-    wf2,
-)
 from flytesnacks.examples.development_lifecycle.development_lifecycle.task_cache import (
     cached_dataframe_wf,
 )
@@ -86,6 +77,12 @@ from flytesnacks.examples.extending.extending.custom_types import (
 
 from flytesnacks.examples.k8s_pod_plugin.k8s_pod_plugin.pod import dynamic_pod_workflow
 from flytesnacks.examples.mlflow_plugin.mlflow_plugin.mlflow_example import ml_pipeline
+from flytesnacks.examples.pandera_plugin.pandera_plugin.basic_schema_example import process_data
+from flytesnacks.examples.pandera_plugin.pandera_plugin.validating_and_testing_ml_pipelines import pipeline
+from flytesnacks.examples.kfpytorch_plugin.kfpytorch_plugin.pytorch_mnist import pytorch_training_wf
+from flytesnacks.examples.kftensorflow_plugin.kftensorflow_plugin.tf_mnist import mnist_tensorflow_workflow
+from flytesnacks.examples.ray_plugin.ray_plugin.ray_example import ray_workflow
+
 
 
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
@@ -159,10 +156,11 @@ def flyte_plugin_wf():
     - flyteinteractive plugin
     - Dask plugin
     """
-    # tensorflow_wf()
-    pytorch_wf()
-    ray_wf()
-    pandera_wf()
+    mnist_tensorflow_workflow()
+    pytorch_training_wf()
+    ray_workflow(n=3)
+    process_data()
+    pipeline(data_random_state=42, model_random_state=42)
     dynamic_pod_workflow()
     ml_pipeline(epochs=5)
 
@@ -183,14 +181,8 @@ def flyte_agent_wf():
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
 def flyte_conformance_wf():
     # Core
-    # test_failure_node()
     test_flyte_type_wf()
     pod_template_workflow()
     map_task_wf()
     ephemeral_storage_test()
 
-
-@workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
-def flyte_failure_node_wf():
-    wf1()
-    wf2()
