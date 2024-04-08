@@ -1,5 +1,5 @@
 from typing import List
-from flytekit import task, workflow, map_task
+from flytekit import task, workflow, map_task, dynamic
 from flytekit.experimental import map_task as array_node_map_task
 
 
@@ -31,4 +31,13 @@ def map_task_wf() -> bool:
     my_input = get_input()
     mapped_out1 = map_task(a_mappable_task)(a=my_input)
     mapped_out2 = array_node_map_task(a_mappable_task)(a=my_input)
+    map_task_in_dynamic()
     return is_equal(x=mapped_out1, y=mapped_out2)
+
+
+@dynamic
+def map_task_in_dynamic():
+    my_input = get_input()
+    mapped_out1 = map_task(a_mappable_task)(a=my_input)
+    mapped_out2 = array_node_map_task(a_mappable_task)(a=my_input)
+    is_equal(x=mapped_out1, y=mapped_out2)
