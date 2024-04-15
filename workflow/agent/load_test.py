@@ -9,18 +9,16 @@ def sleep_task() -> str:
 
 @workflow()
 def sleep_wf():
-    for i in range(1):
+    for i in range(50):
         sleep_task()
-
-
-sleep_lp = LaunchPlan.get_or_create(name="fixed_inputs", workflow=sleep_wf, max_parallelism=100)
 
 
 @workflow
 def load_test_wf():
-    for i in range(32):
+    sleep_lp = LaunchPlan.get_or_create(name="fixed_inputs", workflow=sleep_wf, max_parallelism=100)
+    for i in range(64):
         sleep_lp()
 
 
 if __name__ == "__main__":
-    print(sleep_wf())
+    sleep_task()
