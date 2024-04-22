@@ -1,4 +1,6 @@
-from flytekit import workflow, WorkflowFailurePolicy
+from datetime import timedelta
+
+from flytekit import workflow, WorkflowFailurePolicy, LaunchPlan, FixedRate
 
 from workflow.core.map_task import map_task_wf
 from workflow.core.pod_template import pod_template_workflow
@@ -8,7 +10,7 @@ from workflow.core.ephemeral_storage import ephemeral_storage_test
 from workflow.agent.airflow_agent import airflow_wf
 from workflow.agent.bigquery_agent import bigquery_wf
 from workflow.agent.flyte_sensors import sensor_wf
-from workflow.agent.mock_agents import mock_agents_wf
+from workflow.agent.dummy_agents import dummy_agents_wf
 
 from flytesnacks.examples.advanced_composition.advanced_composition.chain_entities import (
     chain_tasks_wf,
@@ -34,7 +36,6 @@ from flytesnacks.examples.advanced_composition.advanced_composition.decorating_w
 )
 from flytesnacks.examples.advanced_composition.advanced_composition.dynamic_workflow import (
     dynamic_wf,
-    merge_sort,
 )
 from flytesnacks.examples.advanced_composition.advanced_composition.subworkflow import (
     slope_intercept_wf,
@@ -87,11 +88,11 @@ from flytesnacks.examples.kfpytorch_plugin.kfpytorch_plugin.pytorch_mnist import
     pytorch_training_wf,
 )
 from flytesnacks.examples.kftensorflow_plugin.kftensorflow_plugin.tf_mnist import (
-    mnist_tensorflow_workflow,
+    mnist_tensorflow_workflow,  # noqa: F401
 )
 from flytesnacks.examples.ray_plugin.ray_plugin.ray_example import ray_workflow
 from flytesnacks.examples.k8s_spark_plugin.k8s_spark_plugin.dataframe_passing import (
-    spark_to_pandas_wf,
+    spark_to_pandas_wf,  # noqa: F401
 )
 from flytesnacks.examples.k8s_spark_plugin.k8s_spark_plugin.pyspark_pi import my_spark
 
@@ -118,7 +119,6 @@ def flytesnacks_wf():
     decorating_task_wf(x=10)
     decorating_workflow(x=10.0)
     dynamic_wf(s1="Pear", s2="Earth")
-    merge_sort(numbers=[3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5], numbers_count=20)
     slope_intercept_wf(x=[1, 2, 3, 4, 5], y=[6, 7, 8, 9, 10])
     regression_line_wf()
     nested_regression_line_wf()
@@ -187,7 +187,7 @@ def flyte_agent_wf():
     airflow_wf()
     bigquery_wf()
     sensor_wf()
-    mock_agents_wf()
+    dummy_agents_wf()
 
 
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
@@ -196,3 +196,33 @@ def flyte_conformance_wf():
     pod_template_workflow()
     map_task_wf()
     ephemeral_storage_test()
+
+
+flytesnacks_lp = LaunchPlan.get_or_create(
+    name="flytesnacks_lp",
+    workflow=flytesnacks_wf,
+    schedule=FixedRate(duration=timedelta(hours=1)),
+    max_parallelism=100,
+)
+
+flyte_plugin_lp = LaunchPlan.get_or_create(
+    name="flyte_plugin_lp",
+    workflow=flyte_plugin_wf,
+    schedule=FixedRate(duration=timedelta(hours=6)),
+    max_parallelism=100,
+)
+
+
+flyte_agent_lp = LaunchPlan.get_or_create(
+    name="flyte_agent_lp",
+    workflow=flyte_agent_wf,
+    schedule=FixedRate(duration=timedelta(hours=24)),
+    max_parallelism=100,
+)
+
+flyte_conformance_lp = LaunchPlan.get_or_create(
+    name="flyte_conformance_lp",
+    workflow=flyte_conformance_wf,
+    schedule=FixedRate(duration=timedelta(hours=1)),
+    max_parallelism=100,
+)
