@@ -1,9 +1,11 @@
-from datetime import datetime
+from time import sleep
+from flyteidl.core.execution_pb2 import TaskExecution
+from dummy_tasks import t1, wf
 
-from flytekit import task, ImageSpec
-from flytekit.configuration import Config
+from flytekit.configuration import Config, SerializationSettings, ImageConfig
 from flytekit.remote import FlyteRemote
 from flytekit.tools.script_mode import hash_file
+from flytekit.tools.translator import Options
 
 remote = FlyteRemote(
     config=Config.auto(),
@@ -11,25 +13,13 @@ remote = FlyteRemote(
     default_domain="development",
 )
 
-image_spec = ImageSpec(
-    name="flyte-conformance",
-    registry="ghcr.io/unionai",
-    packages=["pandas"],
-)
-
-
-@task(container_image=image_spec, cache=True, cache_version="1.0")
-def t1(x: int) -> datetime:
-    return datetime.now()
+_, version, _ = hash_file("dummy_tasks.py")
 
 
 def test_cache_override():
     # TODO: update flytekit remote documentation. https://docs.flyte.org/en/latest/api/flytekit/design/control_plane.html#registering-entities
-
-    _, digest, _ = hash_file(__file__)
     flyte_task = remote.register_task(
-        entity=t1,
-        version=digest,
+        entity=t1, version=version
     )
 
     exe = remote.execute(entity=flyte_task, inputs={"x": 3}, wait=True)
@@ -46,10 +36,8 @@ def test_cache_override():
 
 
 def test_cache_output():
-    _, digest, _ = hash_file(__file__)
     flyte_task = remote.register_task(
-        entity=t1,
-        version=digest,
+        entity=t1, version=version
     )
     exe = remote.execute(entity=flyte_task, inputs={"x": 2}, wait=True)
     exe = remote.sync_execution(exe, sync_nodes=True)
@@ -61,6 +49,25 @@ def test_cache_output():
     assert old == new
 
 
+def test_max_parallelism():
+    flyte_workflow = remote.register_workflow(
+        entity=wf, version=version
+    )
+    exe = remote.execute(
+        entity=flyte_workflow, inputs={}, wait=False, options=Options(max_parallelism=3)
+    )
+    sleep(10)  # wait for tasks to start
+    exe = remote.sync_execution(exe, sync_nodes=True)
+    num_running_tasks = sum(
+        1
+        for node_id, exe in exe.node_executions.items()
+        if exe.task_executions
+        and exe.task_executions[0].closure.phase == TaskExecution.RUNNING
+    )
+    assert num_running_tasks == 3
+
+
 if __name__ == "__main__":
     test_cache_override()
     test_cache_output()
+    test_max_parallelism()
