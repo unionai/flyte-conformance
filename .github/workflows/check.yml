@@ -1,0 +1,63 @@
+name: Unit Tests
+
+# Schedule runs to run twice a day
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  schedule:
+    - cron: "0 13 * * *" # This schedule runs at 1pm UTC every day
+
+env:
+  FLYTE_SDK_LOGGING_LEVEL: 10 # debug
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  detect-python-versions:
+    runs-on: ubuntu-latest
+    outputs:
+      python-versions: ${{ env.python_versions }}
+    steps:
+      - name: Set Python versions for run
+        run: |
+          if [[ ${{ github.event_name }} == "schedule" ]]; then
+            echo "python_versions=[\"3.8\",\"3.9\",\"3.10\",\"3.11\",\"3.12\"]" >> $GITHUB_ENV
+          else
+            echo "python_versions=[\"3.12\"]" >> $GITHUB_ENV
+          fi
+
+  build:
+    needs:
+      - detect-python-versions
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ${{fromJson(needs.detect-python-versions.outputs.python-versions)}}
+    steps:
+      - uses: actions/checkout@v4
+      - name: 'Clear action cache'
+        uses: ./.github/actions/clear-action-cache
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          # This path is specific to Ubuntu
+          path: ~/.cache/pip
+          # Look to see if there is a cache hit for the corresponding requirements files
+          key: ${{ format('{0}-pip-{1}', runner.os, hashFiles('dev-requirements.in', 'requirements.in')) }}
+      - name: Install dependencies
+        run: |
+          make setup
+      - name: Run flytesnacks example locally
+        run: |
+          make flytesnacks

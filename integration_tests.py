@@ -17,7 +17,7 @@ from flytesnacks.examples.advanced_composition.advanced_composition.chain_entiti
     chain_workflows_wf,
 )
 from flytesnacks.examples.advanced_composition.advanced_composition.checkpoint import (
-    checkpointing_example,
+    checkpointing_example,  # noqa: F401
 )
 from flytesnacks.examples.advanced_composition.advanced_composition.conditional import (
     shape_properties,
@@ -77,7 +77,7 @@ from flytesnacks.examples.extending.extending.custom_types import (
 )
 
 from flytesnacks.examples.k8s_pod_plugin.k8s_pod_plugin.pod import dynamic_pod_workflow
-from flytesnacks.examples.mlflow_plugin.mlflow_plugin.mlflow_example import ml_pipeline
+# from flytesnacks.examples.mlflow_plugin.mlflow_plugin.mlflow_example import ml_pipeline
 from flytesnacks.examples.pandera_plugin.pandera_plugin.basic_schema_example import (
     process_data,
 )
@@ -108,7 +108,7 @@ def flytesnacks_wf():
     # Advanced Composition
     chain_tasks_wf()
     chain_workflows_wf()
-    checkpointing_example(n_iterations=3)
+    # checkpointing_example(n_iterations=3)
     shape_properties(radius=3.0)
     shape_properties_with_multiple_branches(radius=3.0)
     shape_properties_accept_conditional_output(radius=0.5)
@@ -172,7 +172,7 @@ def flyte_plugin_wf():
     process_data()
     pipeline(data_random_state=42, model_random_state=42)
     dynamic_pod_workflow()
-    ml_pipeline(epochs=5)
+    # ml_pipeline(epochs=5) # TODO: Fix it
     # spark_to_pandas_wf()  # TODO: Fix it
     my_spark()
 

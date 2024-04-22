@@ -14,18 +14,28 @@ fmt:
 
 .PHONY: setup
 setup:
-	pip install pre-commit
-	pip install flytekitplugins-spark flytekitplugins-ray flytekitplugins-bigquery
-	pip install -U flytekit
+	pip install uv
+	uv pip install -U pre-commit \
+		flytekitplugins-spark flytekitplugins-kftensorflow \
+		flytekitplugins-kfpytorch flytekitplugins-ray \
+		flytekitplugins-bigquery flytekitplugins-envd \
+		flytekitplugins-pod flytekitplugins-airflow \
+		flytekitplugins-mlflow flytekitplugins-pandera \
+		apache-airflow[google]==2.7.3 matplotlib tensorflow tensorboardX tensorflow_datasets \
+		torch torchvision
+	uv pip install -e dummy_agent
+	uv pip install -U flytekit
+
+.PHONY: flytesnacks
+flytesnacks:  # Run flytesnacks example locally
+	pyflyte run integration_tests.py flytesnacks_wf
 
 
-# Build and push the image for the agent
 .PHONY: build_agent_image
-build_agent_image:
+build_agent_image:  # Build and push the image for the agent
 	docker buildx build --push --platform linux/amd64 -t ghcr.io/unionai/flyte-conformance-agent:nightly -f dummy_agent/Dockerfile .
 
 
-# Build and push the image for the agent
 .PHONY: build_ci_image
-build_ci_image:
+build_ci_image:  # Build and push the image for the agent
 	docker buildx build --push --platform linux/amd64,linux/arm64 -t ghcr.io/unionai/flyte-conformance-ci:latest -f Dockerfile .

@@ -22,6 +22,6 @@ def t2(second: int):
 
 
 @workflow
-def wf(second: int = 80):
+def wf(second: int = 60):
     for i in range(10):
         t2(second=second)
