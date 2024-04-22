@@ -1,6 +1,6 @@
 from time import sleep
 from flyteidl.core.execution_pb2 import TaskExecution
-from dummy_tasks import t1, wf
+from dummy_tasks import t1, t3, wf
 
 from flytekit.configuration import Config
 from flytekit.remote import FlyteRemote
@@ -45,6 +45,15 @@ def test_cache_output():
     assert old == new
 
 
+def test_default_env():
+    flyte_task = remote.register_task(entity=t3, version=version)
+    exe = remote.execute(
+        entity=flyte_task, inputs={}, envs={"HELLO": "WORLD"}, wait=True
+    )
+    exe = remote.sync_execution(exe, sync_nodes=True)
+    assert exe.outputs["o0"] == "WORLD"
+
+
 def test_max_parallelism():
     flyte_workflow = remote.register_workflow(entity=wf, version=version)
     exe = remote.execute(
@@ -64,4 +73,5 @@ def test_max_parallelism():
 if __name__ == "__main__":
     test_cache_override()
     test_cache_output()
+    test_default_env()
     # test_max_parallelism()

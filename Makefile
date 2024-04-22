@@ -26,10 +26,13 @@ setup:
 	uv pip install -e dummy_agent
 	uv pip install -U flytekit
 
+.PHONY: functional_tests
+functional_tests:  # Run flytesnacks example locally
+	python functional_tests.py
+
 .PHONY: flytesnacks
 flytesnacks:  # Run flytesnacks example locally
 	pyflyte run integration_tests.py flytesnacks_wf
-
 
 .PHONY: build_agent_image
 build_agent_image:  # Build and push the image for the agent
@@ -37,5 +40,5 @@ build_agent_image:  # Build and push the image for the agent
 
 
 .PHONY: build_ci_image
-build_ci_image:  # Build and push the image for the agent
-	docker buildx build --push --platform linux/amd64,linux/arm64 -t ghcr.io/unionai/flyte-conformance-ci:latest -f Dockerfile .
+build_ci_image: # Build and push the image for the agent
+	docker buildx build --push --platform linux/amd64 -t ghcr.io/unionai/flyte-conformance-ci:latest -f Dockerfile .
