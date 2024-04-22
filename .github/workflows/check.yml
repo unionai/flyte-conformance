@@ -63,5 +63,6 @@ jobs:
           make setup
       - name: Run flytesnacks example locally
         run: |
+          PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
           source .venv/bin/activate
           make flytesnacks
