@@ -42,7 +42,7 @@ jobs:
           platforms: linux/amd64
           push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.image-names.outputs.tags }}
-          file: mock_agent/Dockerfile
+          file: dummy_agent/Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

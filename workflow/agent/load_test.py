@@ -1,5 +1,5 @@
 from flytekit import workflow, task, LaunchPlan
-from flytekitplugins.mock_agent import Sleep
+from flytekitplugins.dummy_agent import Sleep
 
 
 @task(task_config=Sleep(duration=2))
