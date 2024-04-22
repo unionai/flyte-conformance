@@ -35,6 +35,8 @@ jobs:
     needs:
       - detect-python-versions
     runs-on: ${{ matrix.os }}
+    env:
+      PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION: python
     strategy:
       fail-fast: false
       matrix:
@@ -63,6 +65,5 @@ jobs:
           make setup
       - name: Run flytesnacks example locally
         run: |
-          PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
           source .venv/bin/activate
           make flytesnacks
