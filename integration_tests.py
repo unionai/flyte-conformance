@@ -78,7 +78,7 @@ from flytesnacks.examples.extending.extending.custom_types import (
 
 from flytesnacks.examples.k8s_pod_plugin.k8s_pod_plugin.pod import dynamic_pod_workflow
 
-# from flytesnacks.examples.mlflow_plugin.mlflow_plugin.mlflow_example import ml_pipeline
+from flytesnacks.examples.mlflow_plugin.mlflow_plugin.mlflow_example import ml_pipeline
 from flytesnacks.examples.pandera_plugin.pandera_plugin.basic_schema_example import (
     process_data,
 )
@@ -173,7 +173,7 @@ def flyte_plugin_wf():
     process_data()
     pipeline(data_random_state=42, model_random_state=42)
     dynamic_pod_workflow()
-    # ml_pipeline(epochs=5) # TODO: Fix it
+    ml_pipeline(epochs=5) # TODO: Fix it
     # spark_to_pandas_wf()  # TODO: Fix it
     my_spark()
 
