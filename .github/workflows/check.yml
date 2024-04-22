@@ -63,4 +63,5 @@ jobs:
           make setup
       - name: Run flytesnacks example locally
         run: |
+          source .venv/bin/activate
           make flytesnacks
