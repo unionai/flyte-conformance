@@ -26,7 +26,7 @@ class SleepAgent(AsyncAgentBase):
     name = "Sleep Agent"
 
     def __init__(self):
-        super().__init__(task_type_name="sleep", metadata_type=SleepMetadata)
+        super().__init__(task_type_name="dummy", metadata_type=SleepMetadata)
 
     def create(
         self,
@@ -60,7 +60,7 @@ class MockOpenAIAgent(SyncAgentBase):
     name = "Mock OpenAI Agent"
 
     def __init__(self):
-        super().__init__(task_type_name="mock_openai")
+        super().__init__(task_type_name="dummy_openai")
 
     def do(
         self,

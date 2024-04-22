@@ -22,7 +22,7 @@ setup:
 # Build and push the image for the agent
 .PHONY: build_agent_image
 build_agent_image:
-	docker buildx build --push --platform linux/amd64 -t ghcr.io/unionai/flyte-conformance-agent:nightly -f mock_agent/Dockerfile .
+	docker buildx build --push --platform linux/amd64 -t ghcr.io/unionai/flyte-conformance-agent:nightly -f dummy_agent/Dockerfile .
 
 
 # Build and push the image for the agent

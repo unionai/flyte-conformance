@@ -28,7 +28,7 @@ class SleepTask(AsyncAgentExecutorMixin, PythonFunctionTask[Sleep]):
         **kwargs,
     ):
         super().__init__(
-            task_type="sleep",
+            task_type="dummy",
             container_image="dummy",
             task_config=task_config,
             task_function=task_function,
@@ -50,7 +50,7 @@ class OpenAI(object):
 class MockOpenAITask(SyncAgentExecutorMixin, PythonTask):
     def __init__(self, task_config: Optional[OpenAI], **kwargs):
         super().__init__(
-            task_type="mock_openai",
+            task_type="dummy_openai",
             task_config=task_config,
             interface=Interface(inputs=kwtypes(prompt=str), outputs=kwtypes(o0=str)),
             **kwargs,

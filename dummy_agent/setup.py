@@ -1,8 +1,8 @@
 from setuptools import setup
 
-PLUGIN_NAME = "mock_agent"
+PLUGIN_NAME = "dummy_agent"
 
-microlib_name = "flytekitplugins-mock-agent"
+microlib_name = "flytekitplugins-dummy-agent"
 
 plugin_requires = []
 
