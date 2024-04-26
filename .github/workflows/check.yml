@@ -18,23 +18,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  detect-python-versions:
-    runs-on: ubuntu-latest
-    outputs:
-      python-versions: ${{ env.python_versions }}
-    steps:
-      - name: Set Python versions for run
-        run: |
-          if [[ ${{ github.event_name }} == "schedule" ]]; then
-            echo "python_versions=[\"3.8\",\"3.9\",\"3.10\",\"3.11\"]" >> $GITHUB_ENV
-          else
-            echo "python_versions=[\"3.11\"]" >> $GITHUB_ENV
-          fi
-
   flytesnacks:
     name: Flytesnacks examples
-    needs:
-      - detect-python-versions
     runs-on: ${{ matrix.os }}
     env:
       PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION: python
@@ -42,7 +27,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python-version: ${{fromJson(needs.detect-python-versions.outputs.python-versions)}}
+        python-version: ["3.8", "3.11"]
     steps:
       - uses: actions/checkout@v4
         with:
