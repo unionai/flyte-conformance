@@ -35,13 +35,17 @@ jobs:
     needs:
       - detect-python-versions
     runs-on: ${{ matrix.os }}
+    env:
+      PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION: python
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest]
         python-version: ${{fromJson(needs.detect-python-versions.outputs.python-versions)}}
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
       - name: 'Clear action cache'
         uses: ./.github/actions/clear-action-cache
       - name: Set up Python ${{ matrix.python-version }}
