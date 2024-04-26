@@ -73,4 +73,5 @@ jobs:
           pip install uv
           uv venv
           source .venv/bin/activate
+          make setup
           make functional_tests

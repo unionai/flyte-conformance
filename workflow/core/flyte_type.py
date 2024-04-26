@@ -1,7 +1,8 @@
 import os
 from dataclasses import dataclass
 from enum import Enum
-from typing_extensions import Annotated, Any, Dict, NamedTuple
+from typing_extensions import Annotated
+from typing import Any, Dict, NamedTuple
 
 import pandas as pd
 from mashumaro.mixins.json import DataClassJSONMixin
