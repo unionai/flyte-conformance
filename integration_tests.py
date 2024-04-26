@@ -217,7 +217,7 @@ flyte_plugin_lp = LaunchPlan.get_or_create(
 flyte_agent_lp = LaunchPlan.get_or_create(
     name="flyte_agent_lp",
     workflow=flyte_agent_wf,
-    schedule=FixedRate(duration=timedelta(hours=24)),
+    schedule=FixedRate(duration=timedelta(hours=6)),
     max_parallelism=100,
 )
 

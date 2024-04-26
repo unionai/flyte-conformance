@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from airflow.operators.bash import BashOperator
 from airflow.providers.google.cloud.operators.dataproc import (
@@ -7,17 +7,14 @@ from airflow.providers.google.cloud.operators.dataproc import (
     DataprocCreateClusterOperator,
 )
 from airflow.utils import trigger_rule
-from pytz import UTC
 from flytekit import workflow
 
-x = (datetime.now(tz=UTC) + timedelta(seconds=21)).time()
 cluster_name = "flyte-dataproc-demo"
 
 
 @workflow
 def airflow_wf():
-    # TimeSensor(task_id="time_sensor", target_time=x)
-    # BashOperator(task_id="airflow_bash_operator", bash_command="echo hello")
+    BashOperator(task_id="airflow_bash_operator", bash_command="echo hello")
 
     create_cluster = DataprocCreateClusterOperator(
         task_id="create_dataproc_cluster1",
@@ -43,7 +40,7 @@ def airflow_wf():
         arguments=["gs://opta-gcp-dogfood-gcp/spark/file.txt"],
         cluster_name=cluster_name,
         region="us-west1",
-        # project_id="dogfood-gcp-dataplane",
+        project_id="dogfood-gcp-dataplane",
     )
 
     delete_cluster = DataprocDeleteClusterOperator(
