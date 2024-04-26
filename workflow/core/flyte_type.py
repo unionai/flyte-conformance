@@ -2,7 +2,7 @@ import os
 from dataclasses import dataclass
 from enum import Enum
 from typing_extensions import Annotated
-from typing import Any, Dict, NamedTuple
+from typing import Any, Dict, NamedTuple, List
 
 import pandas as pd
 from mashumaro.mixins.json import DataClassJSONMixin
@@ -116,7 +116,7 @@ def test_enum(coffee: Coffee) -> Coffee:
 
 
 @task(container_image=image_spec)
-def slope(x: list[int], y: list[int]) -> slope_value:
+def slope(x: List[int], y: List[int]) -> slope_value:
     sum_xy = sum([x[i] * y[i] for i in range(len(x))])
     sum_x_squared = sum([x[i] ** 2 for i in range(len(x))])
     n = len(x)
