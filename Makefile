@@ -1,4 +1,4 @@
-export REPOSITORY=flytekit
+export FLYTEKIT_VERSION=v1.12.0b6
 
 .SILENT: help
 .PHONY: help
@@ -17,15 +17,14 @@ setup:
 	pip install uv
 	uv pip install -U pip apache-airflow[google]==2.7.3 pre-commit matplotlib \
  		tensorflow tensorboardX tensorflow_datasets "numpy<2.0.0" \
-		torch torchvision
-	uv pip install -U --pre \
-		flytekitplugins-spark flytekitplugins-kftensorflow \
-		flytekitplugins-kfpytorch flytekitplugins-ray \
-		flytekitplugins-bigquery flytekitplugins-envd \
-		flytekitplugins-pod flytekitplugins-airflow \
-		flytekitplugins-mlflow flytekitplugins-pandera
+		torch torchvision \
+		flytekitplugins-spark==$(FLYTEKIT_VERSION) flytekitplugins-kftensorflow==$(FLYTEKIT_VERSION) \
+		flytekitplugins-kfpytorch==$(FLYTEKIT_VERSION) flytekitplugins-ray==$(FLYTEKIT_VERSION) \
+		flytekitplugins-bigquery==$(FLYTEKIT_VERSION) flytekitplugins-envd==$(FLYTEKIT_VERSION) \
+		flytekitplugins-pod==$(FLYTEKIT_VERSION) flytekitplugins-airflow==$(FLYTEKIT_VERSION) \
+		flytekitplugins-mlflow==$(FLYTEKIT_VERSION) flytekitplugins-pandera==$(FLYTEKIT_VERSION) \
+		flytekit==$(FLYTEKIT_VERSION)
 	uv pip install -e dummy_agent
-	uv pip install -U --pre flytekit
 
 .PHONY: functional_tests
 functional_tests:  # Run flytesnacks example locally
