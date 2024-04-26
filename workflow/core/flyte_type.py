@@ -75,9 +75,9 @@ def create_flyte_directory(
 def download_flyte_directory(directory: Annotated[FlyteDirectory, BatchSize(100)]):
     entity = FlyteDirectory.listdir(directory)
     for e in entity:
-        print("s3 object:", e)
+        print("file:", e)
 
-    f = open(entity[0], "r")
+    f = open(os.path.join(directory, entity[0]), "r")
     f.read()
 
     directory.__fspath__()  # download all the files in the directory
@@ -125,8 +125,8 @@ def slope(x: List[int], y: List[int]) -> slope_value:
 
 @workflow
 def test_flyte_type_wf():
-    # flyte_dir = create_flyte_directory(num_files=5, filesize_mb=8)
-    # download_flyte_directory(directory=flyte_dir)
+    flyte_dir = create_flyte_directory(num_files=5, filesize_mb=8)
+    download_flyte_directory(directory=flyte_dir)
 
     test_pickle(
         pickle=Pickle(size=15)
