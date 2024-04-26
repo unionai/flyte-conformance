@@ -31,7 +31,8 @@ jobs:
             echo "python_versions=[\"3.11\"]" >> $GITHUB_ENV
           fi
 
-  build:
+  flytesnacks:
+    name: Flytesnacks examples
     needs:
       - detect-python-versions
     runs-on: ${{ matrix.os }}
@@ -69,3 +70,19 @@ jobs:
         run: |
           source .venv/bin/activate
           make flytesnacks
+          
+  functional-tests:
+    name: Functional tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: "0"
+      - uses: unionai/flytectl-setup-action@v0.0.1
+      - name: setup sandbox
+        run: |
+          flytectl demo start
+          flytectl config init
+      - name: run functional tests
+        run: |
+          make functional_tests
