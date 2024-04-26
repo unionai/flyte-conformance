@@ -15,16 +15,17 @@ fmt:
 .PHONY: setup
 setup:
 	pip install uv
-	uv pip install -U pre-commit \
+	uv pip install -U pip apache-airflow[google]==2.7.3 pre-commit matplotlib \
+ 		tensorflow tensorboardX tensorflow_datasets \
+		torch torchvision
+	uv pip install -U --pre \
 		flytekitplugins-spark flytekitplugins-kftensorflow \
 		flytekitplugins-kfpytorch flytekitplugins-ray \
 		flytekitplugins-bigquery flytekitplugins-envd \
 		flytekitplugins-pod flytekitplugins-airflow \
-		flytekitplugins-mlflow flytekitplugins-pandera \
-		apache-airflow[google]==2.7.3 matplotlib tensorflow tensorboardX tensorflow_datasets \
-		torch torchvision
+		flytekitplugins-mlflow flytekitplugins-pandera
 	uv pip install -e dummy_agent
-	uv pip install -U flytekit
+	uv pip install -U --pre flytekit
 
 .PHONY: functional_tests
 functional_tests:  # Run flytesnacks example locally
