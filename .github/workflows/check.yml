@@ -70,4 +70,7 @@ jobs:
           flytectl config init
       - name: run functional tests
         run: |
+          pip install uv
+          uv venv
+          source .venv/bin/activate
           make functional_tests
