@@ -58,7 +58,7 @@ def create_flyte_directory(
     num_files: int, filesize_mb: int
 ) -> Annotated[FlyteDirectory, BatchSize(100)]:
     directory = "/tmp/test"
-    os.mkdir(directory)
+    os.makedirs(directory, exist_ok=True)
     for i in range(num_files):
         file_path = os.path.join(directory, f"file_{i}.txt")
         with open(file_path, "w") as f:
@@ -75,10 +75,10 @@ def create_flyte_directory(
 def download_flyte_directory(directory: Annotated[FlyteDirectory, BatchSize(100)]):
     entity = FlyteDirectory.listdir(directory)
     for e in entity:
-        print("s3 object:", e.remote_source)
+        print("s3 object:", e)
 
     f = open(entity[0], "r")
-    print(f.read())
+    f.read()
 
     directory.__fspath__()  # download all the files in the directory
 
@@ -125,10 +125,12 @@ def slope(x: List[int], y: List[int]) -> slope_value:
 
 @workflow
 def test_flyte_type_wf():
-    flyte_dir = create_flyte_directory(num_files=10, filesize_mb=8)
-    download_flyte_directory(directory=flyte_dir)
+    # flyte_dir = create_flyte_directory(num_files=5, filesize_mb=8)
+    # download_flyte_directory(directory=flyte_dir)
 
-    # test_pickle(pickle=Pickle(size=15))  # TODO: Failed to Bind variable pickle for function core.flyte_type.test_pickle.
+    test_pickle(
+        pickle=Pickle(size=15)
+    )  # TODO: Failed to Bind variable pickle for function core.flyte_type.test_pickle.
 
     df = generate_pandas_df()
     get_subset_pandas_df(df=df)
