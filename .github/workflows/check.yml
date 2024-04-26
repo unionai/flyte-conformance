@@ -44,6 +44,8 @@ jobs:
         python-version: ${{fromJson(needs.detect-python-versions.outputs.python-versions)}}
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
       - name: 'Clear action cache'
         uses: ./.github/actions/clear-action-cache
       - name: Set up Python ${{ matrix.python-version }}

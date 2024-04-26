@@ -17,7 +17,7 @@ cluster_name = "flyte-dataproc-demo"
 @workflow
 def airflow_wf():
     # TimeSensor(task_id="time_sensor", target_time=x)
-    BashOperator(task_id="airflow_bash_operator", bash_command="echo hello")
+    # BashOperator(task_id="airflow_bash_operator", bash_command="echo hello")
 
     create_cluster = DataprocCreateClusterOperator(
         task_id="create_dataproc_cluster1",

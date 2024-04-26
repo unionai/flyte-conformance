@@ -173,7 +173,7 @@ def flyte_plugin_wf():
     process_data()
     pipeline(data_random_state=42, model_random_state=42)
     dynamic_pod_workflow()
-    ml_pipeline(epochs=5) # TODO: Fix it
+    ml_pipeline(epochs=5)
     # spark_to_pandas_wf()  # TODO: Fix it
     my_spark()
 
