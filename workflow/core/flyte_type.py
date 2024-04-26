@@ -128,9 +128,7 @@ def test_flyte_type_wf():
     flyte_dir = create_flyte_directory(num_files=5, filesize_mb=8)
     download_flyte_directory(directory=flyte_dir)
 
-    test_pickle(
-        pickle=Pickle(size=15)
-    )  # TODO: Failed to Bind variable pickle for function core.flyte_type.test_pickle.
+    test_pickle(pickle=Pickle(size=15))
 
     df = generate_pandas_df()
     get_subset_pandas_df(df=df)
