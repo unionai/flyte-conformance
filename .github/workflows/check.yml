@@ -35,11 +35,11 @@ jobs:
       - name: 'Clear action cache'
         uses: ./.github/actions/clear-action-cache
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Cache pip
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           # This path is specific to Ubuntu
           path: ~/.cache/pip
@@ -74,6 +74,7 @@ jobs:
         run: |
           flytectl demo start
           flytectl config init
+          sleep 10  # wait for the flyte cluster to start
       - name: run functional tests
         run: |
           pip install uv
