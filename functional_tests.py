@@ -1,10 +1,9 @@
 from time import sleep
 from flyteidl.core.execution_pb2 import TaskExecution
-from dummy_tasks import t1, t3, wf
+from dummy_tasks import wf
 
 from flytekit.configuration import Config
 from flytekit.remote import FlyteRemote
-from flytekit.tools.script_mode import hash_file
 from flytekit.tools.translator import Options
 
 remote = FlyteRemote(
@@ -13,12 +12,13 @@ remote = FlyteRemote(
     default_domain="development",
 )
 
-_, version, _ = hash_file("dummy_tasks.py")
+version = "v1"
 
 
 def test_cache_override():
+    print("test cache override")
     # TODO: update flytekit remote documentation. https://docs.flyte.org/en/latest/api/flytekit/design/control_plane.html#registering-entities
-    flyte_task = remote.register_task(entity=t1, version=version)
+    flyte_task = remote.fetch_task(name="dummy_tasks.t1", version=version)
 
     exe = remote.execute(entity=flyte_task, inputs={"x": 3}, wait=True)
     exe = remote.sync_execution(exe, sync_nodes=True)
@@ -34,7 +34,8 @@ def test_cache_override():
 
 
 def test_cache_output():
-    flyte_task = remote.register_task(entity=t1, version=version)
+    print("test cache output")
+    flyte_task = remote.fetch_task(name="dummy_tasks.t1", version=version)
     exe = remote.execute(entity=flyte_task, inputs={"x": 2}, wait=True)
     exe = remote.sync_execution(exe, sync_nodes=True)
     old = exe.outputs["o0"]
@@ -46,7 +47,8 @@ def test_cache_output():
 
 
 def test_default_env():
-    flyte_task = remote.register_task(entity=t3, version=version)
+    print("test default env")
+    flyte_task = remote.fetch_task(name="dummy_tasks.t3", version=version)
     exe = remote.execute(
         entity=flyte_task, inputs={}, envs={"HELLO": "WORLD"}, wait=True
     )
@@ -55,6 +57,7 @@ def test_default_env():
 
 
 def test_max_parallelism():
+    print("test max parallelism")
     flyte_workflow = remote.register_workflow(entity=wf, version=version)
     exe = remote.execute(
         entity=flyte_workflow, inputs={}, wait=False, options=Options(max_parallelism=3)

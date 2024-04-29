@@ -29,6 +29,7 @@ setup:
 
 .PHONY: functional_tests
 functional_tests:  # Run flytesnacks example locally
+	pyflyte register --project flyte-conformance --domain development --version v1 dummy_tasks.py
 	python functional_tests.py
 
 .PHONY: flytesnacks
