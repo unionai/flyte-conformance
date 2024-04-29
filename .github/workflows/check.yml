@@ -76,7 +76,7 @@ jobs:
         run: |
           flytectl demo start --disable-agent
           flytectl config init
-          sleep 10  # wait for the flyte cluster to start
+          flytectl create project --name flyte-conformance --id flyte-conformance --description "end to end tests" --labels app=flyte
       - name: run functional tests
         run: |
           pip install uv

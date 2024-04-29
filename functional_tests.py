@@ -58,7 +58,7 @@ def test_default_env():
 
 def test_max_parallelism():
     print("test max parallelism")
-    flyte_workflow = remote.register_workflow(entity=wf, version=version)
+    flyte_workflow = remote.fetch_workflow(name="dummy_tasks.wf", version=version)
     exe = remote.execute(
         entity=flyte_workflow, inputs={}, wait=False, options=Options(max_parallelism=3)
     )
