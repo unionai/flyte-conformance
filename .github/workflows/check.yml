@@ -18,22 +18,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  detect-python-versions:
-    runs-on: ubuntu-latest
-    outputs:
-      python-versions: ${{ env.python_versions }}
-    steps:
-      - name: Set Python versions for run
-        run: |
-          if [[ ${{ github.event_name }} == "schedule" ]]; then
-            echo "python_versions=[\"3.8\",\"3.9\",\"3.10\",\"3.11\"]" >> $GITHUB_ENV
-          else
-            echo "python_versions=[\"3.11\"]" >> $GITHUB_ENV
-          fi
-
-  build:
-    needs:
-      - detect-python-versions
+  flytesnacks:
+    name: Flytesnacks examples
     runs-on: ${{ matrix.os }}
     env:
       PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION: python
@@ -41,7 +27,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python-version: ${{fromJson(needs.detect-python-versions.outputs.python-versions)}}
+        python-version: ["3.11"]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -49,11 +35,11 @@ jobs:
       - name: 'Clear action cache'
         uses: ./.github/actions/clear-action-cache
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Cache pip
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           # This path is specific to Ubuntu
           path: ~/.cache/pip
@@ -69,3 +55,32 @@ jobs:
         run: |
           source .venv/bin/activate
           make flytesnacks
+          
+  functional-tests:
+    name: Functional tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: "0"
+      - name: 'Clear action cache'
+        uses: ./.github/actions/clear-action-cache
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: unionai/flytectl-setup-action@v0.0.1
+      - name: setup sandbox
+        run: |
+          flytectl demo start --disable-agent
+          flytectl config init
+          flytectl create project --name flyte-conformance --id flyte-conformance --description "end to end tests" --labels app=flyte
+      - name: run functional tests
+        run: |
+          pip install uv
+          uv venv
+          source .venv/bin/activate
+          make setup
+          make functional_tests

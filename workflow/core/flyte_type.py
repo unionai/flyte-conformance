@@ -1,7 +1,8 @@
 import os
 from dataclasses import dataclass
 from enum import Enum
-from typing import Annotated, Any, Dict, NamedTuple
+from typing_extensions import Annotated
+from typing import Any, Dict, NamedTuple, List
 
 import pandas as pd
 from mashumaro.mixins.json import DataClassJSONMixin
@@ -57,7 +58,7 @@ def create_flyte_directory(
     num_files: int, filesize_mb: int
 ) -> Annotated[FlyteDirectory, BatchSize(100)]:
     directory = "/tmp/test"
-    os.mkdir(directory)
+    os.makedirs(directory, exist_ok=True)
     for i in range(num_files):
         file_path = os.path.join(directory, f"file_{i}.txt")
         with open(file_path, "w") as f:
@@ -74,10 +75,10 @@ def create_flyte_directory(
 def download_flyte_directory(directory: Annotated[FlyteDirectory, BatchSize(100)]):
     entity = FlyteDirectory.listdir(directory)
     for e in entity:
-        print("s3 object:", e.remote_source)
+        print("file:", e)
 
-    f = open(entity[0], "r")
-    print(f.read())
+    f = open(os.path.join(directory, entity[0]), "r")
+    f.read()
 
     directory.__fspath__()  # download all the files in the directory
 
@@ -115,7 +116,7 @@ def test_enum(coffee: Coffee) -> Coffee:
 
 
 @task(container_image=image_spec)
-def slope(x: list[int], y: list[int]) -> slope_value:
+def slope(x: List[int], y: List[int]) -> slope_value:
     sum_xy = sum([x[i] * y[i] for i in range(len(x))])
     sum_x_squared = sum([x[i] ** 2 for i in range(len(x))])
     n = len(x)
@@ -124,10 +125,10 @@ def slope(x: list[int], y: list[int]) -> slope_value:
 
 @workflow
 def test_flyte_type_wf():
-    flyte_dir = create_flyte_directory(num_files=10, filesize_mb=8)
+    flyte_dir = create_flyte_directory(num_files=5, filesize_mb=8)
     download_flyte_directory(directory=flyte_dir)
 
-    # test_pickle(pickle=Pickle(size=15))  # TODO: Failed to Bind variable pickle for function core.flyte_type.test_pickle.
+    test_pickle(pickle=Pickle(size=15))
 
     df = generate_pandas_df()
     get_subset_pandas_df(df=df)

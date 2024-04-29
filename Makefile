@@ -1,4 +1,5 @@
 export FLYTEKIT_VERSION=v1.12.0b6
+export FLYTEIDL_VERSION=v1.11.1-b1
 
 .SILENT: help
 .PHONY: help
@@ -23,11 +24,12 @@ setup:
 		flytekitplugins-bigquery==$(FLYTEKIT_VERSION) flytekitplugins-envd==$(FLYTEKIT_VERSION) \
 		flytekitplugins-pod==$(FLYTEKIT_VERSION) flytekitplugins-airflow==$(FLYTEKIT_VERSION) \
 		flytekitplugins-mlflow==$(FLYTEKIT_VERSION) flytekitplugins-pandera==$(FLYTEKIT_VERSION) \
-		flytekit==$(FLYTEKIT_VERSION)
+		flytekit==$(FLYTEKIT_VERSION) flyteidl==$(FLYTEIDL_VERSION)
 	uv pip install -e dummy_agent
 
 .PHONY: functional_tests
 functional_tests:  # Run flytesnacks example locally
+	pyflyte register --project flyte-conformance --domain development --version v1 dummy_tasks.py
 	python functional_tests.py
 
 .PHONY: flytesnacks
