@@ -28,7 +28,7 @@ class SleepTask(AsyncAgentExecutorMixin, PythonFunctionTask[Sleep]):
         **kwargs,
     ):
         super().__init__(
-            task_type="dummy",
+            task_type="sleep",
             container_image="dummy",
             task_config=task_config,
             task_function=task_function,
