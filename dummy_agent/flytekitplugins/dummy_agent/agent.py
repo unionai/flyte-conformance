@@ -40,7 +40,7 @@ class SleepAgent(AsyncAgentBase):
     def get(self, resource_meta: SleepMetadata, **kwargs) -> Resource:
         logger.info("Sleep agent is getting the status of the task.")
         assert isinstance(resource_meta, SleepMetadata)
-        sleep(random.random())
+        sleep(random.random() * resource_meta.duration)
         ctx = FlyteContext.current_context()
         output = TypeEngine.dict_to_literal_map(ctx, {"o0": "What is Flyte?"})
         return Resource(
