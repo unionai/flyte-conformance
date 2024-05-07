@@ -8,11 +8,11 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.
 RUN pip install prometheus_client jsonpickle grpcio-health-checking
 
 # https://github.com/apache/airflow/issues/39437
-RUN pip install apache-airflow==2.8.2 \
+RUN pip install apache-airflow==2.9.1 \
                 apache-airflow[slack] \
                 apache-airflow[google] \
                 google-cloud-orchestration-airflow==1.9.1 \
-                apache-airflow-providers-amazon
+                apache-airflow-providers-amazon==8.20.0
 
 From agent-base as agent
 
