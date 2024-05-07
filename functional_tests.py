@@ -61,7 +61,7 @@ def test_max_parallelism():
     exe = remote.execute(
         entity=flyte_workflow, inputs={}, wait=False, options=Options(max_parallelism=3)
     )
-    sleep(10)  # wait for tasks to start
+    sleep(40)  # wait for tasks to start
     exe = remote.sync_execution(exe, sync_nodes=True)
     num_running_tasks = sum(
         1
