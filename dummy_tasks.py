@@ -28,6 +28,6 @@ def t3() -> str:
 
 
 @workflow
-def wf(second: int = 61):
-    for i in range(10):
+def wf(second: int = 60):
+    for i in range(5):
         t2(second=second)

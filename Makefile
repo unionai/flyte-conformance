@@ -1,5 +1,5 @@
 export FLYTEKIT_VERSION=v1.12.0b6
-export FLYTEIDL_VERSION=v1.11.1-b1
+export FLYTEIDL_VERSION=v1.12.0
 
 .SILENT: help
 .PHONY: help

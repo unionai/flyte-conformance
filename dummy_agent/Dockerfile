@@ -6,11 +6,13 @@ RUN apt-get update && apt-get install -y git apt-transport-https ca-certificates
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg && apt-get update -y && apt-get -f install google-cloud-sdk -y
 
 RUN pip install prometheus_client jsonpickle grpcio-health-checking
-RUN pip install apache-airflow \
+
+# https://github.com/apache/airflow/issues/39437
+RUN pip install apache-airflow==2.9.1 \
                 apache-airflow[slack] \
                 apache-airflow[google] \
                 google-cloud-orchestration-airflow==1.9.1 \
-                apache-airflow-providers-amazon
+                apache-airflow-providers-amazon==8.20.0
 
 From agent-base as agent
 

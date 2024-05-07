@@ -1,6 +1,5 @@
 from time import sleep
 from flyteidl.core.execution_pb2 import TaskExecution
-from dummy_tasks import wf
 
 from flytekit.configuration import Config
 from flytekit.remote import FlyteRemote
@@ -60,9 +59,9 @@ def test_max_parallelism():
     print("test max parallelism")
     flyte_workflow = remote.fetch_workflow(name="dummy_tasks.wf", version=version)
     exe = remote.execute(
-        entity=flyte_workflow, inputs={}, wait=False, options=Options(max_parallelism=3)
+        entity=flyte_workflow, inputs={}, wait=False, options=Options(max_parallelism=1)
     )
-    sleep(10)  # wait for tasks to start
+    sleep(40)  # wait for tasks to start
     exe = remote.sync_execution(exe, sync_nodes=True)
     num_running_tasks = sum(
         1
@@ -70,11 +69,11 @@ def test_max_parallelism():
         if exe.task_executions
         and exe.task_executions[0].closure.phase == TaskExecution.RUNNING
     )
-    assert num_running_tasks == 3
+    assert num_running_tasks == 1
 
 
 if __name__ == "__main__":
     test_cache_override()
     test_cache_output()
     test_default_env()
-    # test_max_parallelism()
+    test_max_parallelism()
