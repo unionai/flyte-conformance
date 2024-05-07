@@ -76,4 +76,4 @@ if __name__ == "__main__":
     test_cache_override()
     test_cache_output()
     test_default_env()
-    # test_max_parallelism()
+    test_max_parallelism()
