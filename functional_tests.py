@@ -1,6 +1,5 @@
 from time import sleep
 from flyteidl.core.execution_pb2 import TaskExecution
-from dummy_tasks import wf
 
 from flytekit.configuration import Config
 from flytekit.remote import FlyteRemote
