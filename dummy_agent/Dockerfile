@@ -2,11 +2,11 @@ FROM python:3.10-slim-buster as agent-base
 
 ENV CLOUDSDK_PYTHON=/usr/local/bin/python
 
-RUN apt-get update && apt-get install -y git apt-transport-https ca-certificates gnupg curl apt-utils libxmlsec1-dev pkg-config
+RUN apt-get update && apt-get install -y git apt-transport-https ca-certificates gnupg curl apt-utils
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg && apt-get update -y && apt-get -f install google-cloud-sdk -y
 
 RUN pip install prometheus_client jsonpickle grpcio-health-checking
-RUN pip install apache-airflow \
+RUN pip install apache-airflow==2.9.0 \
                 apache-airflow[slack] \
                 apache-airflow[google] \
                 google-cloud-orchestration-airflow==1.9.1 \
