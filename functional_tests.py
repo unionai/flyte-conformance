@@ -59,7 +59,7 @@ def test_max_parallelism():
     print("test max parallelism")
     flyte_workflow = remote.fetch_workflow(name="dummy_tasks.wf", version=version)
     exe = remote.execute(
-        entity=flyte_workflow, inputs={}, wait=False, options=Options(max_parallelism=3)
+        entity=flyte_workflow, inputs={}, wait=False, options=Options(max_parallelism=1)
     )
     sleep(40)  # wait for tasks to start
     exe = remote.sync_execution(exe, sync_nodes=True)
@@ -69,7 +69,7 @@ def test_max_parallelism():
         if exe.task_executions
         and exe.task_executions[0].closure.phase == TaskExecution.RUNNING
     )
-    assert num_running_tasks == 3
+    assert num_running_tasks == 1
 
 
 if __name__ == "__main__":
