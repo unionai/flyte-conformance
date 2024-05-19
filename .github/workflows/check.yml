@@ -61,6 +61,7 @@ jobs:
   flytesnacks-remote:
     name: Run Flytesnacks examples remotely
     runs-on: ${{ matrix.os }}
+    if: ${{ github.event_name != 'pull_request' }}
     env:
       PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION: python
       CLIENT_SECRET_DOGFOOD_GCP: ${{ secrets.CLIENT_SECRET_DOGFOOD_GCP }}
@@ -82,9 +83,7 @@ jobs:
       - name: Cache pip
         uses: actions/cache@v4
         with:
-          # This path is specific to Ubuntu
           path: ~/.cache/pip
-          # Look to see if there is a cache hit for the corresponding requirements files
           key: ${{ format('{0}-pip-{1}', runner.os, hashFiles('dev-requirements.in', 'requirements.in')) }}
       - name: Install dependencies
         run: |
@@ -128,3 +127,7 @@ jobs:
           source .venv/bin/activate
           make setup
           make functional_tests
+      - name: register workflows
+        run: |
+          source .venv/bin/activate
+          pyflyte register integration_tests.py flytesnacks_wf
