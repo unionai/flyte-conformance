@@ -120,12 +120,17 @@ jobs:
           flytectl demo start --disable-agent
           flytectl config init
           flytectl create project --name flyte-conformance --id flyte-conformance --description "end to end tests" --labels app=flyte
-      - name: run functional tests
+      - name: Install dependencies
         run: |
           pip install uv
           uv venv
           source .venv/bin/activate
           make setup
+          uv pip install "git+https://github.com/flyteorg/flytekit.git@master"
+          uv pip install "git+https://github.com/flyteorg/flyte.git@master#subdirectory=flyteidl"
+      - name: run functional tests
+        run: |
+          source .venv/bin/activate
           make functional_tests
       - name: register workflows
         run: |
