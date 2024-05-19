@@ -130,4 +130,4 @@ jobs:
       - name: register workflows
         run: |
           source .venv/bin/activate
-          pyflyte register integration_tests.py flytesnacks_wf
+          pyflyte register integration_tests.py
