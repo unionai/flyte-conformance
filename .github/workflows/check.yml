@@ -58,7 +58,7 @@ jobs:
           source .venv/bin/activate
           make flytesnacks
 
-  flytesnacks-remote:
+  register-integration-tests:
     name: Run Flytesnacks examples remotely
     runs-on: ${{ matrix.os }}
     if: ${{ github.event_name != 'pull_request' }}
@@ -97,11 +97,17 @@ jobs:
         run: |
           source .venv/bin/activate
           export FLYTECTL_CONFIG=./config-dogfood-gcp.yaml
-          pyflyte run --remote --project flyte-conformance --domain development integration_tests.py flytesnacks_wf
+          pyflyte register --project flyte-conformance --domain development integration_tests.py
+          pyflyte launchplan --project flyte-conformance --domain development flyte_agent_lp --activate
+          pyflyte launchplan --project flyte-conformance --domain development flyte_conformance_lp --activate
+          pyflyte launchplan --project flyte-conformance --domain development flyte_plugin_lp --activate
+          pyflyte launchplan --project flyte-conformance --domain development flytesnacks_lp --activate
           
   functional-tests:
     name: Functional tests
     runs-on: ubuntu-latest
+    env:
+      PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION: python
     steps:
       - uses: actions/checkout@v2
         with:
