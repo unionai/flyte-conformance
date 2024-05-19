@@ -97,7 +97,7 @@ jobs:
       - name: Run flytesnacks example
         run: |
           source .venv/bin/activate
-          export FLYTECTL_CONFIG=./config.dogfood-gcp.yaml
+          export FLYTECTL_CONFIG=./config-dogfood-gcp.yaml
           pyflyte run --remote --project flyte-conformance --domain development integration_tests.py flytesnacks_wf
           
   functional-tests:
@@ -115,7 +115,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: unionai/flytectl-setup-action@v0.0.1
+      - uses: unionai/flytectl-setup-action@v0.0.3
       - name: setup sandbox
         run: |
           flytectl demo start --disable-agent
