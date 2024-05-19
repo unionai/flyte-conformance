@@ -18,8 +18,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  flytesnacks:
-    name: Flytesnacks examples
+  flytesnacks-local:
+    name: Run Flytesnacks examples locally
     runs-on: ${{ matrix.os }}
     env:
       PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION: python
@@ -51,10 +51,54 @@ jobs:
           uv venv
           source .venv/bin/activate
           make setup
-      - name: Run flytesnacks example locally
+          uv pip install "git+https://github.com/flyteorg/flytekit.git@master"
+          uv pip install "git+https://github.com/flyteorg/flyte.git@master#subdirectory=flyteidl"
+      - name: Run flytesnacks example
         run: |
           source .venv/bin/activate
           make flytesnacks
+
+  flytesnacks-remote:
+    name: Run Flytesnacks examples remotely
+    runs-on: ${{ matrix.os }}
+    env:
+      PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION: python
+      CLIENT_SECRET_DOGFOOD_GCP: ${{ secrets.CLIENT_SECRET_DOGFOOD_GCP }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.11"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: 'Clear action cache'
+        uses: ./.github/actions/clear-action-cache
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          # This path is specific to Ubuntu
+          path: ~/.cache/pip
+          # Look to see if there is a cache hit for the corresponding requirements files
+          key: ${{ format('{0}-pip-{1}', runner.os, hashFiles('dev-requirements.in', 'requirements.in')) }}
+      - name: Install dependencies
+        run: |
+          pip install uv
+          uv venv
+          source .venv/bin/activate
+          make setup
+          uv pip install "git+https://github.com/flyteorg/flytekit.git@master"
+          uv pip install "git+https://github.com/flyteorg/flyte.git@master#subdirectory=flyteidl"
+      - name: Run flytesnacks example
+        run: |
+          source .venv/bin/activate
+          export FLYTECTL_CONFIG=./config.dogfood-gcp.yaml
+          pyflyte run --remote --project flyte-conformance --domain development integration_tests.py flytesnacks_wf
           
   functional-tests:
     name: Functional tests
