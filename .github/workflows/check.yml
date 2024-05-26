@@ -95,7 +95,7 @@ jobs:
         run: |
           source .venv/bin/activate
           export FLYTECTL_CONFIG=./config-dogfood-gcp.yaml
-          pyflyte register --project flyte-conformance --domain development integration_tests.py
+          pyflyte register --project flyte-conformance --domain development workflow/integration_tests.py
           pyflyte launchplan --project flyte-conformance --domain development flyte_agent_lp --activate
           pyflyte launchplan --project flyte-conformance --domain development flyte_conformance_lp --activate
           pyflyte launchplan --project flyte-conformance --domain development flyte_plugin_lp --activate
@@ -172,4 +172,4 @@ jobs:
       - name: register workflows
         run: |
           source .venv/bin/activate
-          pyflyte register integration_tests.py
+          pyflyte register workflow/integration_tests.py

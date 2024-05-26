@@ -2,15 +2,15 @@ from datetime import timedelta
 
 from flytekit import workflow, WorkflowFailurePolicy, LaunchPlan, FixedRate
 
-from workflow.core.map_task import map_task_wf
-from workflow.core.pod_template import pod_template_workflow
-from workflow.core.flyte_type import test_flyte_type_wf
-from workflow.core.ephemeral_storage import ephemeral_storage_test
+from core.map_task import map_task_wf
+from core.pod_template import pod_template_workflow
+from core.flyte_type import test_flyte_type_wf
+from core.ephemeral_storage import ephemeral_storage_test
 
-from workflow.agent.airflow_agent import airflow_wf
-from workflow.agent.bigquery_agent import bigquery_wf
-from workflow.agent.flyte_sensors import sensor_wf
-from workflow.agent.dummy_agents import dummy_agents_wf
+from agent.airflow_agent import airflow_wf
+from agent.bigquery_agent import bigquery_wf
+from agent.flyte_sensors import sensor_wf
+from agent.dummy_agents import dummy_agents_wf
 
 from flytesnacks.examples.advanced_composition.advanced_composition.chain_entities import (
     chain_tasks_wf,
