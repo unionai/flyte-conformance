@@ -37,7 +37,7 @@ def airflow_wf():
         task_id="run_spark",
         dataproc_jars=["file:///usr/lib/spark/examples/jars/spark-examples.jar"],
         main_class="org.apache.spark.examples.JavaWordCount",
-        arguments=["gs://opta-gcp-dogfood-gcp/spark/file.txt"],
+        arguments=["gs://opta-gcp-dogfood-gcp/flyte-conformance/requirements.txt"],
         cluster_name=cluster_name,
         region="us-west1",
         project_id="dogfood-gcp-dataplane",

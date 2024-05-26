@@ -17,7 +17,7 @@ def plus_one(input: int) -> int:
 
 
 @workflow
-def wf(input: int = 0) -> int:
+def actor_wf(input: int = 0) -> int:
     a = plus_one(input=input)
     b = plus_one(input=a)
     c = plus_one(input=b)
