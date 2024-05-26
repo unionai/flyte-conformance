@@ -171,6 +171,5 @@ jobs:
           uv pip install "git+https://github.com/flyteorg/flyte.git@master#subdirectory=flyteidl"
       - name: register workflows
         run: |
-          export FLYTE_PUSH_IMAGE_SPEC=${{ github.event_name != 'pull_request' }}
           source .venv/bin/activate
           pyflyte register workflow/integration_tests.py
