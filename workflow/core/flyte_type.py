@@ -71,7 +71,7 @@ def create_flyte_directory(
     return FlyteDirectory(path=directory, remote_directory=remote_dir)
 
 
-@task(requests=Resources(mem="100Mi"), container_image=image_spec)
+@task(requests=Resources(mem="1000Mi"), container_image=image_spec)
 def download_flyte_directory(directory: Annotated[FlyteDirectory, BatchSize(100)]):
     entity = FlyteDirectory.listdir(directory)
     for e in entity:
@@ -125,7 +125,7 @@ def slope(x: List[int], y: List[int]) -> slope_value:
 
 @workflow
 def test_flyte_type_wf():
-    flyte_dir = create_flyte_directory(num_files=5, filesize_mb=8)
+    flyte_dir = create_flyte_directory(num_files=5, filesize_mb=2)
     download_flyte_directory(directory=flyte_dir)
 
     test_pickle(pickle=Pickle(size=15))

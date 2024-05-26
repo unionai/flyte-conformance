@@ -6,6 +6,7 @@ from core.map_task import map_task_wf
 from core.pod_template import pod_template_workflow
 from core.flyte_type import test_flyte_type_wf
 from core.ephemeral_storage import ephemeral_storage_test
+from core.actor import actor_wf
 
 from agent.airflow_agent import airflow_wf
 from agent.bigquery_agent import bigquery_wf
@@ -197,6 +198,7 @@ def flyte_conformance_wf():
     pod_template_workflow()
     map_task_wf()
     ephemeral_storage_test()
+    actor_wf()
 
 
 flytesnacks_lp = LaunchPlan.get_or_create(
