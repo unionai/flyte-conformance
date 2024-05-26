@@ -1,7 +1,5 @@
 name: Unit Tests
 
-# Schedule runs to run twice a day
-
 on:
   push:
     branches:
@@ -58,8 +56,8 @@ jobs:
           source .venv/bin/activate
           make flytesnacks
 
-  register-integration-tests:
-    name: Run Flytesnacks examples remotely
+  register-integration-workflows:
+    name: Register integration workflows to the remote cluster
     runs-on: ${{ matrix.os }}
     if: ${{ github.event_name != 'pull_request' }}
     env:
@@ -139,6 +137,39 @@ jobs:
         run: |
           source .venv/bin/activate
           make functional_tests
+
+  test-register:
+    name: Register examples to sandbox
+    runs-on: ubuntu-latest
+    env:
+      PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION: python
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: "0"
+          submodules: 'true'
+      - name: 'Clear action cache'
+        uses: ./.github/actions/clear-action-cache
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: unionai/flytectl-setup-action@v0.0.3
+      - name: setup sandbox
+        run: |
+          flytectl demo start --disable-agent
+          flytectl config init
+      - name: Install dependencies
+        run: |
+          pip install uv
+          uv venv
+          source .venv/bin/activate
+          make setup
+          uv pip install "git+https://github.com/flyteorg/flytekit.git@master"
+          uv pip install "git+https://github.com/flyteorg/flyte.git@master#subdirectory=flyteidl"
       - name: register workflows
         run: |
           source .venv/bin/activate
