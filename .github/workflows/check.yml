@@ -161,7 +161,8 @@ jobs:
         with:
           fetch-depth: "0"
           submodules: 'true'
-      - uses: insightsengineering/disk-space-reclaimer@v1
+      - name: 'Clear action cache'
+        uses: ./.github/actions/clear-action-cache
       - name: Login to Unionai GitHub Container Registry
         uses: docker/login-action@v1
         with:
