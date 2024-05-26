@@ -74,6 +74,18 @@ jobs:
           submodules: 'true'
       - name: 'Clear action cache'
         uses: ./.github/actions/clear-action-cache
+      - name: Login to Flyteorg GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ vars.FLYTEORG_USERNAME }}
+          password: ${{ secrets.FLYTEORG_PASSWORD }}
+      - name: Login to Unionai GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
