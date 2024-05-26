@@ -6,3 +6,4 @@ functional_tests.py
 .dockerignore
 .gitignore
 Makefile
+__pycache__
