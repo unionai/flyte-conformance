@@ -20,7 +20,7 @@ def airflow_wf():
         task_id="create_dataproc_cluster1",
         image_version="2.0.27-debian10",
         storage_bucket="opta-gcp-dogfood-gcp",
-        service_account="dogfoodgcp-userflyterol-odkb@dogfood-gcp-dataplane.iam.gserviceaccount.com",
+        service_account="dogfoodgcp-userflyterol-2xaf@dogfood-gcp-dataplane.iam.gserviceaccount.com",
         # service_account_scopes=["https://www.googleapis.com/auth/cloud-platform"],
         master_machine_type="n1-highmem-32",
         master_disk_size=1024,
