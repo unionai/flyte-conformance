@@ -1,0 +1,9 @@
+admin:
+  endpoint: dns:///dogfood-gcp.cloud-staging.union.ai
+  authType: ClientSecret
+  clientId: dogfood-gcp-conformance
+  CLIENT_CREDENTIALS_SECRET_ENV_VAR: CLIENT_SECRET_DOGFOOD_GCP
+  insecure: False
+logger:
+  show-source: true
+  level: 2

@@ -1,7 +1,5 @@
 name: Unit Tests
 
-# Schedule runs to run twice a day
-
 on:
   push:
     branches:
@@ -18,8 +16,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  flytesnacks:
-    name: Flytesnacks examples
+  flytesnacks-local:
+    name: Run Flytesnacks examples locally
     runs-on: ${{ matrix.os }}
     env:
       PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION: python
@@ -51,18 +49,68 @@ jobs:
           uv venv
           source .venv/bin/activate
           make setup
-      - name: Run flytesnacks example locally
+          uv pip install "git+https://github.com/flyteorg/flytekit.git@master"
+          uv pip install "git+https://github.com/flyteorg/flyte.git@master#subdirectory=flyteidl"
+      - name: Run flytesnacks example
         run: |
           source .venv/bin/activate
           make flytesnacks
+
+  register-integration-workflows:
+    name: Register integration workflows to the remote cluster
+    runs-on: ${{ matrix.os }}
+    if: ${{ github.event_name != 'pull_request' }}
+    env:
+      PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION: python
+      CLIENT_SECRET_DOGFOOD_GCP: ${{ secrets.CLIENT_SECRET_DOGFOOD_GCP }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.11"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: 'Clear action cache'
+        uses: ./.github/actions/clear-action-cache
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ format('{0}-pip-{1}', runner.os, hashFiles('dev-requirements.in', 'requirements.in')) }}
+      - name: Install dependencies
+        run: |
+          pip install uv
+          uv venv
+          source .venv/bin/activate
+          make setup
+          uv pip install "git+https://github.com/flyteorg/flytekit.git@master"
+          uv pip install "git+https://github.com/flyteorg/flyte.git@master#subdirectory=flyteidl"
+      - name: Run flytesnacks example
+        run: |
+          source .venv/bin/activate
+          export FLYTECTL_CONFIG=./config-dogfood-gcp.yaml
+          pyflyte register --project flyte-conformance --domain development workflow/integration_tests.py
+          pyflyte launchplan --project flyte-conformance --domain development flyte_agent_lp --activate
+          pyflyte launchplan --project flyte-conformance --domain development flyte_conformance_lp --activate
+          pyflyte launchplan --project flyte-conformance --domain development flyte_plugin_lp --activate
+          pyflyte launchplan --project flyte-conformance --domain development flytesnacks_lp --activate
           
   functional-tests:
     name: Functional tests
     runs-on: ubuntu-latest
+    env:
+      PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION: python
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: "0"
+          submodules: 'true'
       - name: 'Clear action cache'
         uses: ./.github/actions/clear-action-cache
       - name: Login to GitHub Container Registry
@@ -71,16 +119,58 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: unionai/flytectl-setup-action@v0.0.1
+      - uses: unionai/flytectl-setup-action@v0.0.3
       - name: setup sandbox
         run: |
           flytectl demo start --disable-agent
           flytectl config init
           flytectl create project --name flyte-conformance --id flyte-conformance --description "end to end tests" --labels app=flyte
-      - name: run functional tests
+      - name: Install dependencies
         run: |
           pip install uv
           uv venv
           source .venv/bin/activate
           make setup
+          uv pip install "git+https://github.com/flyteorg/flytekit.git@master"
+          uv pip install "git+https://github.com/flyteorg/flyte.git@master#subdirectory=flyteidl"
+      - name: run functional tests
+        run: |
+          source .venv/bin/activate
           make functional_tests
+
+  test-register:
+    name: Register examples to sandbox
+    runs-on: ubuntu-latest
+    env:
+      PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION: python
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: "0"
+          submodules: 'true'
+      - uses: insightsengineering/disk-space-reclaimer@v1
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: unionai/flytectl-setup-action@v0.0.3
+      - name: setup sandbox
+        run: |
+          flytectl demo start --disable-agent
+          flytectl config init
+      - name: Install dependencies
+        run: |
+          pip install uv
+          uv venv
+          source .venv/bin/activate
+          make setup
+          uv pip install "git+https://github.com/flyteorg/flytekit.git@master"
+          uv pip install "git+https://github.com/flyteorg/flyte.git@master#subdirectory=flyteidl"
+      - name: register workflows
+        run: |
+          export FLYTE_PUSH_IMAGE_SPEC=${{ github.event_name != 'pull_request' }}
+          source .venv/bin/activate
+          pyflyte register workflow/integration_tests.py

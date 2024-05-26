@@ -1,8 +1,9 @@
 README.md
 Dockerfile
 LICENSE
-integration_tests.py
+workflow/integration_tests.py
 functional_tests.py
 .dockerignore
 .gitignore
 Makefile
+__pycache__

@@ -1,4 +1,4 @@
-export FLYTEKIT_VERSION=v1.12.0b6
+export FLYTEKIT_VERSION=v1.12.0
 export FLYTEIDL_VERSION=v1.12.0
 
 .SILENT: help
@@ -34,7 +34,7 @@ functional_tests:  # Run flytesnacks example locally
 
 .PHONY: flytesnacks
 flytesnacks:  # Run flytesnacks example locally
-	pyflyte run integration_tests.py flytesnacks_wf
+	pyflyte run workflow/integration_tests.py flytesnacks_wf
 
 .PHONY: build_agent_image
 build_agent_image:  # Build and push the image for the agent
