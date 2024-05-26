@@ -53,7 +53,7 @@ class Pickle:
         return f"pickle's size is {self.size}"
 
 
-@task(requests=Resources(mem="1500Mi"), container_image=image_spec)
+@task(requests=Resources(mem="1000Mi"), container_image=image_spec)
 def create_flyte_directory(
     num_files: int, filesize_mb: int
 ) -> Annotated[FlyteDirectory, BatchSize(100)]:
@@ -71,7 +71,7 @@ def create_flyte_directory(
     return FlyteDirectory(path=directory, remote_directory=remote_dir)
 
 
-@task(requests=Resources(mem="1500Mi"), container_image=image_spec)
+@task(requests=Resources(mem="100Mi"), container_image=image_spec)
 def download_flyte_directory(directory: Annotated[FlyteDirectory, BatchSize(100)]):
     entity = FlyteDirectory.listdir(directory)
     for e in entity:
