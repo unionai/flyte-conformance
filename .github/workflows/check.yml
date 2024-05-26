@@ -91,7 +91,7 @@ jobs:
           make setup
           uv pip install "git+https://github.com/flyteorg/flytekit.git@master"
           uv pip install "git+https://github.com/flyteorg/flyte.git@master#subdirectory=flyteidl"
-      - name: Run flytesnacks example
+      - name: Register workflows
         run: |
           source .venv/bin/activate
           export FLYTECTL_CONFIG=./config-dogfood-gcp.yaml
