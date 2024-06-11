@@ -15,11 +15,13 @@ GROUP_VERSION = "1"
     ],
 )
 def get_my_secret() -> str:
-    secret_val = flytekit.current_context().secrets.get(group=SECRET_GROUP, group_version=GROUP_VERSION)
+    secret_val = flytekit.current_context().secrets.get(
+        group=SECRET_GROUP, group_version=GROUP_VERSION
+    )
     print(secret_val)
     return str(secret_val)
 
 
 @workflow
-def wf() -> str:
+def gcp_secret_wf() -> str:
     return get_my_secret()
