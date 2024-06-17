@@ -16,7 +16,7 @@ fmt:
 .PHONY: setup
 setup:
 	pip install uv
-	uv pip install -U pip apache-airflow[google]==2.7.3 pre-commit matplotlib \
+	uv pip install -U pip apache-airflow[google]==2.7.3 pre-commit matplotlib "tenacity<=8.3.0" \
  		tensorflow tensorboardX tensorflow_datasets "numpy<2.0.0" \
 		torch torchvision \
 		flytekitplugins-spark==$(FLYTEKIT_VERSION) flytekitplugins-kftensorflow==$(FLYTEKIT_VERSION) \
@@ -28,7 +28,7 @@ setup:
 	uv pip install -e dummy_agent
 
 .PHONY: functional_tests
-functional_tests:  # Run flytesnacks example locally
+functional_tests:  # Run functional tests locally
 	pyflyte register --project flyte-conformance --domain development --version v1 dummy_tasks.py
 	python functional_tests.py
 
@@ -42,5 +42,5 @@ build_agent_image:  # Build and push the image for the agent
 
 
 .PHONY: build_ci_image
-build_ci_image: # Build and push the image for the agent
+build_ci_image: # Build and push the image for the ci
 	docker buildx build --push --platform linux/amd64 -t ghcr.io/unionai/flyte-conformance-ci:latest -f Dockerfile .
