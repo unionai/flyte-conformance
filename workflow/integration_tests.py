@@ -8,6 +8,7 @@ from core.flyte_type import test_flyte_type_wf
 from core.ephemeral_storage import ephemeral_storage_test
 from core.actor import actor_wf
 from core.composition_image import composition_image_wf
+from core.gcp_secret import gcp_secret_wf
 
 from agent.airflow_agent import airflow_wf
 from agent.bigquery_agent import bigquery_wf
@@ -98,7 +99,6 @@ from flytesnacks.examples.k8s_spark_plugin.k8s_spark_plugin.dataframe_passing im
     spark_to_pandas_wf,  # noqa: F401
 )
 from flytesnacks.examples.k8s_spark_plugin.k8s_spark_plugin.pyspark_pi import my_spark
-from workflow.core.gcp_secret import gcp_secret_wf
 
 
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
