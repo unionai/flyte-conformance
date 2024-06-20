@@ -118,6 +118,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION: python
+      FLYTE_SDK_RICH_TRACEBACKS: 0
     steps:
       - uses: actions/checkout@v2
         with:
