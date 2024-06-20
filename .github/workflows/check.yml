@@ -54,7 +54,7 @@ jobs:
       - name: Run flytesnacks example
         run: |
           source .venv/bin/activate
-          make flytesnacks
+          pyflyte run workflow/integration_tests.py flytesnacks_wf
 
   register-integration-workflows:
     name: Register integration workflows to the remote cluster
