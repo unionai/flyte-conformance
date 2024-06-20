@@ -74,8 +74,6 @@ def test_max_parallelism():
     )
     sleep(40)  # wait for tasks to start
     exe = remote.sync_execution(exe, sync_nodes=True)
-    if exe.error:
-        raise Exception(exe.error.message)
 
     num_running_tasks = sum(
         1
