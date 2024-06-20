@@ -21,6 +21,9 @@ def test_cache_override():
 
     exe = remote.execute(entity=flyte_task, inputs={"x": 3}, wait=True)
     exe = remote.sync_execution(exe, sync_nodes=True)
+    if exe.error:
+        raise Exception(exe.error.message)
+
     old = exe.outputs["o0"]
 
     exe = remote.execute(
@@ -69,10 +72,11 @@ def test_max_parallelism():
     exe = remote.execute(
         entity=flyte_workflow, inputs={}, wait=False, options=Options(max_parallelism=1)
     )
-    if exe.error:
-        raise Exception(exe.error.message)
     sleep(40)  # wait for tasks to start
     exe = remote.sync_execution(exe, sync_nodes=True)
+    if exe.error:
+        raise Exception(exe.error.message)
+
     num_running_tasks = sum(
         1
         for node_id, exe in exe.node_executions.items()
