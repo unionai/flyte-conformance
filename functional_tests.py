@@ -27,6 +27,8 @@ def test_cache_override():
         entity=flyte_task, inputs={"x": 3}, overwrite_cache=True, wait=True
     )
     exe = remote.sync_execution(exe, sync_nodes=True)
+    if exe.error:
+        raise Exception(exe.error.message)
     new = exe.outputs["o0"]
 
     assert old != new
@@ -37,10 +39,14 @@ def test_cache_output():
     flyte_task = remote.fetch_task(name="dummy_tasks.t1", version=version)
     exe = remote.execute(entity=flyte_task, inputs={"x": 2}, wait=True)
     exe = remote.sync_execution(exe, sync_nodes=True)
+    if exe.error:
+        raise Exception(exe.error.message)
     old = exe.outputs["o0"]
 
     exe = remote.execute(entity=flyte_task, inputs={"x": 2}, wait=True)
     exe = remote.sync_execution(exe, sync_nodes=True)
+    if exe.error:
+        raise Exception(exe.error.message)
     new = exe.outputs["o0"]
     assert old == new
 
@@ -52,6 +58,8 @@ def test_default_env():
         entity=flyte_task, inputs={}, envs={"HELLO": "WORLD"}, wait=True
     )
     exe = remote.sync_execution(exe, sync_nodes=True)
+    if exe.error:
+        raise Exception(exe.error.message)
     assert exe.outputs["o0"] == "WORLD"
 
 
@@ -61,6 +69,8 @@ def test_max_parallelism():
     exe = remote.execute(
         entity=flyte_workflow, inputs={}, wait=False, options=Options(max_parallelism=1)
     )
+    if exe.error:
+        raise Exception(exe.error.message)
     sleep(40)  # wait for tasks to start
     exe = remote.sync_execution(exe, sync_nodes=True)
     num_running_tasks = sum(
