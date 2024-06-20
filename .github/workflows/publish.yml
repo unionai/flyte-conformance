@@ -8,7 +8,7 @@ on:
 
 
 jobs:
-  build-and-push-agent-images:
+  push-agent-images:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -46,7 +46,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  build-and-push-ci-images:
+  push-flytekit-images:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

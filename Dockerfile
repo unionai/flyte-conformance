@@ -1,11 +1,19 @@
-FROM ghcr.io/unionai/flyte-conformance-agent:latest
+FROM python:3.10-slim-bookworm
 
-MAINTAINER Flyte Team <users@flyte.org>
+WORKDIR /root
+ENV PYTHONPATH /root
+ENV FLYTE_SDK_RICH_TRACEBACKS 0
 
-RUN pip install flytekitplugins-kftensorflow
-RUN pip install flytekitplugins-kfpytorch
-RUN pip install flytekitplugins-ray
-RUN pip install flytekitplugins-pandera
-RUN pip install flytekitplugins-envd
-RUN pip install flytekitplugins-mlflow
-RUN pip install flytekitplugins-spark
+RUN apt-get update && apt-get install build-essential -y \
+    && pip install uv rustfs \
+    && uv pip install --system --no-cache-dir -U flytekit==1.2.3 \
+        flytekitplugins-deck-standard==1.2.3 \
+    && apt-get clean autoclean \
+    && apt-get autoremove --yes \
+    && rm -rf /var/lib/{apt,dpkg,cache,log}/ \
+    && useradd -u 1000 flytekit \
+    && chown flytekit: /root \
+    && chown flytekit: /home \
+    && :
+
+USER flytekit

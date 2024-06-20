@@ -53,6 +53,6 @@ build_agent_image:  # Build and push the image for the agent
 	docker buildx build --push --platform linux/amd64 -t ghcr.io/unionai/flyte-conformance-agent:nightly -f dummy_agent/Dockerfile .
 
 
-.PHONY: build_ci_image
-build_ci_image: # Build and push the image for the ci
-	docker buildx build --push --platform linux/amd64 -t ghcr.io/unionai/flyte-conformance-ci:latest -f Dockerfile .
+.PHONY: build_flytekit_image
+build_flytekit_image: # Build and push the default image for the flyte task
+	docker buildx build --push --platform linux/amd64 -t ghcr.io/unionai/flytekit:nightly -f Dockerfile .
