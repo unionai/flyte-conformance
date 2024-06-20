@@ -14,9 +14,9 @@ from kubernetes.client.models import (
 
 _SHARED_DATA_PATH = "/data/message.txt"
 image_spec = ImageSpec(
+    packages=["flytekitplugins-pod"],
     name="flyte-conformance",
     registry="ghcr.io/unionai",
-    base_image="ghcr.io/flyteorg/flytekit:py3.10-1.10.2",
 )
 
 
@@ -29,6 +29,7 @@ image_spec = ImageSpec(
     requests=Resources(
         mem="500Mi",
     ),
+    container_image=image_spec,
 )
 def pod_task() -> str:
     return "Hello from pod task!"

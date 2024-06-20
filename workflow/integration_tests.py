@@ -91,9 +91,6 @@ from flytesnacks.examples.pandera_plugin.pandera_plugin.validating_and_testing_m
 from flytesnacks.examples.kfpytorch_plugin.kfpytorch_plugin.pytorch_mnist import (
     pytorch_training_wf,
 )
-from flytesnacks.examples.kftensorflow_plugin.kftensorflow_plugin.tf_mnist import (
-    mnist_tensorflow_workflow,  # noqa: F401
-)
 from flytesnacks.examples.ray_plugin.ray_plugin.ray_example import ray_workflow
 from flytesnacks.examples.k8s_spark_plugin.k8s_spark_plugin.dataframe_passing import (
     spark_to_pandas_wf,  # noqa: F401

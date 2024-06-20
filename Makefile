@@ -1,4 +1,4 @@
-export FLYTEKIT_VERSION=v1.12.2
+export FLYTEKIT_VERSION=v1.12.3
 export FLYTEIDL_VERSION=v1.12.0
 
 .SILENT: help
@@ -33,14 +33,26 @@ functional_tests:  # Run functional tests locally
 	python functional_tests.py
 
 .PHONY: flytesnacks
-flytesnacks:  # Run flytesnacks example locally
-	pyflyte run workflow/integration_tests.py flytesnacks_wf
+flytesnacks:  # Register and run flytesnacks example
+	pyflyte run --remote workflow/integration_tests.py flytesnacks_wf
+
+.PHONY: flyteplugins
+flyteplugins:  # Register and run flyte plugins example
+	pyflyte run --remote workflow/integration_tests.py flyte_plugin_wf
+
+.PHONY: flyteagents
+flyteagents:  # Register and run flyte agents example
+	pyflyte run --remote workflow/integration_tests.py flyte_agent_wf
+
+.PHONY: flyte-conformance
+flyte-conformance:  # Register and run flyte conformance example
+	pyflyte run --remote workflow/integration_tests.py flyte_conformance_wf
 
 .PHONY: build_agent_image
 build_agent_image:  # Build and push the image for the agent
 	docker buildx build --push --platform linux/amd64 -t ghcr.io/unionai/flyte-conformance-agent:nightly -f dummy_agent/Dockerfile .
 
 
-.PHONY: build_ci_image
-build_ci_image: # Build and push the image for the ci
-	docker buildx build --push --platform linux/amd64 -t ghcr.io/unionai/flyte-conformance-ci:latest -f Dockerfile .
+.PHONY: build_flytekit_image
+build_flytekit_image: # Build and push the default image for the flyte task
+	docker buildx build --push --platform linux/amd64 -t ghcr.io/unionai/flytekit:nightly -f Dockerfile .
