@@ -41,11 +41,11 @@ flyteplugins:  # Register and run flyte plugins example
 	pyflyte run --remote workflow/integration_tests.py flyte_plugin_wf
 
 .PHONY: flyteagents
-flyteagents:  # Register and run flyte plugins example
+flyteagents:  # Register and run flyte agents example
 	pyflyte run --remote workflow/integration_tests.py flyte_agent_wf
 
 .PHONY: flyte-conformance
-flyte-conformance:  # Register and run flyte plugins example
+flyte-conformance:  # Register and run flyte conformance example
 	pyflyte run --remote workflow/integration_tests.py flyte_conformance_wf
 
 .PHONY: build_agent_image
