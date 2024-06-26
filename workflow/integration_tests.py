@@ -7,6 +7,8 @@ from core.pod_template import pod_template_workflow
 from core.flyte_type import test_flyte_type_wf
 from core.ephemeral_storage import ephemeral_storage_test
 from core.actor import actor_wf
+from core.composition_image import composition_image_wf
+from core.gcp_secret import gcp_secret_wf
 
 from agent.airflow_agent import airflow_wf
 from agent.bigquery_agent import bigquery_wf
@@ -88,9 +90,6 @@ from flytesnacks.examples.pandera_plugin.pandera_plugin.validating_and_testing_m
 )
 from flytesnacks.examples.kfpytorch_plugin.kfpytorch_plugin.pytorch_mnist import (
     pytorch_training_wf,
-)
-from flytesnacks.examples.kftensorflow_plugin.kftensorflow_plugin.tf_mnist import (
-    mnist_tensorflow_workflow,  # noqa: F401
 )
 from flytesnacks.examples.ray_plugin.ray_plugin.ray_example import ray_workflow
 from flytesnacks.examples.k8s_spark_plugin.k8s_spark_plugin.dataframe_passing import (
@@ -199,6 +198,8 @@ def flyte_conformance_wf():
     map_task_wf()
     ephemeral_storage_test()
     actor_wf()
+    composition_image_wf()
+    gcp_secret_wf()
 
 
 flytesnacks_lp = LaunchPlan.get_or_create(

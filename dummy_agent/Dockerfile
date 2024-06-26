@@ -30,6 +30,7 @@ RUN pip install -U "git+https://github.com/flyteorg/flyte.git@$FLYTE_VERSION#sub
 
 COPY dummy_agent /root/dummy_agent
 RUN pip install /root/dummy_agent
+RUN pip install "numpy<2.0.0" "tenacity<=8.3.0"
 
 ENV FLYTE_SDK_LOGGING_LEVEL 20
 
