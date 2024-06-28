@@ -16,8 +16,8 @@ RUN pip install apache-airflow==2.9.1 \
 
 From agent-base as agent
 
-ARG FLYTEKIT_VERSION=bcce17eb919e507d0f8dd257f6f85dd7ac3fecff
-ARG FLYTE_VERSION=39093e1d9b1afa080860d51eda77a473a6ac7768
+ARG FLYTEKIT_VERSION=31a6fc814682db508fd49bb35cb6a882ec936832
+ARG FLYTE_VERSION=5f6d682cb7f5d417f217c61393ce62fff4dbeb8c
 
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION"
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-airflow"
