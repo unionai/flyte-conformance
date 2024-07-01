@@ -17,7 +17,7 @@ fmt:
 setup:
 	pip install uv
 	uv pip install -U pip apache-airflow[google]==2.7.3 pre-commit matplotlib "tenacity<=8.3.0" \
- 		tensorflow tensorboardX tensorflow_datasets "numpy<2.0.0" \
+ 		tensorflow tensorboardX tensorflow_datasets "numpy<2.0.0" "pandera>=0.7.1,<=0.19.3" \
 		torch torchvision \
 		flytekitplugins-spark==$(FLYTEKIT_VERSION) flytekitplugins-kftensorflow==$(FLYTEKIT_VERSION) \
 		flytekitplugins-kfpytorch==$(FLYTEKIT_VERSION) flytekitplugins-ray==$(FLYTEKIT_VERSION) \
