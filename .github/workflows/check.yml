@@ -196,7 +196,7 @@ jobs:
     env:
       PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION: python
       PYTHONUNBUFFERED: "1"
-      FLYTE_INTERNAL_IMAGE: ghcr:io/unionai/flytekit:${{ github.sha }}
+      # FLYTE_INTERNAL_IMAGE: ghcr:io/unionai/flytekit:${{ github.sha }}
     steps:
       - uses: actions/checkout@v2
         with:

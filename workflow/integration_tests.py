@@ -7,7 +7,7 @@ from core.pod_template import pod_template_workflow
 from core.flyte_type import test_flyte_type_wf
 from core.ephemeral_storage import ephemeral_storage_test
 from core.actor import actor_wf
-from core.composition_image import composition_image_wf
+from core.image_spec_composition import composition_image_wf
 from core.gcp_secret import gcp_secret_wf
 
 from agent.airflow_agent import airflow_wf
