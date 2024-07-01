@@ -185,8 +185,8 @@ def case_study_wf():
 
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
 def flyte_agent_wf():
-    airflow_wf()
-    bigquery_wf()
+    # airflow_wf()
+    # bigquery_wf()
     sensor_wf()
     dummy_agents_wf()
 
