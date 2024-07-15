@@ -1,5 +1,5 @@
-export FLYTEKIT_VERSION=v1.12.3
-export FLYTEIDL_VERSION=v1.12.0
+export FLYTEKIT_VERSION=v1.13.0
+export FLYTEIDL_VERSION=v1.13.0
 
 .SILENT: help
 .PHONY: help
@@ -21,11 +21,13 @@ setup:
 		torch torchvision \
 		flytekitplugins-spark==$(FLYTEKIT_VERSION) flytekitplugins-kftensorflow==$(FLYTEKIT_VERSION) \
 		flytekitplugins-kfpytorch==$(FLYTEKIT_VERSION) flytekitplugins-ray==$(FLYTEKIT_VERSION) \
-		flytekitplugins-bigquery==$(FLYTEKIT_VERSION) flytekitplugins-envd==$(FLYTEKIT_VERSION) \
+		flytekitplugins-bigquery==$(FLYTEKIT_VERSION) \
 		flytekitplugins-pod==$(FLYTEKIT_VERSION) flytekitplugins-airflow==$(FLYTEKIT_VERSION) \
 		flytekitplugins-mlflow==$(FLYTEKIT_VERSION) flytekitplugins-pandera==$(FLYTEKIT_VERSION) \
 		union flytekit==$(FLYTEKIT_VERSION) flyteidl==$(FLYTEIDL_VERSION)
 	uv pip install -e dummy_agent
+	uv pip install "git+https://github.com/flyteorg/flytekit.git@master"
+	uv pip install "git+https://github.com/flyteorg/flyte.git@master#subdirectory=flyteidl"
 
 .PHONY: functional_tests
 functional_tests:  # Run functional tests locally

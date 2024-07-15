@@ -49,8 +49,6 @@ jobs:
           uv venv
           source .venv/bin/activate
           make setup
-          uv pip install "git+https://github.com/flyteorg/flytekit.git@master"
-          uv pip install "git+https://github.com/flyteorg/flyte.git@master#subdirectory=flyteidl"
       - name: Run flytesnacks example
         run: |
           source .venv/bin/activate
@@ -101,8 +99,6 @@ jobs:
           uv venv
           source .venv/bin/activate
           make setup
-          uv pip install "git+https://github.com/flyteorg/flytekit.git@master"
-          uv pip install "git+https://github.com/flyteorg/flyte.git@master#subdirectory=flyteidl"
       - name: Register workflows
         run: |
           source .venv/bin/activate
@@ -144,8 +140,6 @@ jobs:
           uv venv
           source .venv/bin/activate
           make setup
-          uv pip install "git+https://github.com/flyteorg/flytekit.git@master"
-          uv pip install "git+https://github.com/flyteorg/flyte.git@master#subdirectory=flyteidl"
       - name: run functional tests
         run: |
           source .venv/bin/activate
@@ -227,8 +221,6 @@ jobs:
           uv venv
           source .venv/bin/activate
           make setup
-          uv pip install "git+https://github.com/flyteorg/flytekit.git@master"
-          uv pip install "git+https://github.com/flyteorg/flyte.git@master#subdirectory=flyteidl"
       - name: register workflows
         run: |
           source .venv/bin/activate
