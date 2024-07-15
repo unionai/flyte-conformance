@@ -1,7 +1,8 @@
 from flytekit import workflow, Resources
-from unionai.actor import ActorEnvironment
+from union.actor import ActorEnvironment
 
 actor = ActorEnvironment(
+    name="plus_one",
     replica_count=1,
     parallelism=1,
     backlog_length=50,
