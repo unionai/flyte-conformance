@@ -21,7 +21,7 @@ setup:
 		torch torchvision \
 		flytekitplugins-spark==$(FLYTEKIT_VERSION) flytekitplugins-kftensorflow==$(FLYTEKIT_VERSION) \
 		flytekitplugins-kfpytorch==$(FLYTEKIT_VERSION) flytekitplugins-ray==$(FLYTEKIT_VERSION) \
-		flytekitplugins-bigquery==$(FLYTEKIT_VERSION) flytekitplugins-envd==$(FLYTEKIT_VERSION) \
+		flytekitplugins-bigquery==$(FLYTEKIT_VERSION) \
 		flytekitplugins-pod==$(FLYTEKIT_VERSION) flytekitplugins-airflow==$(FLYTEKIT_VERSION) \
 		flytekitplugins-mlflow==$(FLYTEKIT_VERSION) flytekitplugins-pandera==$(FLYTEKIT_VERSION) \
 		union flytekit==$(FLYTEKIT_VERSION) flyteidl==$(FLYTEIDL_VERSION)
