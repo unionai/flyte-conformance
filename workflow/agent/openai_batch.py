@@ -1,7 +1,6 @@
 from typing import Iterator
 
 from flytekit import Secret, workflow
-from flytekit.types.file import JSONLFile
 from flytekit.types.iterator import JSON
 from flytekitplugins.openai import BatchResult, create_batch
 
@@ -30,5 +29,5 @@ it_batch = create_batch(
 )
 
 @workflow
-def json_iterator_wf(json_vals: Iterator[JSON] = jsons()) -> BatchResult:
+def json_iterator_wf(json_vals: Iterator[JSON]) -> BatchResult:
     return it_batch(jsonl_in=json_vals)
