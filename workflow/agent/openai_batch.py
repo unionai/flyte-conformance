@@ -29,18 +29,6 @@ it_batch = create_batch(
     secret=Secret(group="openai", key="1"),
 )
 
-file_batch = create_batch(
-    name="gpt-3.5-turbo",
-    secret=Secret(group="openai", key="1"),
-    is_json_iterator=False,
-)
-
-
 @workflow
 def json_iterator_wf(json_vals: Iterator[JSON] = jsons()) -> BatchResult:
     return it_batch(jsonl_in=json_vals)
-
-
-@workflow
-def jsonl_wf(jsonl_file: JSONLFile = "data.jsonl") -> BatchResult:
-    return file_batch(jsonl_in=jsonl_file)
