@@ -1,4 +1,4 @@
-export FLYTEKIT_VERSION=v1.13.0
+export FLYTEKIT_VERSION=v1.13.1a1
 export FLYTEIDL_VERSION=v1.13.0
 
 .SILENT: help
@@ -24,6 +24,7 @@ setup:
 		flytekitplugins-bigquery==$(FLYTEKIT_VERSION) \
 		flytekitplugins-pod==$(FLYTEKIT_VERSION) flytekitplugins-airflow==$(FLYTEKIT_VERSION) \
 		flytekitplugins-mlflow==$(FLYTEKIT_VERSION) flytekitplugins-pandera==$(FLYTEKIT_VERSION) \
+		flytekitplugins-openai==$(FLYTEKIT_VERSION) \
 		union flytekit==$(FLYTEKIT_VERSION) flyteidl==$(FLYTEIDL_VERSION)
 	uv pip install -e dummy_agent
 	uv pip install "git+https://github.com/flyteorg/flytekit.git@master"

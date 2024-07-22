@@ -13,6 +13,7 @@ from core.gcp_secret import gcp_secret_wf
 from agent.airflow_agent import airflow_wf
 from agent.bigquery_agent import bigquery_wf
 from agent.flyte_sensors import sensor_wf
+from agent.openai_batch import json_iterator_wf, jsons
 from agent.dummy_agents import dummy_agents_wf
 
 from flytesnacks.examples.advanced_composition.advanced_composition.chain_entities import (
@@ -188,6 +189,7 @@ def flyte_agent_wf():
     airflow_wf()
     bigquery_wf()
     sensor_wf()
+    json_iterator_wf(json_vals=jsons())
     dummy_agents_wf()
 
 
