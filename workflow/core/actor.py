@@ -1,14 +1,17 @@
-from flytekit import workflow, Resources
+from flytekit import workflow, Resources, ImageSpec
 from union.actor import ActorEnvironment
 
+
+image_spec = ImageSpec(name="actor", registry="pingsutw", packages=["panda", "union>=0.1.52", "flytekit>=1.13.1a2"], apt_packages=["git"])
+
+
 actor = ActorEnvironment(
-    name="plus_one",
-    replica_count=1,
-    parallelism=1,
+    name="flyte-conformance",
+    replica_count=2,
+    parallelism=2,
     backlog_length=50,
     ttl_seconds=300,
-    requests=Resources(cpu="1", mem="500Mi"),
-    container_image="ghcr.io/unionai/unionai-actors:0.1",
+    container_image=image_spec,
 )
 
 
@@ -17,8 +20,15 @@ def plus_one(input: int) -> int:
     return input + 1
 
 
+@actor.dynamic
+def d1():
+    plus_one(input=1)
+    plus_one(input=1)
+
+
 @workflow
 def actor_wf(input: int = 0) -> int:
+    d1()
     a = plus_one(input=input)
     b = plus_one(input=a)
     c = plus_one(input=b)
