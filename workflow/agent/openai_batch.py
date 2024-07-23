@@ -25,7 +25,7 @@ def jsons():
 
 it_batch = create_batch(
     name="gpt-3.5-turbo",
-    secret=Secret(group="openai", key="1"),
+    secret=Secret(key="union-openai-api-key"),
 )
 
 @workflow
