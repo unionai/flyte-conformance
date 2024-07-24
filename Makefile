@@ -1,4 +1,4 @@
-export FLYTEKIT_VERSION=v1.13.1a1
+export FLYTEKIT_VERSION=v1.13.1a2
 export FLYTEIDL_VERSION=v1.13.0
 
 .SILENT: help
@@ -27,7 +27,8 @@ setup:
 		flytekitplugins-openai==$(FLYTEKIT_VERSION) \
 		union flytekit==$(FLYTEKIT_VERSION) flyteidl==$(FLYTEIDL_VERSION)
 	uv pip install -e dummy_agent
-	uv pip install "git+https://github.com/flyteorg/flytekit.git@master"
+#   TODO: master branch is not working
+	uv pip install "git+https://github.com/flyteorg/flytekit.git@efed4410266b0843f34d795cbf68b6b8f3a786ac"
 	uv pip install "git+https://github.com/flyteorg/flyte.git@master#subdirectory=flyteidl"
 
 .PHONY: functional_tests
