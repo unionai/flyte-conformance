@@ -31,7 +31,7 @@ def d1():
     plus_one(input=1)
 
 
-@workflow()
+@workflow
 def actor_wf(input: int = 0) -> int:
     """
     actor workflow.
