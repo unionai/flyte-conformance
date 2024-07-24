@@ -28,6 +28,7 @@ it_batch = create_batch(
     secret=Secret(key="union-openai-api-key"),
 )
 
+
 @workflow
 def json_iterator_wf(json_vals: Iterator[JSON]) -> BatchResult:
     return it_batch(jsonl_in=json_vals)

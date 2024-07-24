@@ -1,8 +1,13 @@
-from flytekit import workflow, Resources, ImageSpec
+from flytekit import workflow, ImageSpec
 from union.actor import ActorEnvironment
 
 
-image_spec = ImageSpec(name="actor", registry="pingsutw", packages=["panda", "union>=0.1.52", "flytekit>=1.13.1a2"], apt_packages=["git"])
+image_spec = ImageSpec(
+    name="actor",
+    registry="pingsutw",
+    packages=["panda", "union>=0.1.52", "flytekit>=1.13.1a2"],
+    apt_packages=["git"],
+)
 
 
 actor = ActorEnvironment(
@@ -26,8 +31,16 @@ def d1():
     plus_one(input=1)
 
 
-@workflow
+@workflow()
 def actor_wf(input: int = 0) -> int:
+    """
+    actor workflow.
+
+    This is a simple workflow that demonstrates the use of the Actor in Flyte.
+    - regular task in the actor
+    - dynamic task in the actor
+    """
+
     d1()
     a = plus_one(input=input)
     b = plus_one(input=a)
