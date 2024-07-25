@@ -29,5 +29,8 @@ def t3() -> str:
 
 @workflow
 def wf(second: int = 60):
+    """
+    Dummy workflow for functional testing.
+    """
     for i in range(5):
         t2(second=second)
