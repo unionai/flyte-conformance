@@ -22,13 +22,13 @@ ARG FLYTE_VERSION=81afb76b44931d827f8e898d097a7e8054a5b836
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION"
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-airflow"
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-openai"
-RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-snowflake"
+# RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-snowflake"
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-bigquery"
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-spark"
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-aws-sagemaker"
 RUN pip install -U "git+https://github.com/flyteorg/flyte.git@$FLYTE_VERSION#subdirectory=flyteidl"
-RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@a17f28d05da51cfed9ad94c3a2931c33ae787481#subdirectory=plugins/flytekit-snowflake"
-RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@a17f28d05da51cfed9ad94c3a2931c33ae787481"
+RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@87b1452c135dcc10708eafe36b28bb9cc777ae02#subdirectory=plugins/flytekit-snowflake"
+RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@87b1452c135dcc10708eafe36b28bb9cc777ae02"
 
 COPY dummy_agent /root/dummy_agent
 RUN pip install /root/dummy_agent

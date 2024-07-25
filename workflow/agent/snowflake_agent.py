@@ -3,7 +3,7 @@ from flytekitplugins.snowflake import SnowflakeConfig, SnowflakeTask
 from flytekit import Secret
 import pandas as pd
 
-flytekit_hash = "a17f28d05da51cfed9ad94c3a2931c33ae787481"
+flytekit_hash = "14c4318f87615961c0d703bdf1b5949b73544d1f"
 flytekit = f"git+https://github.com/flyteorg/flytekit.git@{flytekit_hash}"
 snowflake_plugins = f"git+https://github.com/flyteorg/flytekit.git@{flytekit_hash}#subdirectory=plugins/flytekit-snowflake"
 
@@ -55,8 +55,7 @@ snowflake_task_templatized_query = SnowflakeTask(
 )
 
 @task(container_image=image, secret_requests=[Secret(
-      group="snowflake",
-      key="private_key",)])
+      key="snowflake",)])
 def print_head(input_sd: StructuredDataset) -> pd.DataFrame:
     df = input_sd.open(pd.DataFrame).all()
     print(df)

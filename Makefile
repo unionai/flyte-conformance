@@ -28,8 +28,8 @@ setup:
 		union flytekit==$(FLYTEKIT_VERSION) flyteidl==$(FLYTEIDL_VERSION)
 	uv pip install -e dummy_agent
 #   TODO: master branch is not working
-	uv pip install "git+https://github.com/flyteorg/flytekit.git@d5e37e8638f1012f2dc08bdde21947073f1ab49b"
-	uv pip install "git+https://github.com/flyteorg/flyte.git@master#subdirectory=flyteidl"
+	uv pip install "git+https://github.com/flyteorg/flytekit.git@a17f28d05da51cfed9ad94c3a2931c33ae787481"
+	uv pip install "git+https://github.com/flyteorg/flyte.git@master#a17f28d05da51cfed9ad94c3a2931c33ae787481=flyteidl"
 
 .PHONY: functional_tests
 functional_tests:  # Run functional tests locally
