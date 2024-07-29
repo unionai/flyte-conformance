@@ -27,8 +27,8 @@ RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSI
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-spark"
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-aws-sagemaker"
 RUN pip install -U "git+https://github.com/flyteorg/flyte.git@$FLYTE_VERSION#subdirectory=flyteidl"
-RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@87b1452c135dcc10708eafe36b28bb9cc777ae02#subdirectory=plugins/flytekit-snowflake"
-RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@87b1452c135dcc10708eafe36b28bb9cc777ae02"
+RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@762ad0bc43ba16fc5b258c4861fbed07bf26b503#subdirectory=plugins/flytekit-snowflake"
+RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@762ad0bc43ba16fc5b258c4861fbed07bf26b503"
 
 COPY dummy_agent /root/dummy_agent
 RUN pip install /root/dummy_agent
