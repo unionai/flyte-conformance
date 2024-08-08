@@ -33,8 +33,8 @@ def make_dataclass(iter: int) -> MapInput:
     return m
 
 @workflow
-def make_dc_wf(input: int):
-      make_dataclass(iter=input)
+def make_dc_wf(input: int) -> MapInput:
+    return make_dataclass(iter=input)
 
 make_dc_wf = LaunchPlan.get_or_create(name="make_dc_wf", workflow=make_dc_wf)
 
@@ -78,5 +78,5 @@ def make_flytefiles(iters: int) -> List[FlyteFile]:
     return files
 
 @workflow
-def big_ff_wf(iters: int=10):
+def big_ff_wf(iters: int=100000):
     make_flytefiles(iters=iters)
