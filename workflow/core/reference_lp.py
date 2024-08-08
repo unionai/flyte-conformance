@@ -7,21 +7,15 @@ from mashumaro.mixins.json import DataClassJSONMixin
 from typing import List
 
 ### Reference the LP and map over
-
-@task
-def hello_iter(iter: int) -> str:
-    return f"Hello {int}"# * 80 * 1024
-
 @reference_launch_plan(
-    project="flytesnacks",
+    project="flyte-conformance",
     domain="development",
-    name="big_fan_wf_lp",
-    version="ESqLPNauicjwcXJFHi2l6w",
+    name="make_dc_wf",
+    version="-qcX4nn0sxP5_jinA7fPbw",
 )
-def big_fan_wf_lp(input: str):
+def make_dc_wf(input: int):
     ...
 
 @workflow
 def map_ref_wf():
-    ins = map_task(hello_iter)([i for i in range(5000)])
-    map_task(big_fan_wf_lp)(input=ins)
+    map_task(make_dc_wf)(input=[i for i in range(10)])
