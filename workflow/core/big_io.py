@@ -5,7 +5,7 @@ from dataclasses import dataclass, fields
 from mashumaro.mixins.json import DataClassJSONMixin
 from typing import List
 
-## Big mapped dataclass wf
+## Make dataclass wf
 @dataclass
 class MapInput(DataClassJSONMixin):
     f1: FlyteFile | None = None
@@ -13,7 +13,6 @@ class MapInput(DataClassJSONMixin):
     f3: FlyteFile | None = None
     f4: FlyteFile | None = None
     f5: FlyteFile | None = None
-
 
 @task
 def make_dataclass(iter: int) -> MapInput:
@@ -38,14 +37,9 @@ def make_dc_wf(input: int) -> MapInput:
 
 make_dc_wf = LaunchPlan.get_or_create(name="make_dc_wf", workflow=make_dc_wf)
 
-@task
-def aggregate_dataclasses(ins: List[MapInput]) -> int:
-    return len(ins)
-
 @workflow
 def big_map_wf():
-    mapped = map_task(make_dataclass, concurrency=400)(list(range(6000)))
-    aggregate_dataclasses(mapped)
+    map_task(make_dataclass, concurrency=400)(list(range(10000)))
 
 ## Simple big message wf
 @task
