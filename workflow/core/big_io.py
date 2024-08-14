@@ -39,7 +39,7 @@ make_dc_wf = LaunchPlan.get_or_create(name="make_dc_wf", workflow=make_dc_wf)
 
 @workflow
 def big_map_wf():
-    map_task(make_dataclass, concurrency=400)(list(range(10000)))
+    map_task(make_dataclass, concurrency=50)(list(range(20000)))
 
 ## Simple big message wf
 @task
@@ -56,7 +56,7 @@ def noop():
     ...
 
 @workflow
-def big_in_wf(input: str = "Hello Work" * 200 * 1024):
+def big_in_wf(input: str = "Hello World" * 185 * 1024):
     noop()
 
 ## Big list of files wf
