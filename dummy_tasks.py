@@ -2,7 +2,10 @@ import os
 from datetime import datetime
 from time import sleep
 
+from click.testing import CliRunner
+
 from flytekit import ImageSpec, task, workflow
+from flytekit.clis.sdk_in_container import pyflyte
 
 image_spec = ImageSpec(
     name="flyte-conformance",
@@ -34,3 +37,11 @@ def wf(second: int = 60):
     """
     for i in range(5):
         t2(second=second)
+
+
+if __name__ == "__main__":
+    runner = CliRunner()
+    result = runner.invoke(
+        pyflyte.main, ["-vv", "run", "--remote", "dummy_tasks.py", "wf"]
+    )
+    print(result.output)
