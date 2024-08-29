@@ -154,6 +154,7 @@ def flytesnacks_wf():
 def flyte_plugin_wf():
     """
     TODO:
+    - Databricks
     - Papermill
     - flyteinteractive plugin
     - DBT plugin
@@ -176,7 +177,6 @@ def flyte_plugin_wf():
     ml_pipeline(epochs=5)
     # spark_to_pandas_wf()  # TODO: Fix it
     my_spark()
-    # Add databricks
 
 
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)

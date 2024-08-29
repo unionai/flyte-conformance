@@ -1,5 +1,4 @@
-export FLYTEKIT_VERSION=v1.13.1a2
-export FLYTEIDL_VERSION=v1.13.0
+export FLYTEKIT_PLUGIN_VERSION=v1.13.5
 
 .SILENT: help
 .PHONY: help
@@ -19,17 +18,16 @@ setup:
 	uv pip install -U pip apache-airflow[google]==2.7.3 pre-commit matplotlib "tenacity<=8.3.0" \
  		tensorflow tensorboardX tensorflow_datasets "numpy<2.0.0" "pandera>=0.7.1,<=0.19.3" \
 		torch torchvision \
-		flytekitplugins-spark==$(FLYTEKIT_VERSION) flytekitplugins-kftensorflow==$(FLYTEKIT_VERSION) \
-		flytekitplugins-kfpytorch==$(FLYTEKIT_VERSION) flytekitplugins-ray==$(FLYTEKIT_VERSION) \
-		flytekitplugins-bigquery==$(FLYTEKIT_VERSION) \
-		flytekitplugins-pod==$(FLYTEKIT_VERSION) flytekitplugins-airflow==$(FLYTEKIT_VERSION) \
-		flytekitplugins-mlflow==$(FLYTEKIT_VERSION) flytekitplugins-pandera==$(FLYTEKIT_VERSION) \
-		flytekitplugins-openai==$(FLYTEKIT_VERSION) flytekitplugins-envd==$(FLYTEKIT_VERSION) \
-		union flytekit==$(FLYTEKIT_VERSION) flyteidl==$(FLYTEIDL_VERSION)
+		flytekitplugins-spark==$(FLYTEKIT_PLUGIN_VERSION) flytekitplugins-kftensorflow==$(FLYTEKIT_PLUGIN_VERSION) \
+		flytekitplugins-kfpytorch==$(FLYTEKIT_PLUGIN_VERSION) flytekitplugins-ray==$(FLYTEKIT_PLUGIN_VERSION) \
+		flytekitplugins-bigquery==$(FLYTEKIT_PLUGIN_VERSION) \
+		flytekitplugins-pod==$(FLYTEKIT_PLUGIN_VERSION) flytekitplugins-airflow==$(FLYTEKIT_PLUGIN_VERSION) \
+		flytekitplugins-mlflow==$(FLYTEKIT_PLUGIN_VERSION) flytekitplugins-pandera==$(FLYTEKIT_PLUGIN_VERSION) \
+		flytekitplugins-openai==$(FLYTEKIT_PLUGIN_VERSION) flytekitplugins-envd==$(FLYTEKIT_PLUGIN_VERSION) \
+		union flytekit==$(FLYTEKIT_PLUGIN_VERSION)
 	uv pip install -e dummy_agent
-#   TODO: master branch is not working
-	uv pip install "git+https://github.com/flyteorg/flytekit.git@a17f28d05da51cfed9ad94c3a2931c33ae787481"
-	uv pip install "git+https://github.com/flyteorg/flyte.git@master#a17f28d05da51cfed9ad94c3a2931c33ae787481=flyteidl"
+	uv pip install "git+https://github.com/flyteorg/flytekit.git@65bf9e7896285d290ab1f1698c98cc75e623d11d"
+	uv pip install "git+https://github.com/flyteorg/flyte.git@27d9746e60e2a42fc1621e47c55591c56f216d7f#subdirectory=flyteidl"
 
 .PHONY: functional_tests
 functional_tests:  # Run functional tests locally
