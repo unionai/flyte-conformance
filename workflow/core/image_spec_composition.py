@@ -27,7 +27,7 @@ def t2(a: int) -> int:
 @workflow
 def composition_image_wf(a: int = 3):
     """
-    hello
+    helloooo
     """
     t1(a=a)
     t2(a=a)
