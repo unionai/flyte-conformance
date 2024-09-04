@@ -74,3 +74,31 @@ def make_flytefiles(iters: int) -> List[FlyteFile]:
 @workflow
 def big_ff_wf(iters: int=100000):
     make_flytefiles(iters=iters)
+
+## Big inputs and outputs
+@task
+def generate_strs(count: int) -> List[str]:
+    return ["a"] * count
+
+@task
+def my_1mb_task(i: str) -> str:
+    return f"Hello world {i}" * 100 * 1024
+
+@workflow
+def my_wf(mbs: int) -> List[str]:
+  strs = generate_strs(count=mbs)
+  return map_task(my_1mb_task)(i=strs)
+
+@workflow
+def big_inputs_wf(input: List[str]):
+   noop()
+
+@task
+def noop():
+    ... 
+
+big_inputs_wf_lp = LaunchPlan.get_or_create(name="big_inputs_wf_lp", workflow=big_inputs_wf)
+
+@workflow
+def ref_wf(mbs: int):
+  big_inputs_wf_lp(input=my_wf(mbs))
