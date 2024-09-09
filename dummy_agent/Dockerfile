@@ -16,8 +16,8 @@ RUN pip install apache-airflow==2.9.1 \
 
 From agent-base as agent
 
-ARG FLYTEKIT_VERSION=107e16705ac7ba1ca6348553e5fefa040fef911c
-ARG FLYTE_VERSION=81afb76b44931d827f8e898d097a7e8054a5b836
+ARG FLYTEKIT_VERSION=a366653e697cd3adf429a05adde2ac421fbcae99
+ARG FLYTE_VERSION=27d9746e60e2a42fc1621e47c55591c56f216d7f
 
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION"
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-airflow"
@@ -26,11 +26,13 @@ RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSI
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-bigquery"
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-spark"
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-aws-sagemaker"
+RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-ray"
 RUN pip install -U "git+https://github.com/flyteorg/flyte.git@$FLYTE_VERSION#subdirectory=flyteidl"
 
 COPY dummy_agent /root/dummy_agent
 RUN pip install /root/dummy_agent
 RUN pip install "numpy<2.0.0" "tenacity<=8.3.0"
+RUN pip install anyscale
 
 ENV FLYTE_SDK_LOGGING_LEVEL 20
 

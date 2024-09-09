@@ -154,19 +154,19 @@ def flytesnacks_wf():
 def flyte_plugin_wf():
     """
     TODO:
-    - MPI
-    - Hive
-    - Modin
+    - Databricks
     - Papermill
+    - flyteinteractive plugin
+    - DBT plugin
+    - duckdb plugin
     - Great Expectations
     - AWS batch
-    - DBT plugin
-    - Databricks plugin
-    - dolt plugin
-    - duckdb plugin
-    - feast plugin
-    - flyteinteractive plugin
     - Dask plugin
+    - MPI
+    - Modin
+    - dolt plugin
+    - feast plugin
+    - Hive
     """
     # mnist_tensorflow_workflow()  # TODO: Fix it
     pytorch_training_wf()

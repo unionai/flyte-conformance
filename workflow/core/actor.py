@@ -4,7 +4,7 @@ from union.actor import ActorEnvironment
 
 image_spec = ImageSpec(
     name="actor",
-    registry="pingsutw",
+    registry="ghcr.io/unionai",
     packages=["panda", "union>=0.1.52", "flytekit>=1.13.1a2"],
     apt_packages=["git"],
 )
@@ -13,7 +13,7 @@ image_spec = ImageSpec(
 actor = ActorEnvironment(
     name="flyte-conformance",
     replica_count=2,
-    parallelism=2,
+    parallelism=1,
     backlog_length=50,
     ttl_seconds=300,
     container_image=image_spec,
