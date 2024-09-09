@@ -1,10 +1,8 @@
-import os
-from flytekit import task, workflow, map_task, dynamic, image_spec, Resources, reference_launch_plan
+from flytekit import workflow, map_task, reference_launch_plan
 from flytekit.types.file import FlyteFile
-from flytekit.types.directory import FlyteDirectory
-from dataclasses import dataclass, fields
+from dataclasses import dataclass
 from mashumaro.mixins.json import DataClassJSONMixin
-from typing import List
+
 
 @dataclass
 class MapInput(DataClassJSONMixin):
@@ -13,6 +11,7 @@ class MapInput(DataClassJSONMixin):
     f3: FlyteFile | None = None
     f4: FlyteFile | None = None
     f5: FlyteFile | None = None
+
 
 ### Reference the LP and map over
 @reference_launch_plan(
@@ -23,6 +22,7 @@ class MapInput(DataClassJSONMixin):
 )
 def make_dc_wf(input: int) -> MapInput:
     ...
+
 
 @workflow
 def map_ref_wf():

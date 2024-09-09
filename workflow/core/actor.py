@@ -3,9 +3,9 @@ from union.actor import ActorEnvironment
 
 
 image_spec = ImageSpec(
-    name="actor",
+    name="flyte-conformance",
     registry="ghcr.io/unionai",
-    packages=["panda", "union>=0.1.52", "flytekit>=1.13.1a2"],
+    packages=["panda", "union", "flytekit"],
     apt_packages=["git"],
 )
 
