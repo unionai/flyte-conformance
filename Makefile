@@ -26,7 +26,7 @@ setup:
 		flytekitplugins-openai==$(FLYTEKIT_PLUGIN_VERSION) flytekitplugins-envd==$(FLYTEKIT_PLUGIN_VERSION) \
 		union flytekit==$(FLYTEKIT_PLUGIN_VERSION)
 	uv pip install -e dummy_agent
-	uv pip install "git+https://github.com/flyteorg/flytekit.git@65bf9e7896285d290ab1f1698c98cc75e623d11d"
+	uv pip install "git+https://github.com/flyteorg/flytekit.git@a366653e697cd3adf429a05adde2ac421fbcae99"
 	uv pip install "git+https://github.com/flyteorg/flyte.git@27d9746e60e2a42fc1621e47c55591c56f216d7f#subdirectory=flyteidl"
 
 .PHONY: functional_tests

@@ -3,13 +3,8 @@ from flytekitplugins.snowflake import SnowflakeConfig, SnowflakeTask
 from flytekit import Secret
 import pandas as pd
 
-flytekit_hash = "762ad0bc43ba16fc5b258c4861fbed07bf26b503"
-flytekit = f"git+https://github.com/flyteorg/flytekit.git@{flytekit_hash}"
-snowflake_plugins = f"git+https://github.com/flyteorg/flytekit.git@{flytekit_hash}#subdirectory=plugins/flytekit-snowflake"
-
 image = ImageSpec(
-    packages=[flytekit, snowflake_plugins, "pandas"],
-    apt_packages=["git"],
+    packages=["flytekitplugins-snowflake", "pandas"],
     registry="ghcr.io/unionai",
 )
 
