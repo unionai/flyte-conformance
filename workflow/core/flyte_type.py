@@ -22,7 +22,7 @@ from flytekit.types.directory import FlyteDirectory
 image_spec = ImageSpec(
     name="flyte-conformance",
     registry="ghcr.io/unionai",
-    packages=["pandas"],
+    packages=["pandas", "pyarrow"],
 )
 
 col = kwtypes(Age=int)
