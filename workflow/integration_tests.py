@@ -153,7 +153,7 @@ def flytesnacks_wf():
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
 def flyte_plugin_wf():
     """
-    TODO:
+    TODO: Fix the following workflows
     - Databricks
     - Papermill
     - flyteinteractive plugin
@@ -167,8 +167,8 @@ def flyte_plugin_wf():
     - dolt plugin
     - feast plugin
     - Hive
+    - mnist_tensorflow_workflow
     """
-    # mnist_tensorflow_workflow()  # TODO: Fix it
     pytorch_training_wf()
     ray_workflow(n=3)
     process_data()
