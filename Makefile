@@ -24,7 +24,7 @@ setup:
 		flytekitplugins-pod==$(FLYTEKIT_PLUGIN_VERSION) flytekitplugins-airflow==$(FLYTEKIT_PLUGIN_VERSION) \
 		flytekitplugins-mlflow==$(FLYTEKIT_PLUGIN_VERSION) flytekitplugins-pandera==$(FLYTEKIT_PLUGIN_VERSION) \
 		flytekitplugins-openai==$(FLYTEKIT_PLUGIN_VERSION) flytekitplugins-envd==$(FLYTEKIT_PLUGIN_VERSION) \
-		union flytekit==$(FLYTEKIT_PLUGIN_VERSION)
+		union==0.1.72 flytekit==$(FLYTEKIT_PLUGIN_VERSION)
 	uv pip install -e dummy_agent
 	uv pip install "git+https://github.com/flyteorg/flytekit.git@15d82efc55326d593e9c19ea7c24ef842ba3edc7"
 	uv pip install "git+https://github.com/flyteorg/flyte.git@27d9746e60e2a42fc1621e47c55591c56f216d7f#subdirectory=flyteidl"
