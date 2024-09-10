@@ -9,10 +9,12 @@ MyDataset = Annotated[StructuredDataset, kwtypes(name=str)]
 image_spec = ImageSpec(
     name="flyte-conformance",
     packages=[
-        "flytekitplugins-bigquery==1.11.0",
-        "flytekit==1.11.0",
+        "flytekitplugins-bigquery",
+        "flytekit",
         "google-cloud-bigquery-storage",
         "google-cloud-bigquery",
+        "pandas",
+        "pyarrow",
     ],
     registry="ghcr.io/unionai",
 )

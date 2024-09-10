@@ -153,7 +153,6 @@ def flytesnacks_wf():
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
 def flyte_plugin_wf():
     """
-    TODO:
     - Databricks
     - Papermill
     - flyteinteractive plugin
