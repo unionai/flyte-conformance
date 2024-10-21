@@ -1,20 +1,29 @@
 from datetime import timedelta
-
-from airflow.operators.bash import BashOperator
-from airflow.providers.google.cloud.operators.dataproc import (
-    DataprocDeleteClusterOperator,
-    DataprocSubmitSparkJobOperator,
-    DataprocCreateClusterOperator,
-)
-from airflow.utils import trigger_rule
-from flytekit import workflow
+from flytekit import workflow, task
+from flytekit.types.file import FlyteFile
 
 cluster_name = "flyte-dataproc-demo"
 
 
+@task
+def create_dummy_file() -> FlyteFile:
+    with open("/tmp/dummy.txt", 'w') as f:
+        f.write("hello world ...")
+    return FlyteFile(path="/tmp/dummy.txt", remote_path="gs://opta-gcp-dogfood-gcp/flyte-conformance/dummy.txt")
+
+
 @workflow
 def airflow_wf():
+    from airflow.operators.bash import BashOperator
+    from airflow.providers.google.cloud.operators.dataproc import (
+        DataprocDeleteClusterOperator,
+        DataprocSubmitSparkJobOperator,
+        DataprocCreateClusterOperator,
+    )
+    from airflow.utils import trigger_rule
+
     BashOperator(task_id="airflow_bash_operator", bash_command="echo hello")
+    generate_file = create_dummy_file()
 
     create_cluster = DataprocCreateClusterOperator(
         task_id="create_dataproc_cluster1",
@@ -37,7 +46,7 @@ def airflow_wf():
         task_id="run_spark",
         dataproc_jars=["file:///usr/lib/spark/examples/jars/spark-examples.jar"],
         main_class="org.apache.spark.examples.JavaWordCount",
-        arguments=["gs://opta-gcp-dogfood-gcp/flyte-conformance/requirements.txt"],
+        arguments=["gs://opta-gcp-dogfood-gcp/flyte-conformance/dummy.txt"],
         cluster_name=cluster_name,
         region="us-west1",
         project_id="dogfood-gcp-dataplane",
@@ -54,4 +63,5 @@ def airflow_wf():
         trigger_rule=trigger_rule.TriggerRule.ALL_DONE,
     )
 
+    generate_file >> create_cluster
     create_cluster >> spark_on_dataproc >> delete_cluster
