@@ -3,7 +3,7 @@ from datetime import timedelta
 from flytekit import workflow, WorkflowFailurePolicy, LaunchPlan, FixedRate
 
 from core.map_task import map_task_wf
-from core.pod_template import pod_template_workflow
+# from core.pod_template import pod_template_workflow
 from core.flyte_type import test_flyte_type_wf
 from core.ephemeral_storage import ephemeral_storage_test
 from core.actor import actor_wf
@@ -198,7 +198,7 @@ def flyte_agent_wf():
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
 def flyte_conformance_wf():
     test_flyte_type_wf()
-    pod_template_workflow()
+    # pod_template_workflow()  # uncomment after flytesnacks is updated
     map_task_wf()
     ephemeral_storage_test()
     actor_wf()

@@ -1,4 +1,4 @@
-from flytekit import workflow, ImageSpec
+from flytekit import workflow, ImageSpec, dynamic
 from union.actor import ActorEnvironment
 
 
@@ -13,8 +13,6 @@ image_spec = ImageSpec(
 actor = ActorEnvironment(
     name="flyte-conformance",
     replica_count=2,
-    parallelism=1,
-    backlog_length=50,
     ttl_seconds=300,
     container_image=image_spec,
 )
@@ -25,7 +23,7 @@ def plus_one(input: int) -> int:
     return input + 1
 
 
-@actor.dynamic
+@dynamic
 def d1():
     plus_one(input=1)
     plus_one(input=1)
