@@ -9,6 +9,8 @@ from core.ephemeral_storage import ephemeral_storage_test
 from core.actor import actor_wf
 from core.image_spec_composition import composition_image_wf
 from core.gcp_secret import gcp_secret_wf
+from core.artifact_primitives import artifact_primitives_wf
+from core.artifact_files import artifacts_files_wf
 
 from agent.airflow_agent import airflow_wf
 from agent.bigquery_agent import bigquery_wf
@@ -202,6 +204,8 @@ def flyte_conformance_wf():
     actor_wf()
     composition_image_wf()
     gcp_secret_wf()
+    artifact_primitives_wf()
+    artifacts_files_wf()
 
 
 flytesnacks_lp = LaunchPlan.get_or_create(
