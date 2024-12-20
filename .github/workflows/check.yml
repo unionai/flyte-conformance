@@ -36,8 +36,6 @@ jobs:
         uses: astral-sh/setup-uv@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: "Set up Python"
-        uses: actions/setup-python@v5
       - name: Cache pip
         uses: actions/cache@v4
         with:
@@ -87,8 +85,6 @@ jobs:
         uses: astral-sh/setup-uv@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: "Set up Python"
-        uses: actions/setup-python@v5
       - name: Cache pip
         uses: actions/cache@v4
         with:
@@ -96,9 +92,6 @@ jobs:
           key: ${{ format('{0}-pip-{1}', runner.os, hashFiles('dev-requirements.in', 'requirements.in')) }}
       - name: Install dependencies
         run: |
-          pip install uv
-          uv venv
-          source .venv/bin/activate
           make setup
       - name: Register workflows
         run: |
@@ -127,8 +120,6 @@ jobs:
         uses: astral-sh/setup-uv@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: "Set up Python"
-        uses: actions/setup-python@v5
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
@@ -218,8 +209,6 @@ jobs:
         uses: astral-sh/setup-uv@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: "Set up Python"
-        uses: actions/setup-python@v5
       - name: setup sandbox
         run: |
           flytectl demo start --disable-agent
