@@ -48,7 +48,6 @@ jobs:
           make setup
       - name: Run flytesnacks example
         run: |
-          source .venv/bin/activate
           pyflyte run workflow/integration_tests.py flytesnacks_wf
 
   register-integration-workflows:
@@ -95,7 +94,6 @@ jobs:
           make setup
       - name: Register workflows
         run: |
-          source .venv/bin/activate
           export FLYTECTL_CONFIG=./config-dogfood-gcp.yaml
           pyflyte register --project flyte-conformance --domain development workflow/integration_tests.py
           pyflyte launchplan --project flyte-conformance --domain development flyte_agent_lp --activate
