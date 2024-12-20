@@ -1,6 +1,6 @@
 from typing import List
 from flytekit import task, workflow, map_task, dynamic
-from flytekit.experimental import map_task as array_node_map_task
+from flytekit import map_task as array_node_map_task
 
 
 @task(cache=True, cache_version="1.0")
