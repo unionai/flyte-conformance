@@ -32,8 +32,8 @@ jobs:
           submodules: 'true'
       - name: 'Clear action cache'
         uses: ./.github/actions/clear-action-cache
-      - name: Install uv
-        uses: astral-sh/setup-uv@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Cache pip
@@ -45,8 +45,6 @@ jobs:
           key: ${{ format('{0}-pip-{1}', runner.os, hashFiles('dev-requirements.in', 'requirements.in')) }}
       - name: Install dependencies
         run: |
-          uv venv
-          source .venv/bin/activate
           make setup
       - name: Run flytesnacks example
         run: |
@@ -83,8 +81,8 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Install uv
-        uses: astral-sh/setup-uv@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Cache pip
@@ -94,8 +92,6 @@ jobs:
           key: ${{ format('{0}-pip-{1}', runner.os, hashFiles('dev-requirements.in', 'requirements.in')) }}
       - name: Install dependencies
         run: |
-          uv venv
-          source .venv/bin/activate
           make setup
       - name: Register workflows
         run: |
@@ -120,8 +116,8 @@ jobs:
           submodules: 'true'
       - name: 'Clear action cache'
         uses: ./.github/actions/clear-action-cache
-      - name: Install uv
-        uses: astral-sh/setup-uv@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Login to GitHub Container Registry
@@ -138,8 +134,6 @@ jobs:
           flytectl create project --name flyte-conformance --id flyte-conformance --description "end to end tests" --labels app=flyte
       - name: Install dependencies
         run: |
-          uv venv
-          source .venv/bin/activate
           make setup
       - name: run functional tests
         run: |
@@ -212,8 +206,8 @@ jobs:
           username: ${{ vars.FLYTEORG_USERNAME }}
           password: ${{ secrets.FLYTEORG_PASSWORD }}
       - uses: unionai/flytectl-setup-action@v0.0.3
-      - name: Install uv
-        uses: astral-sh/setup-uv@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: setup sandbox
@@ -222,8 +216,6 @@ jobs:
           flytectl config init
       - name: Install dependencies
         run: |
-          uv venv
-          source .venv/bin/activate
           make setup
       - name: register workflows
         run: |
