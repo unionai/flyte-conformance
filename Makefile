@@ -16,7 +16,7 @@ setup:
 
 .PHONY: uv-setup
 uv-setup:
-	uv pip install -r requirements.in
+	uv --system pip install -r requirements.in
 
 .PHONY: functional_tests
 functional_tests:  # Run functional tests locally
