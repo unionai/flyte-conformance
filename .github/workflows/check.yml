@@ -45,7 +45,8 @@ jobs:
           key: ${{ format('{0}-pip-{1}', runner.os, hashFiles('dev-requirements.in', 'requirements.in')) }}
       - name: Install dependencies
         run: |
-          make setup
+          pip install uv
+          make uv-setup
       - name: Run flytesnacks example
         run: |
           pyflyte run workflow/integration_tests.py flytesnacks_wf
@@ -91,7 +92,8 @@ jobs:
           key: ${{ format('{0}-pip-{1}', runner.os, hashFiles('dev-requirements.in', 'requirements.in')) }}
       - name: Install dependencies
         run: |
-          make setup
+          pip install uv
+          make uv-setup
       - name: Register workflows
         run: |
           export FLYTECTL_CONFIG=./config-dogfood-gcp.yaml
@@ -132,7 +134,8 @@ jobs:
           flytectl create project --name flyte-conformance --id flyte-conformance --description "end to end tests" --labels app=flyte
       - name: Install dependencies
         run: |
-          make setup
+          pip install uv
+          make uv-setup
       - name: run functional tests
         run: |
           make functional_tests
@@ -213,7 +216,8 @@ jobs:
           flytectl config init
       - name: Install dependencies
         run: |
-          make setup
+          pip install uv
+          make uv-setup
       - name: register workflows
         run: |
           pyflyte register workflow/integration_tests.py
