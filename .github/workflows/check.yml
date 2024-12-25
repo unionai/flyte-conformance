@@ -116,6 +116,10 @@ jobs:
           submodules: 'true'
       - name: 'Clear action cache'
         uses: ./.github/actions/clear-action-cache
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
@@ -189,6 +193,10 @@ jobs:
           submodules: 'true'
       - name: 'Clear action cache'
         uses: ./.github/actions/clear-action-cache
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
       - name: Login to Unionai GitHub Container Registry
         uses: docker/login-action@v1
         with:
