@@ -49,6 +49,7 @@ jobs:
           make uv-setup
       - name: Run flytesnacks example
         run: |
+          export FLYTECTL_CONFIG=./config-dogfood-gcp.yaml
           pyflyte run workflow/integration_tests.py flytesnacks_wf
 
   register-integration-workflows:
