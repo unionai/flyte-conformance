@@ -1,5 +1,3 @@
-export FLYTEKIT_PLUGIN_VERSION=v1.14.0
-
 .SILENT: help
 .PHONY: help
 help:
@@ -14,21 +12,11 @@ fmt:
 
 .PHONY: setup
 setup:
-	pip install uv==0.2.29
-	uv pip install -U pip apache-airflow[google]==2.7.3 pre-commit matplotlib "tenacity<=8.3.0" \
- 		tensorflow tensorboardX tensorflow_datasets "numpy<2.0.0" "pandera>=0.7.1,<=0.19.3" \
-		torch torchvision \
-		"protobuf<5.0.0" \
-		flytekitplugins-spark==$(FLYTEKIT_PLUGIN_VERSION) flytekitplugins-kftensorflow==$(FLYTEKIT_PLUGIN_VERSION) \
-		flytekitplugins-kfpytorch==$(FLYTEKIT_PLUGIN_VERSION) flytekitplugins-ray==$(FLYTEKIT_PLUGIN_VERSION) \
-		flytekitplugins-bigquery==$(FLYTEKIT_PLUGIN_VERSION) \
-		flytekitplugins-pod==$(FLYTEKIT_PLUGIN_VERSION) flytekitplugins-airflow==$(FLYTEKIT_PLUGIN_VERSION) \
-		flytekitplugins-mlflow==$(FLYTEKIT_PLUGIN_VERSION) flytekitplugins-pandera==$(FLYTEKIT_PLUGIN_VERSION) \
-		flytekitplugins-openai==$(FLYTEKIT_PLUGIN_VERSION) flytekitplugins-envd==$(FLYTEKIT_PLUGIN_VERSION) \
-		union==0.1.105 flytekit==$(FLYTEKIT_PLUGIN_VERSION)
-	uv pip install -e dummy_agent
-	uv pip install "git+https://github.com/flyteorg/flytekit.git@c8f98c5e7ae2d36587f64663f2c99e1bfcea3d43"
-	uv pip install "git+https://github.com/flyteorg/flyte.git@e72f102aebc1f6c3062d999c714123b4d05de8e4#subdirectory=flyteidl"
+	pip install requirements.in
+
+.PHONY: uv-setup
+uv-setup:
+	uv pip install --system -r requirements.in
 
 .PHONY: functional_tests
 functional_tests:  # Run functional tests locally
