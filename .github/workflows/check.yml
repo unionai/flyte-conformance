@@ -9,7 +9,7 @@ on:
     - cron: "0 13 * * *" # This schedule runs at 1pm UTC every day
 
 env:
-  FLYTE_SDK_LOGGING_LEVEL: 10 # debug
+  FLYTE_SDK_LOGGING_LEVEL: 20 # info
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
