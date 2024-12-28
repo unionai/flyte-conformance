@@ -7,9 +7,12 @@ cluster_name = "flyte-dataproc-demo"
 
 @task
 def create_dummy_file() -> FlyteFile:
-    with open("/tmp/dummy.txt", 'w') as f:
+    with open("/tmp/dummy.txt", "w") as f:
         f.write("hello world ...")
-    return FlyteFile(path="/tmp/dummy.txt", remote_path="gs://opta-gcp-dogfood-gcp/flyte-conformance/dummy.txt")
+    return FlyteFile(
+        path="/tmp/dummy.txt",
+        remote_path="gs://opta-gcp-dogfood-gcp/flyte-conformance/dummy.txt",
+    )
 
 
 @workflow
