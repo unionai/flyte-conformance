@@ -1,5 +1,6 @@
 flytekit
 apache-airflow[google]==2.7.3
+apache-airflow-providers-google<12.0.0
 pre-commit
 matplotlib
 tenacity<=8.3.0
