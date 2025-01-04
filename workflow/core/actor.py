@@ -23,7 +23,7 @@ def plus_one(input: int) -> int:
     return input + 1
 
 
-@dynamic
+@dynamic(container_image=image_spec)
 def d1():
     plus_one(input=1)
     plus_one(input=1)
