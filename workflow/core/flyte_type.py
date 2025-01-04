@@ -22,7 +22,7 @@ from flytekit.types.directory import FlyteDirectory
 image_spec = ImageSpec(
     name="flyte-conformance",
     registry="ghcr.io/unionai",
-    packages=["pandas", "pyarrow"],
+    packages=["pandas", "pyarrow", "flytekit>=1.14.3"],
 )
 
 col = kwtypes(Age=int)
@@ -133,6 +133,6 @@ def test_flyte_type_wf():
     df = generate_pandas_df()
     get_subset_pandas_df(df=df)
 
-    test_dataclass(d=Datum(x=1, y="hello", z={1: "world"}))
+    test_dataclass(d=Datum(x=6, y="hello", z={1: "world"}))
     test_enum(coffee=Coffee.LATTE)
     slope(x=[-3, 0, 3], y=[7, 4, -2])

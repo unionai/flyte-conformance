@@ -98,11 +98,7 @@ jobs:
       - name: Register workflows
         run: |
           export FLYTECTL_CONFIG=./config-dogfood-gcp.yaml
-          pyflyte register --project flyte-conformance --domain development workflow/integration_tests.py
-          pyflyte launchplan --project flyte-conformance --domain development flyte_agent_lp --activate
-          pyflyte launchplan --project flyte-conformance --domain development flyte_conformance_lp --activate
-          pyflyte launchplan --project flyte-conformance --domain development flyte_plugin_lp --activate
-          pyflyte launchplan --project flyte-conformance --domain development flytesnacks_lp --activate
+          make register
           
   functional-tests:
     name: Functional tests
