@@ -23,6 +23,14 @@ functional_tests:  # Run functional tests locally
 	pyflyte register --project flyte-conformance --domain development --version v1 dummy_tasks.py
 	python functional_tests.py
 
+.PHONY: register
+register:  # Register all the workflows
+	pyflyte register --project flyte-conformance --domain development workflow/integration_tests.py
+	pyflyte launchplan --project flyte-conformance --domain development flyte_agent_lp --activate
+	pyflyte launchplan --project flyte-conformance --domain development flyte_conformance_lp --activate
+	pyflyte launchplan --project flyte-conformance --domain development flyte_plugin_lp --activate
+	pyflyte launchplan --project flyte-conformance --domain development flytesnacks_lp --activate
+
 .PHONY: flytesnacks
 flytesnacks:  # Register and run flytesnacks example
 	pyflyte run --remote workflow/integration_tests.py flytesnacks_wf
