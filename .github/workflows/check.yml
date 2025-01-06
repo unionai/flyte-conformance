@@ -176,12 +176,13 @@ jobs:
           cache-to: type=gha,mode=max
 
   test-register:
-    name: Register examples to sandbox
+    name: Register examples to dev cluster
     needs: [push-flytekit-images]
     runs-on: ubuntu-latest
     env:
       PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION: python
       PYTHONUNBUFFERED: "1"
+      CLIENT_SECRET_DOGFOOD_GCP: ${{ secrets.CLIENT_SECRET_DOGFOOD_GCP }}
       # FLYTE_FORCE_PUSH_IMAGE_SPEC: "1"
       # FLYTE_INTERNAL_IMAGE: ghcr:io/unionai/flytekit:${{ github.sha }}
     steps:
@@ -207,15 +208,11 @@ jobs:
           registry: ghcr.io
           username: ${{ vars.FLYTEORG_USERNAME }}
           password: ${{ secrets.FLYTEORG_PASSWORD }}
-      - uses: unionai/flytectl-setup-action@v0.0.3
-      - name: setup sandbox
-        run: |
-          flytectl demo start --disable-agent
-          flytectl config init
       - name: Install dependencies
         run: |
           pip install uv
           make uv-setup
       - name: register workflows
         run: |
+          export FLYTECTL_CONFIG=./config-dogfood-gcp.yaml
           pyflyte register workflow/integration_tests.py

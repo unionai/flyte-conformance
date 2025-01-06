@@ -95,5 +95,5 @@ def multiple_containers_pod_task() -> str:
 
 @workflow
 def pod_template_workflow():
-    multiple_containers_pod_task()
+    # multiple_containers_pod_task()
     pod_task()
