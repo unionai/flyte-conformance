@@ -3,12 +3,14 @@ from datetime import timedelta
 from flytekit import workflow, WorkflowFailurePolicy, LaunchPlan, FixedRate
 
 from core.map_task import map_task_wf
-from core.pod_template import pod_template_workflow
+# from core.pod_template import pod_template_workflow
 from core.flyte_type import test_flyte_type_wf
 from core.ephemeral_storage import ephemeral_storage_test
 from core.actor import actor_wf
 from core.image_spec_composition import composition_image_wf
 from core.gcp_secret import gcp_secret_wf
+from core.artifact_primitives import artifact_primitives_wf
+from core.artifact_files import artifacts_files_wf
 
 from agent.airflow_agent import airflow_wf
 from agent.bigquery_agent import bigquery_wf
@@ -196,12 +198,14 @@ def flyte_agent_wf():
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
 def flyte_conformance_wf():
     test_flyte_type_wf()
-    pod_template_workflow()
+    # pod_template_workflow()  # uncomment after flytesnacks is updated
     map_task_wf()
     ephemeral_storage_test()
     actor_wf()
     composition_image_wf()
     gcp_secret_wf()
+    artifact_primitives_wf()
+    artifacts_files_wf()
 
 
 flytesnacks_lp = LaunchPlan.get_or_create(
