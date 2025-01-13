@@ -40,7 +40,7 @@ class SleepAgent(AsyncAgentBase):
     def get(self, resource_meta: SleepMetadata, **kwargs) -> Resource:
         logger.info("Sleep agent is getting the status of the task.")
         assert isinstance(resource_meta, SleepMetadata)
-        sleep(random.random() * resource_meta.duration)
+        # sleep(random.random() * resource_meta.duration)
         ctx = FlyteContext.current_context()
         output = TypeEngine.dict_to_literal_map(ctx, {"o0": "What is Flyte?"})
         return Resource(
@@ -78,7 +78,7 @@ class MockOpenAIAgent(SyncAgentBase):
         output = {
             "o0": "Flyte is a scalable and flexible workflow orchestration platform"
         }
-        return Resource(phase=TaskExecution.SUCCEEDED, outputs=output)
+        return Resource(phase=TaskExecution.SUCCEEDED)
 
 
 AgentRegistry.register(MockOpenAIAgent(), override=True)
