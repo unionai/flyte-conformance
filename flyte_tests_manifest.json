@@ -1,0 +1,10 @@
+[
+  {
+    "name": "flyte-conformance",
+    "priority": "P1",
+    "path": "core",
+    "examples": [
+      ["core.integration_tests.flyte_conformance_wf", {}]
+    ]
+  }
+]
