@@ -1,8 +1,8 @@
 from setuptools import setup
 
-PLUGIN_NAME = "dummy_agent"
+PLUGIN_NAME = "noop_agent"
 
-microlib_name = "flytekitplugins-dummy-agent"
+microlib_name = "flytekitplugins-noop-agent"
 
 plugin_requires = []
 

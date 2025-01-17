@@ -29,8 +29,8 @@ RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSI
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-ray"
 RUN pip install -U "git+https://github.com/flyteorg/flyte.git@$FLYTE_VERSION#subdirectory=flyteidl"
 
-COPY dummy_agent /root/dummy_agent
-RUN pip install /root/dummy_agent
+COPY noop_agent /root/noop_agent
+RUN pip install /root/noop_agent
 RUN pip install "numpy<2.0.0" "tenacity<=8.3.0"
 RUN pip install anyscale
 
