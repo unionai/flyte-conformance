@@ -80,15 +80,15 @@ person = Human(
 image_spec = ImageSpec(registry="ghcr.io/flyteorg", packages=["pydantic"])
 
 
-@task(container_image=image_spec.force_push())
+@task(container_image=image_spec)
 def noop_container_task():
     sleep(120)
 
 
 @workflow()
 def noop_wf(num_wf: int):
-    noop_container_task()
-    noop_container_task()
+    # noop_container_task()
+    # noop_container_task()
 
     from flytekitplugins.noop_agent import NoopAgentAsyncTask
     async_task = NoopAgentAsyncTask(name="noop_agent_task", duration=120, inputs={"person": Human})
