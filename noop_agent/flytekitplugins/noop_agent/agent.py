@@ -2,6 +2,8 @@ import typing
 from dataclasses import dataclass
 from time import sleep
 
+import cloudpickle
+
 from flytekit import logger
 from flytekit.extend.backend.base_agent import (
     SyncAgentBase,
@@ -21,6 +23,13 @@ class NoopMetadata(ResourceMeta):
     duration: timedelta
     create_time: datetime
     outputs: typing.Optional[LiteralMap]
+
+    def encode(self) -> bytes:
+        return cloudpickle.dumps(self)
+
+    @classmethod
+    def decode(cls, data: bytes) -> "NoopMetadata":
+        return cloudpickle.loads(data)
 
 
 class NoopAsyncAgent(AsyncAgentBase):

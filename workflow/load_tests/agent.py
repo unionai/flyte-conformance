@@ -1,8 +1,7 @@
 from time import sleep
 from typing import Optional, List
 
-from flytekit import workflow, task, LaunchPlan, map_task
-from flytekitplugins.noop_agent import NoopAgentAsyncTask
+from flytekit import workflow, task, LaunchPlan, map_task, ImageSpec
 from .generate_outputs import generate_list
 
 
@@ -78,10 +77,10 @@ person = Human(
     }
 )
 
-async_task = NoopAgentAsyncTask(name="noop_agent_task", duration=120, inputs={"person": Human})
+image_spec = ImageSpec(registry="ghcr.io/flyteorg", packages=["pydantic"])
 
 
-@task
+@task(container_image=image_spec.force_push())
 def noop_container_task():
     sleep(120)
 
@@ -90,6 +89,10 @@ def noop_container_task():
 def noop_wf(num_wf: int):
     noop_container_task()
     noop_container_task()
+
+    from flytekitplugins.noop_agent import NoopAgentAsyncTask
+    async_task = NoopAgentAsyncTask(name="noop_agent_task", duration=120, inputs={"person": Human})
+
     async_task(person=person)
     async_task(person=person)
     async_task(person=person)

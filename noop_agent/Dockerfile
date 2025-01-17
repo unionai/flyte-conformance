@@ -33,6 +33,7 @@ COPY noop_agent /root/noop_agent
 RUN pip install /root/noop_agent
 RUN pip install "numpy<2.0.0" "tenacity<=8.3.0"
 RUN pip install anyscale
+RUN pip install "protobuf<5.0.0"
 
 ENV FLYTE_SDK_LOGGING_LEVEL 20
 
