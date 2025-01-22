@@ -1,10 +1,7 @@
-from multiprocessing import Pool
 from time import sleep
 from typing import Optional, List
 
-from flytekit import workflow, task, LaunchPlan, map_task, ImageSpec, FlyteRemote, Config
-
-
+from flytekit import workflow, task, ImageSpec
 from pydantic import BaseModel, Field
 
 
@@ -86,35 +83,22 @@ def noop_container_task():
 
 
 @workflow()
-def noop_wf(num_wf: int):
-    # noop_container_task()
-    # noop_container_task()
-
+def video_wf():
     from flytekitplugins.noop_agent import NoopAgentAsyncTask
-    async_task = NoopAgentAsyncTask(name="noop_agent_task", duration=120, inputs={"person": Human})
-
-    async_task(person=person)
-    async_task(person=person)
-    async_task(person=person)
-    async_task(person=person)
-
-
-noop_lp = LaunchPlan.get_or_create(name="noop_lp", workflow=noop_wf, max_parallelism=200)
+    async_task = NoopAgentAsyncTask(name="video_task", duration=90, inputs={"person": Human})
+    async_task(person=person) >> async_task(person=person) >> async_task(person=person) >> async_task(person=person)
 
 
 @workflow()
-def agent_wf_map_task(l: List[int] = list(range(200))):
-    for i in range(50):
-        map_task(noop_lp)(num_wf=l)
+def text_wf():
+    from flytekitplugins.noop_agent import NoopAgentAsyncTask
+    async_task = NoopAgentAsyncTask(name="text_task", duration=60, inputs={"person": Human})
+    async_task(person=person)
 
 
-def execute_workflow(i):
-    for i in range(10):
-        remote = FlyteRemote(config=Config.auto(), default_project="kevin", default_domain="development")
-        wf = remote.fetch_workflow(name="load_tests.agent.noop_wf", version="24JxD5uYUiWKqJONYH8ftA")
-        remote.execute_remote_wf(entity=wf, inputs={"num_wf": 1})
+@workflow()
+def image_wf():
+    from flytekitplugins.noop_agent import NoopAgentAsyncTask
+    async_task = NoopAgentAsyncTask(name="image_task", duration=60, inputs={"person": Human})
+    async_task(person=person) >> async_task(person=person)
 
-
-if __name__ == "__main__":
-    with Pool() as p:
-        p.map(execute_workflow, range(1000))
