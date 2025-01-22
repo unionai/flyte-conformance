@@ -1,3 +1,4 @@
+import asyncio
 import typing
 from dataclasses import dataclass
 from time import sleep
@@ -38,20 +39,23 @@ class NoopAsyncAgent(AsyncAgentBase):
     def __init__(self):
         super().__init__(task_type_name="noop_async_agent_task", metadata_type=NoopMetadata)
 
-    def create(
+    async def create(
         self,
         task_template: TaskTemplate,
         inputs: typing.Optional[LiteralMap] = None,
         **kwargs,
     ) -> NoopMetadata:
         duration = task_template.custom["duration"]
+        # Mock API request
+        await asyncio.sleep(0.2)
         return NoopMetadata(duration=timedelta(seconds=duration), create_time=datetime.now(), outputs=inputs)
 
-    def get(self, resource_meta: NoopMetadata, **kwargs) -> Resource:
+    async def get(self, resource_meta: NoopMetadata, **kwargs) -> Resource:
+
         logger.info("Noop async agent is getting the status of the task.")
         end_time = resource_meta.create_time + resource_meta.duration
         # Mock API request
-        sleep(0.2)
+        await asyncio.sleep(0.2)
         if end_time > datetime.now():
             return Resource(phase=TaskExecution.RUNNING)
         return Resource(
@@ -62,7 +66,7 @@ class NoopAsyncAgent(AsyncAgentBase):
             outputs=resource_meta.outputs,
         )
 
-    def delete(self, resource_meta: NoopMetadata, **kwargs):
+    async def delete(self, resource_meta: NoopMetadata, **kwargs):
         assert isinstance(resource_meta, NoopMetadata)
         return
 

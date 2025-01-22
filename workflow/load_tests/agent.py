@@ -1,8 +1,8 @@
+from multiprocessing import Pool
 from time import sleep
 from typing import Optional, List
 
-from flytekit import workflow, task, LaunchPlan, map_task, ImageSpec
-from .generate_outputs import generate_list
+from flytekit import workflow, task, LaunchPlan, map_task, ImageSpec, FlyteRemote, Config
 
 
 from pydantic import BaseModel, Field
@@ -103,9 +103,18 @@ noop_lp = LaunchPlan.get_or_create(name="noop_lp", workflow=noop_wf, max_paralle
 
 
 @workflow()
-def agent_wf_map_task(num_wf: int = 3):
-    map_task(noop_lp)(num_wf=generate_list(num=num_wf))
+def agent_wf_map_task(l: List[int] = list(range(200))):
+    for i in range(50):
+        map_task(noop_lp)(num_wf=l)
+
+
+def execute_workflow(i):
+    for i in range(10):
+        remote = FlyteRemote(config=Config.auto(), default_project="kevin", default_domain="development")
+        wf = remote.fetch_workflow(name="load_tests.agent.noop_wf", version="24JxD5uYUiWKqJONYH8ftA")
+        remote.execute_remote_wf(entity=wf, inputs={"num_wf": 1})
 
 
 if __name__ == "__main__":
-    agent_wf_map_task(num_wf=1)
+    with Pool() as p:
+        p.map(execute_workflow, range(1000))

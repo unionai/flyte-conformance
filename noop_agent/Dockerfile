@@ -16,23 +16,25 @@ RUN pip install apache-airflow==2.9.1 \
 
 From agent-base as agent
 
-ARG FLYTEKIT_VERSION=15d82efc55326d593e9c19ea7c24ef842ba3edc7
-ARG FLYTE_VERSION=27d9746e60e2a42fc1621e47c55591c56f216d7f
+# master
+# ARG FLYTEKIT_VERSION=30088c2c970aff0b76c0bdd4db72b3c3e1d6fd18
+# my branch
+ARG FLYTEKIT_VERSION=b6c0125aedbef59f087beaf0782d267480457397
+ARG FLYTE_VERSION=ab463c3c8297b525bb73e7735f6bac1cf884092b
 
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION"
-RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-airflow"
-RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-openai"
-RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-snowflake"
-RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-bigquery"
-RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-spark"
-RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-aws-sagemaker"
-RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-ray"
+#RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-airflow"
+#RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-openai"
+#RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-snowflake"
+#RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-bigquery"
+#RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-spark"
+#RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-aws-sagemaker"
+#RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-ray"
 RUN pip install -U "git+https://github.com/flyteorg/flyte.git@$FLYTE_VERSION#subdirectory=flyteidl"
 
 COPY noop_agent /root/noop_agent
 RUN pip install /root/noop_agent
 RUN pip install "numpy<2.0.0" "tenacity<=8.3.0"
-RUN pip install anyscale
 RUN pip install "protobuf<5.0.0"
 
 ENV FLYTE_SDK_LOGGING_LEVEL 20
