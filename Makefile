@@ -12,7 +12,7 @@ fmt:
 
 .PHONY: setup
 setup:
-	pip install requirements.in
+	pip install -r requirements.in
 
 .PHONY: uv-setup
 uv-setup:

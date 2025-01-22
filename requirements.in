@@ -25,4 +25,4 @@ flytekitplugins-openai
 flytekitplugins-envd
 envd==0.3.45
 union
-./dummy_agent
+./noop_agent

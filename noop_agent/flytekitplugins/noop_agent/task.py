@@ -1,5 +1,3 @@
-import datetime
-from dataclasses import dataclass
 from typing import Optional, Dict, Any, Type
 
 from flytekit.configuration import SerializationSettings
@@ -42,11 +40,9 @@ class NoopAgentAsyncTask(AsyncAgentExecutorMixin, PythonTask):
 
 
 class NoopAgentSyncTask(SyncAgentExecutorMixin, PythonTask):
-    def __init__(self,  inputs: Optional[Dict[str, Type]] = None, **kwargs):
+    def __init__(self, inputs: Optional[Dict[str, Type]] = None, **kwargs):
         super().__init__(
             task_type="noop_sync_agent_task",
             interface=Interface(inputs=inputs, outputs=inputs),
             **kwargs,
         )
-
-

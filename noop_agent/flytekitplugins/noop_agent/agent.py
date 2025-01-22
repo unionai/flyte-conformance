@@ -37,7 +37,9 @@ class NoopAsyncAgent(AsyncAgentBase):
     name = "Noop async Agent"
 
     def __init__(self):
-        super().__init__(task_type_name="noop_async_agent_task", metadata_type=NoopMetadata)
+        super().__init__(
+            task_type_name="noop_async_agent_task", metadata_type=NoopMetadata
+        )
 
     async def create(
         self,
@@ -48,10 +50,13 @@ class NoopAsyncAgent(AsyncAgentBase):
         duration = task_template.custom["duration"]
         # Mock API request
         await asyncio.sleep(0.2)
-        return NoopMetadata(duration=timedelta(seconds=duration), create_time=datetime.now(), outputs=inputs)
+        return NoopMetadata(
+            duration=timedelta(seconds=duration),
+            create_time=datetime.now(),
+            outputs=inputs,
+        )
 
     async def get(self, resource_meta: NoopMetadata, **kwargs) -> Resource:
-
         logger.info("Noop async agent is getting the status of the task.")
         end_time = resource_meta.create_time + resource_meta.duration
         # Mock API request
