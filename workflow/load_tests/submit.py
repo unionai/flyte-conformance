@@ -32,11 +32,12 @@ def launch_load_tests(num_wf: int, workflow_name: str, version: str):
             client_credentials_secret=secret_value,
         )
     )
+    remote = FlyteRemote(
+        config=config, default_domain="development", default_project="kevin"
+    )
+    wf = remote.fetch_workflow(name=workflow_name, version=version)
+
     for i in range(num_wf):
-        remote = FlyteRemote(
-            config=config, default_domain="development", default_project="kevin"
-        )
-        wf = remote.fetch_workflow(name=workflow_name, version=version)
         remote.execute_remote_wf(entity=wf, inputs={})
 
 
@@ -47,7 +48,7 @@ def load_tests_wf(
     version: str = "ou87icnLvRG9StCK6yJGsA",
 ):
     """
-    :param num_wf: Number of 25x workflows to launch
+    :param num_wf: Number of 20x workflows to launch
     :param workflow_name: Name of the workflow to launch
     :param version: Version of the workflow to launch
     """

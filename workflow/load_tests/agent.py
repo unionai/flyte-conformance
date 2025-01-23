@@ -1,8 +1,11 @@
+import typing
 from time import sleep
 from typing import Optional, List
 
 from flytekit import workflow, task, ImageSpec
 from pydantic import BaseModel, Field
+
+from flytekit.core.task import Echo
 
 
 class Child(BaseModel):
@@ -68,10 +71,17 @@ person = Human(
 
 image_spec = ImageSpec(registry="ghcr.io/flyteorg", packages=["pydantic"])
 
+echo = Echo(name="echo", inputs={"a": typing.Optional[float]})
+
 
 @task(container_image=image_spec)
 def noop_container_task():
     sleep(120)
+
+
+@workflow()
+def echo_wf():
+    echo(a=1.0)
 
 
 @workflow()
@@ -113,6 +123,6 @@ def image_wf():
 def test_wf():
     from flytekitplugins.noop_agent import NoopAgentAsyncTask, SleepTask
 
-    sleep = SleepTask(name="sleep", datetime="2025-01-22 17:30:00")
+    sleep = SleepTask(name="sleep", datetime="2025-01-22 19:00:00")
     dummy_task = NoopAgentAsyncTask(name="dummy_task", duration=60, inputs={"person": Human})
     sleep() >> dummy_task(person=person)

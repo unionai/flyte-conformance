@@ -5,6 +5,7 @@ from time import sleep
 from zoneinfo import ZoneInfo
 
 import cloudpickle
+import pytz
 
 from flytekit import logger
 from flytekit.extend.backend.base_agent import (
@@ -102,7 +103,7 @@ class SleepAgent(AsyncAgentBase):
         logger.info("Sleep agent is getting the status of the task.")
         now = datetime.now(ZoneInfo("America/Los_Angeles"))
         logger.info(f"Running until {resource_meta.datetime}, current time is {now}")
-        if datetime.fromisoformat(resource_meta.datetime).astimezone(ZoneInfo("America/Los_Angeles")) > now:
+        if pytz.timezone('America/Los_Angeles').localize(datetime.fromisoformat(resource_meta.datetime)).astimezone(ZoneInfo("America/Los_Angeles")) > now:
             return Resource(phase=TaskExecution.RUNNING)
         return Resource(phase=TaskExecution.SUCCEEDED)
 
