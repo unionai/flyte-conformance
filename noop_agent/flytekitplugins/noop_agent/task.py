@@ -20,7 +20,7 @@ class NoopAgentAsyncTask(AsyncAgentExecutorMixin, PythonTask):
         **kwargs,
     ):
         """
-        Dummy Task that does nothing but wait for a specified duration before completing
+        NoopAgentAsyncTask Task that does nothing but wait for a specified duration before completing
 
         :param name: The Name of this task, should be unique in the project
         :param inputs: Name and type of inputs specified as an ordered dictionary
@@ -37,6 +37,36 @@ class NoopAgentAsyncTask(AsyncAgentExecutorMixin, PythonTask):
 
     def get_custom(self, settings: SerializationSettings) -> Optional[Dict[str, Any]]:
         return {"duration": self._duration}
+
+
+class SleepTask(AsyncAgentExecutorMixin, PythonTask):
+    _TASK_TYPE = "sleep_agent_task"
+
+    def __init__(
+        self,
+        name: str,
+        datetime: str,
+        inputs: Optional[Dict[str, Type]] = None,
+        **kwargs,
+    ):
+        """
+        Sleep Task that does nothing but wait for a specified duration before completing
+
+        :param name: The Name of this task, should be unique in the project
+        :param inputs: Name and type of inputs specified as an ordered dictionary
+        :param duration: The duration the agent will wait
+        :param kwargs: All other args required by Parent type
+        """
+        super().__init__(
+            name=name,
+            interface=Interface(inputs=inputs, outputs=inputs),
+            task_type=self._TASK_TYPE,
+            **kwargs,
+        )
+        self._datetime = datetime
+
+    def get_custom(self, settings: SerializationSettings) -> Optional[Dict[str, Any]]:
+        return {"datetime": self._datetime}
 
 
 class NoopAgentSyncTask(SyncAgentExecutorMixin, PythonTask):

@@ -9,7 +9,7 @@ image_spec = ImageSpec(registry="pingsutw", packages=["union"])
 
 actor = ActorEnvironment(
     name="flyte-conformance",
-    replica_count=10,
+    replica_count=20,
     ttl_seconds=300,
     container_image=image_spec,
     secret_requests=[
@@ -42,16 +42,16 @@ def launch_load_tests(num_wf: int, workflow_name: str, version: str):
 
 @workflow()
 def load_tests_wf(
-    num_wf: int = 100,
+    num_wf: int = 400,
     workflow_name: str = "load_tests.agent.text_wf",
-    version: str = "JLbJclMQ_yikhwZVzKri3g",
+    version: str = "ou87icnLvRG9StCK6yJGsA",
 ):
     """
-    :param num_wf: Number of 10x workflows to launch
+    :param num_wf: Number of 25x workflows to launch
     :param workflow_name: Name of the workflow to launch
     :param version: Version of the workflow to launch
     """
-    for i in range(10):
+    for i in range(20):
         launch_load_tests(
             num_wf=num_wf,
             workflow_name=workflow_name,

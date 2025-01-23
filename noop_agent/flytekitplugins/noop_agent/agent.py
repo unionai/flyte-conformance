@@ -2,6 +2,7 @@ import asyncio
 import typing
 from dataclasses import dataclass
 from time import sleep
+from zoneinfo import ZoneInfo
 
 import cloudpickle
 
@@ -31,6 +32,11 @@ class NoopMetadata(ResourceMeta):
     @classmethod
     def decode(cls, data: bytes) -> "NoopMetadata":
         return cloudpickle.loads(data)
+
+
+@dataclass
+class sleepMetadata(ResourceMeta):
+    datetime: str
 
 
 class NoopAsyncAgent(AsyncAgentBase):
@@ -76,6 +82,34 @@ class NoopAsyncAgent(AsyncAgentBase):
         return
 
 
+class SleepAgent(AsyncAgentBase):
+    name = "Sleep Agent"
+
+    def __init__(self):
+        super().__init__(
+            task_type_name="sleep_agent_task", metadata_type=sleepMetadata
+        )
+
+    async def create(
+        self,
+        task_template: TaskTemplate,
+        inputs: typing.Optional[LiteralMap] = None,
+        **kwargs,
+    ) -> sleepMetadata:
+        return sleepMetadata(datetime=task_template.custom["datetime"])
+
+    async def get(self, resource_meta: sleepMetadata, **kwargs) -> Resource:
+        logger.info("Sleep agent is getting the status of the task.")
+        logger.info(f"Running until {resource_meta.datetime}, current time is {datetime.now()}")
+        if datetime.fromisoformat(resource_meta.datetime) > datetime.now(ZoneInfo("America/Los_Angeles")):
+            return Resource(phase=TaskExecution.RUNNING)
+        return Resource(phase=TaskExecution.SUCCEEDED)
+
+    async def delete(self, resource_meta: NoopMetadata, **kwargs):
+        assert isinstance(resource_meta, NoopMetadata)
+        return
+
+
 class NoopSyncAgent(SyncAgentBase):
     name = "Noop Sync Agent"
 
@@ -96,3 +130,4 @@ class NoopSyncAgent(SyncAgentBase):
 
 AgentRegistry.register(NoopSyncAgent(), override=True)
 AgentRegistry.register(NoopAsyncAgent(), override=True)
+AgentRegistry.register(SleepAgent(), override=True)

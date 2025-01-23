@@ -94,7 +94,7 @@ def text_wf():
     from flytekitplugins.noop_agent import NoopAgentAsyncTask
 
     async_task = NoopAgentAsyncTask(
-        name="text_task", duration=60, inputs={"person": Human}
+        name="text_task", duration=90, inputs={"person": Human}
     )
     async_task(person=person)
 
@@ -107,3 +107,12 @@ def image_wf():
         name="image_task", duration=60, inputs={"person": Human}
     )
     async_task(person=person) >> async_task(person=person)
+
+
+@workflow()
+def test_wf():
+    from flytekitplugins.noop_agent import NoopAgentAsyncTask, SleepTask
+
+    sleep = SleepTask(name="sleep", datetime="2025-01-22 16:30:00")
+    dummy_task = NoopAgentAsyncTask(name="dummy_task", duration=60, inputs={"person": Human})
+    sleep() >> dummy_task(person=person)
