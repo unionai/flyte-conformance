@@ -100,8 +100,9 @@ class SleepAgent(AsyncAgentBase):
 
     async def get(self, resource_meta: sleepMetadata, **kwargs) -> Resource:
         logger.info("Sleep agent is getting the status of the task.")
-        logger.info(f"Running until {resource_meta.datetime}, current time is {datetime.now()}")
-        if datetime.fromisoformat(resource_meta.datetime) > datetime.now(ZoneInfo("America/Los_Angeles")):
+        now = datetime.now(ZoneInfo("America/Los_Angeles"))
+        logger.info(f"Running until {resource_meta.datetime}, current time is {now}")
+        if datetime.fromisoformat(resource_meta.datetime).astimezone(ZoneInfo("America/Los_Angeles")) > now:
             return Resource(phase=TaskExecution.RUNNING)
         return Resource(phase=TaskExecution.SUCCEEDED)
 

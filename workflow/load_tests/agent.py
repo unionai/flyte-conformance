@@ -113,6 +113,6 @@ def image_wf():
 def test_wf():
     from flytekitplugins.noop_agent import NoopAgentAsyncTask, SleepTask
 
-    sleep = SleepTask(name="sleep", datetime="2025-01-22 16:30:00")
+    sleep = SleepTask(name="sleep", datetime="2025-01-22 17:30:00")
     dummy_task = NoopAgentAsyncTask(name="dummy_task", duration=60, inputs={"person": Human})
     sleep() >> dummy_task(person=person)
