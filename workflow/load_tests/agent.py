@@ -2,6 +2,8 @@ import typing
 from time import sleep
 from typing import Optional, List
 
+from union import ActorEnvironment
+
 from flytekit import workflow, task, ImageSpec
 from pydantic import BaseModel, Field
 
@@ -73,10 +75,17 @@ image_spec = ImageSpec(registry="ghcr.io/flyteorg", packages=["pydantic"])
 
 echo = Echo(name="echo", inputs={"a": typing.Optional[float]})
 
+actor = ActorEnvironment(
+    name="load-test",
+    replica_count=10,
+    ttl_seconds=300,
+    container_image=image_spec,
+)
+
 
 @task(container_image=image_spec)
-def noop_container_task():
-    sleep(120)
+def noop_container_task(sec: int):
+    sleep(sec)
 
 
 @workflow()
@@ -91,12 +100,18 @@ def video_wf():
     async_task = NoopAgentAsyncTask(
         name="video_task", duration=90, inputs={"person": Human}
     )
-    (
-        async_task(person=person)
-        >> async_task(person=person)
-        >> async_task(person=person)
-        >> async_task(person=person)
-    )
+    a1 = async_task(person=person)
+    a2 = async_task(person=person)
+    a3 = async_task(person=person)
+    a4 = async_task(person=person)
+    t1 = noop_container_task(sec=120)
+    t2 = noop_container_task(sec=60)
+
+    a1 >> a2
+    a1 >> a3
+    a3 >> t1
+    t1 >> a4
+    a4 >> t2
 
 
 @workflow()
@@ -106,7 +121,11 @@ def text_wf():
     async_task = NoopAgentAsyncTask(
         name="text_task", duration=40, inputs={"person": Human}
     )
-    async_task(person=person)
+    a1 = async_task(person=person)
+    t1 = noop_container_task(sec=60)
+    t2 = noop_container_task(sec=60)
+    t1 >> a1
+    a1 >> t2
 
 
 @workflow()
@@ -116,7 +135,13 @@ def image_wf():
     async_task = NoopAgentAsyncTask(
         name="image_task", duration=40, inputs={"person": Human}
     )
-    async_task(person=person) >> async_task(person=person)
+    a1 = async_task(person=person)
+    a2 = async_task(person=person)
+    t1 = noop_container_task(sec=60)
+    t2 = noop_container_task(sec=60)
+    a1 >> t1
+    t1 >> a2
+    a2 >> t2
 
 
 @workflow()
