@@ -1,3 +1,6 @@
+from concurrent.futures import ThreadPoolExecutor
+from multiprocessing import Pool
+
 from union import ActorEnvironment
 
 from flytekit import FlyteRemote
@@ -32,13 +35,13 @@ def launch_load_tests(num_wf: int, workflow_name: str, version: str):
             client_credentials_secret=secret_value,
         )
     )
-    remote = FlyteRemote(
-        config=config, default_domain="development", default_project="kevin"
-    )
+    remote = FlyteRemote(config=config, default_domain="development", default_project="kevin")
     wf = remote.fetch_workflow(name=workflow_name, version=version)
 
-    for i in range(num_wf):
-        remote.execute_remote_wf(entity=wf, inputs={})
+    with ThreadPoolExecutor() as executor:
+        for i in range(num_wf):
+            executor.submit(remote.execute_remote_wf, wf, {})
+
 
 
 @workflow()
