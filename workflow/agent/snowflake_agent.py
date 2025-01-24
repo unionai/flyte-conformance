@@ -17,7 +17,6 @@ snowflake_task_insert_query = SnowflakeTask(
         database="FLYTEAGENT",
         schema="PUBLIC",
         warehouse="COMPUTE_WH",
-        table="FLYTEAGENT.PUBLIC.TEST",
     ),
     query_template="""
             INSERT INTO FLYTEAGENT.PUBLIC.TEST (ID, NAME, AGE)
@@ -34,7 +33,6 @@ snowflake_task_templatized_query = SnowflakeTask(
         database="FLYTEAGENT",
         schema="PUBLIC",
         warehouse="COMPUTE_WH",
-        table="FLYTEAGENT.PUBLIC.TEST",
     ),
     query_template="SELECT * FROM FLYTEAGENT.PUBLIC.TEST LIMIT 1;",
 )
