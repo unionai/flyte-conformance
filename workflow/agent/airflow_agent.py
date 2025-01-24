@@ -20,7 +20,7 @@ def airflow_wf():
     from airflow.operators.bash import BashOperator
     from airflow.providers.google.cloud.operators.dataproc import (
         DataprocDeleteClusterOperator,
-        DataprocSubmitSparkJobOperator,
+        DataprocSubmitJobOperator,
         DataprocCreateClusterOperator,
     )
     from airflow.utils import trigger_rule
@@ -44,7 +44,7 @@ def airflow_wf():
         project_id="dogfood-gcp-dataplane",
     )
 
-    spark_on_dataproc = DataprocSubmitSparkJobOperator(
+    spark_on_dataproc = DataprocSubmitJobOperator(
         job_name="spark_pi",
         task_id="run_spark",
         dataproc_jars=["file:///usr/lib/spark/examples/jars/spark-examples.jar"],
