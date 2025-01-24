@@ -1,22 +1,4 @@
-from datetime import timedelta
-
-from flytekit import workflow, WorkflowFailurePolicy, LaunchPlan, FixedRate
-
-from core.map_task import map_task_wf
-# from core.pod_template import pod_template_workflow
-from core.flyte_type import test_flyte_type_wf
-from core.ephemeral_storage import ephemeral_storage_test
-from core.actor import actor_wf
-from core.image_spec_composition import composition_image_wf
-from core.gcp_secret import gcp_secret_wf
-from core.artifact_primitives import artifact_primitives_wf
-from core.artifact_files import artifacts_files_wf
-
-from agent.airflow_agent import airflow_wf
-from agent.bigquery_agent import bigquery_wf
-from agent.flyte_sensors import sensor_wf
-from agent.openai_batch import json_iterator_wf, jsons
-from agent.dummy_agents import dummy_agents_wf
+from flytekit import workflow, WorkflowFailurePolicy
 
 from flytesnacks.examples.advanced_composition.advanced_composition.chain_entities import (
     chain_tasks_wf,
@@ -179,60 +161,3 @@ def flyte_plugin_wf():
     ml_pipeline(epochs=5)
     spark_to_pandas_wf()
     my_spark()
-
-
-@workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
-def case_study_wf():
-    blast_wf()  # TODO: Fix it
-
-
-@workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
-def flyte_agent_wf():
-    airflow_wf()
-    bigquery_wf()
-    sensor_wf()
-    json_iterator_wf(json_vals=jsons())
-    dummy_agents_wf()
-
-
-@workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
-def flyte_conformance_wf():
-    test_flyte_type_wf()
-    # pod_template_workflow()  # uncomment after flytesnacks is updated
-    map_task_wf()
-    ephemeral_storage_test()
-    actor_wf()
-    composition_image_wf()
-    gcp_secret_wf()
-    artifact_primitives_wf()
-    artifacts_files_wf()
-
-
-flytesnacks_lp = LaunchPlan.get_or_create(
-    name="flytesnacks_lp",
-    workflow=flytesnacks_wf,
-    schedule=FixedRate(duration=timedelta(hours=1)),
-    max_parallelism=100,
-)
-
-flyte_plugin_lp = LaunchPlan.get_or_create(
-    name="flyte_plugin_lp",
-    workflow=flyte_plugin_wf,
-    schedule=FixedRate(duration=timedelta(hours=6)),
-    max_parallelism=100,
-)
-
-
-flyte_agent_lp = LaunchPlan.get_or_create(
-    name="flyte_agent_lp",
-    workflow=flyte_agent_wf,
-    schedule=FixedRate(duration=timedelta(hours=6)),
-    max_parallelism=100,
-)
-
-flyte_conformance_lp = LaunchPlan.get_or_create(
-    name="flyte_conformance_lp",
-    workflow=flyte_conformance_wf,
-    schedule=FixedRate(duration=timedelta(hours=1)),
-    max_parallelism=100,
-)
