@@ -1,9 +1,10 @@
 from flytekit import ImageSpec, task, dynamic, workflow
+from utils import registry
 
 repro_img = ImageSpec(
     packages=["mypy"],
     apt_packages=["git"],
-    registry="pingsutw",
+    registry=registry,
 )
 
 image_foo = repro_img.with_apt_packages(["curl"])

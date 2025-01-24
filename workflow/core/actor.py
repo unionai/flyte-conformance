@@ -1,10 +1,10 @@
 from flytekit import workflow, ImageSpec, dynamic
 from union.actor import ActorEnvironment
-
+from utils import registry
 
 image_spec = ImageSpec(
     name="flyte-conformance",
-    registry="ghcr.io/unionai",
+    registry=registry,
     packages=["panda", "union", "flytekit"],
     apt_packages=["git"],
 )

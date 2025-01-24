@@ -1,15 +1,16 @@
 from flytekit import task, workflow, ImageSpec
+from utils import registry
 
 image_sklearn = ImageSpec(
     packages=["scikit-learn"],
     apt_packages=["git"],
-    registry="ghcr.io/unionai",
+    registry=registry,
     name="flyte-conformance",
 )
 image_tensorflow = ImageSpec(
     base_image=image_sklearn,
     packages=["tensorflow"],
-    registry="ghcr.io/unionai",
+    registry=registry,
     name="flyte-conformance",
 )
 

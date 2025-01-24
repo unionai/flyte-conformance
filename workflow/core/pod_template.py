@@ -11,12 +11,13 @@ from kubernetes.client.models import (
     V1Volume,
     V1VolumeMount,
 )
+from utils import registry
 
 _SHARED_DATA_PATH = "/data/message.txt"
 image_spec = ImageSpec(
     packages=["flytekitplugins-pod"],
     name="flyte-conformance",
-    registry="ghcr.io/unionai",
+    registry=registry,
 )
 
 

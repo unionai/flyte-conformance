@@ -2,10 +2,11 @@ from flytekit import kwtypes, workflow, task, ImageSpec, StructuredDataset
 from flytekitplugins.snowflake import SnowflakeConfig, SnowflakeTask
 from flytekit import Secret
 import pandas as pd
+from utils import registry
 
 image = ImageSpec(
     packages=["flytekitplugins-snowflake", "pandas"],
-    registry="ghcr.io/unionai",
+    registry=registry,
 )
 
 snowflake_task_insert_query = SnowflakeTask(

@@ -1,8 +1,9 @@
 from flytekit import task, workflow, ImageSpec
 from flytekitplugins.flyteinteractive import vscode
+from utils import registry
 
 image_spec = ImageSpec(
-    registry="ghcr.io/unionai-oss",
+    registry=registry,
     name="flyte-conformance",
     packages=["flytekitplugins-flyteinteractive"],
 )

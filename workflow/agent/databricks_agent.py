@@ -8,8 +8,9 @@ import flytekit
 from flytekit import Resources, task, workflow, ImageSpec
 from flytekit.clis.sdk_in_container import pyflyte
 from flytekitplugins.spark import Databricks
+from utils import registry
 
-image = ImageSpec(base_image="pingsutw/databricks:v4", registry="pingsutw")
+image = ImageSpec(base_image="pingsutw/databricks:v4", registry=registry)
 
 
 @task(

@@ -18,10 +18,11 @@ from flytekit import (
     kwtypes,
 )
 from flytekit.types.directory import FlyteDirectory
+from utils import registry
 
 image_spec = ImageSpec(
     name="flyte-conformance",
-    registry="ghcr.io/unionai",
+    registry=registry,
     packages=["pandas", "pyarrow", "flytekit>=1.14.3"],
 )
 
