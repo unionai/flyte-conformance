@@ -277,6 +277,7 @@ jobs:
           make uv-setup
       - name: Pyflyte package
         run: |
+          echo $PYTHONPATH
           pyflyte \
           --pkgs workflow.${{ matrix.package }} package \
           --output flyte-package.tgz \
