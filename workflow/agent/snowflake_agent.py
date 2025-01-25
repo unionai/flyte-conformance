@@ -2,10 +2,11 @@ from flytekit import kwtypes, workflow, task, ImageSpec, StructuredDataset
 from flytekitplugins.snowflake import SnowflakeConfig, SnowflakeTask
 from flytekit import Secret
 import pandas as pd
+from workflow.utils import registry
 
 image = ImageSpec(
     packages=["flytekitplugins-snowflake", "pandas"],
-    registry="ghcr.io/unionai",
+    registry=registry,
 )
 
 snowflake_task_insert_query = SnowflakeTask(
@@ -17,7 +18,6 @@ snowflake_task_insert_query = SnowflakeTask(
         database="FLYTEAGENT",
         schema="PUBLIC",
         warehouse="COMPUTE_WH",
-        table="FLYTEAGENT.PUBLIC.TEST",
     ),
     query_template="""
             INSERT INTO FLYTEAGENT.PUBLIC.TEST (ID, NAME, AGE)
@@ -34,7 +34,6 @@ snowflake_task_templatized_query = SnowflakeTask(
         database="FLYTEAGENT",
         schema="PUBLIC",
         warehouse="COMPUTE_WH",
-        table="FLYTEAGENT.PUBLIC.TEST",
     ),
     query_template="SELECT * FROM FLYTEAGENT.PUBLIC.TEST LIMIT 1;",
 )
