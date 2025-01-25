@@ -23,6 +23,7 @@ flytekitplugins-mlflow
 flytekitplugins-pandera
 flytekitplugins-openai
 flytekitplugins-envd
-envd==0.3.45
+flytekitplugins-snowflake
+flytekitplugins-flyteinteractive
 union
 ./dummy_agent
