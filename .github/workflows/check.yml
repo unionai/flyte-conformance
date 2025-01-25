@@ -278,8 +278,6 @@ jobs:
       - name: Pyflyte package
         working-directory: workflow/${{ matrix.package }}
         run: |
-          export FLYTE_PUSH_IMAGE_SPEC=${{ github.event_name != 'pull_request' }}
-          source $GITHUB_WORKSPACE/.venv/bin/activate
           pyflyte \
           --pkgs ${{ matrix.package }} package \
           --output flyte-package.tgz \
