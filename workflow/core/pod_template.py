@@ -11,7 +11,7 @@ from kubernetes.client.models import (
     V1Volume,
     V1VolumeMount,
 )
-from utils import registry
+from workflow.utils import registry
 
 _SHARED_DATA_PATH = "/data/message.txt"
 image_spec = ImageSpec(

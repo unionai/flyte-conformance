@@ -1,6 +1,6 @@
 from flytekit import task, workflow, ImageSpec
 from flytekitplugins.flyteinteractive import vscode
-from utils import registry
+from workflow.utils import registry
 
 image_spec = ImageSpec(
     registry=registry,

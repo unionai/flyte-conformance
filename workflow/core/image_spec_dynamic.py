@@ -1,5 +1,5 @@
 from flytekit import ImageSpec, task, dynamic, workflow
-from utils import registry
+from workflow.utils import registry
 
 repro_img = ImageSpec(
     packages=["mypy"],

@@ -2,7 +2,7 @@ from flytekit import kwtypes, workflow, task, ImageSpec, StructuredDataset
 from flytekitplugins.snowflake import SnowflakeConfig, SnowflakeTask
 from flytekit import Secret
 import pandas as pd
-from utils import registry
+from workflow.utils import registry
 
 image = ImageSpec(
     packages=["flytekitplugins-snowflake", "pandas"],

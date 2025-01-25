@@ -18,7 +18,7 @@ from flytekit import (
     kwtypes,
 )
 from flytekit.types.directory import FlyteDirectory
-from utils import registry
+from workflow.utils import registry
 
 image_spec = ImageSpec(
     name="flyte-conformance",

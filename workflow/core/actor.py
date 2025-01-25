@@ -1,6 +1,6 @@
 from flytekit import workflow, ImageSpec, dynamic
 from union.actor import ActorEnvironment
-from utils import registry
+from workflow.utils import registry
 
 image_spec = ImageSpec(
     name="flyte-conformance",

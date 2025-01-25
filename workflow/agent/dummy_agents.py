@@ -2,7 +2,7 @@ from flytekit import workflow, task, ImageSpec
 from flytekitplugins.dummy_agent import Sleep
 from flytekitplugins.dummy_agent import MockOpenAITask
 from flytekitplugins.dummy_agent.task import OpenAI
-from utils import registry
+from workflow.utils import registry
 
 image_spec = ImageSpec(name="flyte-conformance", registry=registry)
 openai_task = MockOpenAITask(

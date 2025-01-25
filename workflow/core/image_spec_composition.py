@@ -1,5 +1,5 @@
 from flytekit import task, workflow, ImageSpec
-from utils import registry
+from workflow.utils import registry
 
 image_sklearn = ImageSpec(
     packages=["scikit-learn"],

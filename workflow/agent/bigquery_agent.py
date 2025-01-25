@@ -3,7 +3,7 @@ import pyarrow as pa
 from flytekit import StructuredDataset, kwtypes, task, workflow, ImageSpec
 from flytekitplugins.bigquery import BigQueryConfig, BigQueryTask
 from typing_extensions import Annotated
-from utils import registry
+from workflow.utils import registry
 
 MyDataset = Annotated[StructuredDataset, kwtypes(name=str)]
 
