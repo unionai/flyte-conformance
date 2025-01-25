@@ -272,15 +272,13 @@ jobs:
 #          username: ${{ vars.FLYTEORG_USERNAME }}
 #          password: ${{ secrets.FLYTEORG_PASSWORD }}
       - name: Install dependencies
-        working-directory: workflow/${{ matrix.package }}
         run: |
           pip install uv
           make uv-setup
       - name: Pyflyte package
-        working-directory: workflow/${{ matrix.package }}
         run: |
           pyflyte \
-          --pkgs ${{ matrix.package }} package \
+          --pkgs workflow/${{ matrix.package }} package \
           --output flyte-package.tgz \
           --force
           tar -xvf flyte-package.tgz
