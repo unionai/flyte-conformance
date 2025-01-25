@@ -46,3 +46,64 @@ jobs:
           file: dummy_agent/Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
+  list_packages:
+    runs-on: ubuntu-latest
+    name: "Create a list of workflow packages"
+    steps:
+      - uses: actions/checkout@v2
+      - name: "Provide the list"
+        id: create-package-list
+        run: |
+          echo "PACKAGES=$(find workflow -maxdepth 1 -type d -exec basename '{}' \; \
+          | grep -v -e 'workflow' \
+          | grep -v -e 'flytesnacks' \
+          | sort \
+          | jq --raw-input . \
+          | jq --slurp . \
+          | jq -c .)" >> "$GITHUB_OUTPUT"
+    outputs:
+      packages: "${{ steps.create-package-list.outputs.PACKAGES }}"
+  release:
+    needs: [list_packages, push-agent-images]
+    runs-on: "ubuntu-latest"
+    env:
+      FLYTE_SDK_RICH_TRACEBACKS: "0"
+    strategy:
+      fail-fast: false
+      matrix:
+        package: "${{ fromJson(needs.list_packages.outputs.packages) }}"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: insightsengineering/disk-space-reclaimer@v1
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          # This path is specific to Ubuntu
+          path: ~/.cache/pip
+          # Look to see if there is a cache hit for the corresponding requirements files
+          key: ${{ format('{0}-pip-{1}', runner.os, hashFiles('requirements.in')) }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to GitHub Container Registry
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Pyflyte package
+        working-directory: workflow/${{ matrix.package }}
+        run: |
+          export FLYTE_PUSH_IMAGE_SPEC=${{ github.event_name != 'pull_request' }}
+          default_image=ghcr.io/${{ github.repository_owner }}/flyte-conformance-agent:${{ github.sha }}
+          source $GITHUB_WORKSPACE/.venv/bin/activate
+          pyflyte \
+          --pkgs ${{ matrix.package }} package \
+          --image $default_image \
+          --output flyte-package.tgz \
+          --force
+          tar -xvf flyte-package.tgz
