@@ -278,7 +278,7 @@ jobs:
       - name: Pyflyte package
         run: |
           pyflyte \
-          --pkgs workflow/${{ matrix.package }} package \
+          --pkgs workflow.${{ matrix.package }} package \
           --output flyte-package.tgz \
           --force
           tar -xvf flyte-package.tgz
