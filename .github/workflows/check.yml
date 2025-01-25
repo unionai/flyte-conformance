@@ -272,7 +272,7 @@ jobs:
 #          username: ${{ vars.FLYTEORG_USERNAME }}
 #          password: ${{ secrets.FLYTEORG_PASSWORD }}
       - name: Install dependencies
-        working-directory: examples/${{ matrix.package }}
+        working-directory: workflow/${{ matrix.package }}
         run: |
           pip install uv
           make uv-setup
