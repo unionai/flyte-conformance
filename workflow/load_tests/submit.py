@@ -6,7 +6,7 @@ from flytekit import FlyteRemote
 from flytekit import Config, workflow, ImageSpec, Secret, current_context
 from flytekit.configuration import PlatformConfig, AuthType
 
-image_spec = ImageSpec(registry="pingsutw", packages=["union"])
+image_spec = ImageSpec(registry="ghcr.io/flyteorg", packages=["union"])
 
 actor = ActorEnvironment(
     name="flyte-conformance",
