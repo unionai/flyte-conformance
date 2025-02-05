@@ -17,7 +17,7 @@ from agent.airflow_agent import airflow_wf
 from agent.bigquery_agent import bigquery_wf
 from agent.flyte_sensors import sensor_wf
 from agent.openai_batch import json_iterator_wf, jsons
-from agent.dummy_agents import dummy_agents_wf
+from agent.noop_agents import noop_agents_wf
 
 from flytesnacks.examples.advanced_composition.advanced_composition.chain_entities import (
     chain_tasks_wf,
@@ -193,7 +193,7 @@ def flyte_agent_wf():
     bigquery_wf()
     sensor_wf()
     json_iterator_wf(json_vals=jsons())
-    dummy_agents_wf()
+    noop_agents_wf()
 
 
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
