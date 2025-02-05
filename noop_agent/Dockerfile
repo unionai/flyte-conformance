@@ -28,6 +28,8 @@ RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSI
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-spark"
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-aws-sagemaker"
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-ray"
+RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@5cd58ecf65346ad9860e89b1078f1006bb910ee6#subdirectory=plugins/flytekit-slurm"
+RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@5cd58ecf65346ad9860e89b1078f1006bb910ee6"
 RUN pip install -U "git+https://github.com/flyteorg/flyte.git@$FLYTE_VERSION#subdirectory=flyteidl"
 
 COPY noop_agent /root/noop_agent
