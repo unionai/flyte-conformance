@@ -4,10 +4,10 @@ from typing import Optional, List
 
 from union import ActorEnvironment
 
-from flytekit import workflow, task, ImageSpec
+from flytekit import workflow, ImageSpec, Resources
 from pydantic import BaseModel, Field
 
-from flytekit.core.task import Echo
+from flytekit.core.task import Echo, task
 
 
 class Child(BaseModel):
@@ -71,19 +71,22 @@ person = Human(
     home={"address": "789 Park Ave, Metropolis, USA", "type": "Apartment"},
 )
 
-image_spec = ImageSpec(registry="ghcr.io/flyteorg", packages=["pydantic"])
+image_spec = ImageSpec(registry="ghcr.io/flyteorg", packages=["pydantic", "union"])
 
 echo = Echo(name="echo", inputs={"a": typing.Optional[float]})
 
 actor = ActorEnvironment(
     name="load-test",
-    replica_count=10,
+    replica_count=8000,
     ttl_seconds=300,
     container_image=image_spec,
+    requests=Resources(cpu="50m", mem="200Mi"),
+    limits=Resources(cpu="200m", mem="600Mi"),
 )
 
 
-@task(container_image=image_spec)
+# @task(requests=Resources(cpu="50m", mem="200Mi"), limits=Resources(cpu="200m", mem="600Mi"), container_image=image_spec)
+@actor.task
 def noop_container_task(sec: int):
     sleep(sec)
 

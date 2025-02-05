@@ -1,7 +1,7 @@
 import threading
 from union import ActorEnvironment
 
-from flytekit import FlyteRemote, Resources
+from flytekit import FlyteRemote
 
 from flytekit import Config, workflow, ImageSpec, Secret, current_context
 from flytekit.configuration import PlatformConfig, AuthType
@@ -9,18 +9,17 @@ from flytekit.configuration import PlatformConfig, AuthType
 image_spec = ImageSpec(registry="pingsutw", packages=["union"])
 
 actor = ActorEnvironment(
-    name="load-test",
+    name="flyte-conformance",
     replica_count=100,
     ttl_seconds=300,
     container_image=image_spec,
     secret_requests=[
         Secret(key="load-test-aws-secret", mount_requirement=Secret.MountType.FILE)
     ],
-    requests=Resources(cpu="2", mem="2000Mi")
 )
 
 
-@actor.task()
+@actor.task
 def launch_load_tests(num_wf: int, workflow_name: str, version: str):
     secret_file = current_context().secrets.get_secrets_file("load-test-aws-secret")
     with open(secret_file, "r") as f:
@@ -34,14 +33,17 @@ def launch_load_tests(num_wf: int, workflow_name: str, version: str):
             client_credentials_secret=secret_value,
         )
     )
-    remote = FlyteRemote(config=config, default_domain="development", default_project="kevin")
+    remote = FlyteRemote(config=config, default_domain="development", default_project="load-test")
     wf = remote.fetch_workflow(name=workflow_name, version=version)
 
     def execute_remote_wf():
         for i in range(num_wf):
             remote.execute(wf, {})
 
-    threads = [threading.Thread(target=execute_remote_wf) for _ in range(10)]
+    threads = [
+        threading.Thread(target=execute_remote_wf)
+        for _ in range(10)
+    ]
     for t in threads:
         t.start()
     for t in threads:
@@ -50,9 +52,9 @@ def launch_load_tests(num_wf: int, workflow_name: str, version: str):
 
 @workflow()
 def load_tests_wf(
-    num_wf: int = 10,
-    workflow_name: str = "load_tests.agent.text_wf",
-    version: str = "ou87icnLvRG9StCK6yJGsA",
+    num_wf: int = 1,
+    workflow_name: str = "load_tests.agent.echo_wf",
+    version: str = "QM6uEd_k6djIwEFtR_hOow",
 ):
     """
     :param num_wf: Number of 1000x workflows to launch

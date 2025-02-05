@@ -56,7 +56,7 @@ class NoopAsyncAgent(AsyncAgentBase):
     ) -> NoopMetadata:
         duration = task_template.custom["duration"]
         # Mock API request
-        await asyncio.sleep(0.2)
+        await asyncio.sleep(0.25)
         return NoopMetadata(
             duration=timedelta(seconds=duration),
             create_time=datetime.now(),
@@ -67,7 +67,7 @@ class NoopAsyncAgent(AsyncAgentBase):
         logger.info("Noop async agent is getting the status of the task.")
         end_time = resource_meta.create_time + resource_meta.duration
         # Mock API request
-        await asyncio.sleep(0.2)
+        await asyncio.sleep(0.5)
         if end_time > datetime.now():
             return Resource(phase=TaskExecution.RUNNING)
         return Resource(
