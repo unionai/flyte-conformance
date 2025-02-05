@@ -17,12 +17,13 @@ flytekitplugins-kftensorflow
 flytekitplugins-kfpytorch
 flytekitplugins-ray
 flytekitplugins-bigquery
-flytekitplugins-pod
 flytekitplugins-airflow
 flytekitplugins-mlflow
 flytekitplugins-pandera
 flytekitplugins-openai
 flytekitplugins-envd
+google-cloud-bigquery-storage
+google-cloud-bigquery
 envd==0.3.45
 union
-./dummy_agent
+./noop_agent

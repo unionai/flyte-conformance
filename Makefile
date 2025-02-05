@@ -12,7 +12,7 @@ fmt:
 
 .PHONY: setup
 setup:
-	pip install requirements.in
+	pip install -r requirements.in
 
 .PHONY: uv-setup
 uv-setup:
@@ -49,7 +49,7 @@ flyte-conformance:  # Register and run flyte conformance example
 
 .PHONY: build_agent_image
 build_agent_image:  # Build and push the image for the agent
-	docker buildx build --push --platform linux/amd64 -t ghcr.io/unionai/flyte-conformance-agent:nightly -f dummy_agent/Dockerfile .
+	docker buildx build --push --platform linux/amd64 -t ghcr.io/unionai/flyte-conformance-agent:nightly -f noop_agent/Dockerfile .
 
 .PHONY: build_flytekit_image
 build_flytekit_image: # Build and push the default image for the flyte task

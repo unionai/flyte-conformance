@@ -3,6 +3,7 @@ from datetime import timedelta
 from flytekit import workflow, WorkflowFailurePolicy, LaunchPlan, FixedRate
 
 from core.map_task import map_task_wf
+
 # from core.pod_template import pod_template_workflow
 from core.flyte_type import test_flyte_type_wf
 from core.ephemeral_storage import ephemeral_storage_test
@@ -16,7 +17,7 @@ from agent.airflow_agent import airflow_wf
 from agent.bigquery_agent import bigquery_wf
 from agent.flyte_sensors import sensor_wf
 from agent.openai_batch import json_iterator_wf, jsons
-from agent.dummy_agents import dummy_agents_wf
+from agent.noop_agents import noop_agents_wf
 
 from flytesnacks.examples.advanced_composition.advanced_composition.chain_entities import (
     chain_tasks_wf,
@@ -81,8 +82,6 @@ from flytesnacks.examples.development_lifecycle.development_lifecycle.task_cache
 from flytesnacks.examples.extending.extending.custom_types import (
     wf as test_custom_type_wf,
 )
-
-from flytesnacks.examples.k8s_pod_plugin.k8s_pod_plugin.pod import dynamic_pod_workflow
 
 from flytesnacks.examples.mlflow_plugin.mlflow_plugin.mlflow_example import ml_pipeline
 from flytesnacks.examples.pandera_plugin.pandera_plugin.basic_schema_example import (
@@ -175,7 +174,6 @@ def flyte_plugin_wf():
     ray_workflow(n=3)
     process_data()
     pipeline(data_random_state=42, model_random_state=42)
-    dynamic_pod_workflow()
     ml_pipeline(epochs=5)
     spark_to_pandas_wf()
     my_spark()
@@ -192,7 +190,7 @@ def flyte_agent_wf():
     bigquery_wf()
     sensor_wf()
     json_iterator_wf(json_vals=jsons())
-    dummy_agents_wf()
+    noop_agents_wf()
 
 
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)

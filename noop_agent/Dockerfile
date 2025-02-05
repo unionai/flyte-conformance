@@ -12,12 +12,13 @@ RUN pip install apache-airflow==2.9.1 \
                 apache-airflow[slack] \
                 apache-airflow[google] \
                 google-cloud-orchestration-airflow==1.9.1 \
-                apache-airflow-providers-amazon==8.20.0
+                apache-airflow-providers-amazon==8.20.0 \
+                anyscale
 
 From agent-base as agent
 
-ARG FLYTEKIT_VERSION=15d82efc55326d593e9c19ea7c24ef842ba3edc7
-ARG FLYTE_VERSION=27d9746e60e2a42fc1621e47c55591c56f216d7f
+ARG FLYTEKIT_VERSION=2ef875c19c95ea0b9e80b70efa56a2dc21a5025d
+ARG FLYTE_VERSION=ea00864d3731be95f893f2211b8176ed313d7dbb
 
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION"
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-airflow"
@@ -29,10 +30,9 @@ RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSI
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-ray"
 RUN pip install -U "git+https://github.com/flyteorg/flyte.git@$FLYTE_VERSION#subdirectory=flyteidl"
 
-COPY dummy_agent /root/dummy_agent
-RUN pip install /root/dummy_agent
-RUN pip install "numpy<2.0.0" "tenacity<=8.3.0"
-RUN pip install anyscale
+COPY noop_agent /root/noop_agent
+RUN pip install /root/noop_agent
+RUN pip install "numpy<2.0.0" "tenacity<=8.3.0" "protobuf<5.0.0"
 
 ENV FLYTE_SDK_LOGGING_LEVEL 20
 

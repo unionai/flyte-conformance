@@ -81,7 +81,9 @@ def wf_make_datetime(
 
 
 @task
-def make_list_str(n: typing.Optional[typing.List[str]]) -> Annotated[typing.List[str], ListStr]:
+def make_list_str(
+    n: typing.Optional[typing.List[str]]
+) -> Annotated[typing.List[str], ListStr]:
     if n is None:
         return ["hello", "world"]
     n.append(f"{len(n)}")
@@ -89,7 +91,9 @@ def make_list_str(n: typing.Optional[typing.List[str]]) -> Annotated[typing.List
 
 
 @workflow
-def wf_make_list_str(n: typing.Optional[typing.List[str]] = ListStr.query()) -> typing.List[str]:
+def wf_make_list_str(
+    n: typing.Optional[typing.List[str]] = ListStr.query()
+) -> typing.List[str]:
     return make_list_str(n=n)
 
 
