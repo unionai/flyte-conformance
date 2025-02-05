@@ -7,7 +7,7 @@ from union import ActorEnvironment
 from flytekit import workflow, ImageSpec, Resources
 from pydantic import BaseModel, Field
 
-from flytekit.core.task import Echo, task
+from flytekit.core.task import Echo
 
 
 class Child(BaseModel):
@@ -145,12 +145,3 @@ def image_wf():
     a1 >> t1
     t1 >> a2
     a2 >> t2
-
-
-@workflow()
-def test_wf():
-    from flytekitplugins.noop_agent import NoopAgentAsyncTask, SleepTask
-
-    sleep = SleepTask(name="sleep", datetime="2025-01-22 19:00:00")
-    dummy_task = NoopAgentAsyncTask(name="dummy_task", duration=60, inputs={"person": Human})
-    sleep() >> dummy_task(person=person)

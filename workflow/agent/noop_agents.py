@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 from flytekit import workflow
 from flytekitplugins.noop_agent import NoopAgentAsyncTask, NoopAgentSyncTask
 from typing import Optional, List
@@ -68,9 +66,7 @@ person = Human(
 )
 
 
-async_task = NoopAgentAsyncTask(
-    name="async_task", duration=timedelta(seconds=2), inputs={"person": Human}
-)
+async_task = NoopAgentAsyncTask(name="async_task", duration=2, inputs={"person": Human})
 sync_task = NoopAgentSyncTask(name="sync_task", inputs={"person": Human})
 
 

@@ -23,6 +23,8 @@ flytekitplugins-mlflow
 flytekitplugins-pandera
 flytekitplugins-openai
 flytekitplugins-envd
+google-cloud-bigquery-storage
+google-cloud-bigquery
 envd==0.3.45
 union
 ./noop_agent

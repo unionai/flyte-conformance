@@ -2,10 +2,8 @@ import asyncio
 import typing
 from dataclasses import dataclass
 from time import sleep
-from zoneinfo import ZoneInfo
 
 import cloudpickle
-import pytz
 
 from flytekit import logger
 from flytekit.extend.backend.base_agent import (
@@ -35,12 +33,11 @@ class NoopMetadata(ResourceMeta):
         return cloudpickle.loads(data)
 
 
-@dataclass
-class sleepMetadata(ResourceMeta):
-    datetime: str
-
-
 class NoopAsyncAgent(AsyncAgentBase):
+    """
+    Noop async agent that does nothing but wait for a specified duration before completing
+    """
+
     name = "Noop async Agent"
 
     def __init__(self):
@@ -83,36 +80,11 @@ class NoopAsyncAgent(AsyncAgentBase):
         return
 
 
-class SleepAgent(AsyncAgentBase):
-    name = "Sleep Agent"
-
-    def __init__(self):
-        super().__init__(
-            task_type_name="sleep_agent_task", metadata_type=sleepMetadata
-        )
-
-    async def create(
-        self,
-        task_template: TaskTemplate,
-        inputs: typing.Optional[LiteralMap] = None,
-        **kwargs,
-    ) -> sleepMetadata:
-        return sleepMetadata(datetime=task_template.custom["datetime"])
-
-    async def get(self, resource_meta: sleepMetadata, **kwargs) -> Resource:
-        logger.info("Sleep agent is getting the status of the task.")
-        now = datetime.now(ZoneInfo("America/Los_Angeles"))
-        logger.info(f"Running until {resource_meta.datetime}, current time is {now}")
-        if pytz.timezone('America/Los_Angeles').localize(datetime.fromisoformat(resource_meta.datetime)).astimezone(ZoneInfo("America/Los_Angeles")) > now:
-            return Resource(phase=TaskExecution.RUNNING)
-        return Resource(phase=TaskExecution.SUCCEEDED)
-
-    async def delete(self, resource_meta: NoopMetadata, **kwargs):
-        assert isinstance(resource_meta, NoopMetadata)
-        return
-
-
 class NoopSyncAgent(SyncAgentBase):
+    """
+    Noop sync agent that does nothing but wait for a specified duration before completing
+    """
+
     name = "Noop Sync Agent"
 
     def __init__(self):
@@ -132,4 +104,3 @@ class NoopSyncAgent(SyncAgentBase):
 
 AgentRegistry.register(NoopSyncAgent(), override=True)
 AgentRegistry.register(NoopAsyncAgent(), override=True)
-AgentRegistry.register(SleepAgent(), override=True)

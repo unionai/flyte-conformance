@@ -33,17 +33,16 @@ def launch_load_tests(num_wf: int, workflow_name: str, version: str):
             client_credentials_secret=secret_value,
         )
     )
-    remote = FlyteRemote(config=config, default_domain="development", default_project="load-test")
+    remote = FlyteRemote(
+        config=config, default_domain="development", default_project="load-test"
+    )
     wf = remote.fetch_workflow(name=workflow_name, version=version)
 
     def execute_remote_wf():
         for i in range(num_wf):
             remote.execute(wf, {})
 
-    threads = [
-        threading.Thread(target=execute_remote_wf)
-        for _ in range(10)
-    ]
+    threads = [threading.Thread(target=execute_remote_wf) for _ in range(10)]
     for t in threads:
         t.start()
     for t in threads:
@@ -57,6 +56,8 @@ def load_tests_wf(
     version: str = "QM6uEd_k6djIwEFtR_hOow",
 ):
     """
+    This workflow used to launch the load-test workflows from one cluster to another cluster.
+
     :param num_wf: Number of 1000x workflows to launch
     :param workflow_name: Name of the workflow to launch
     :param version: Version of the workflow to launch

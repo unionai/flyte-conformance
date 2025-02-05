@@ -12,7 +12,8 @@ RUN pip install apache-airflow==2.9.1 \
                 apache-airflow[slack] \
                 apache-airflow[google] \
                 google-cloud-orchestration-airflow==1.9.1 \
-                apache-airflow-providers-amazon==8.20.0
+                apache-airflow-providers-amazon==8.20.0 \
+                anyscale
 
 From agent-base as agent
 
@@ -31,8 +32,7 @@ RUN pip install -U "git+https://github.com/flyteorg/flyte.git@$FLYTE_VERSION#sub
 
 COPY noop_agent /root/noop_agent
 RUN pip install /root/noop_agent
-RUN pip install "numpy<2.0.0" "tenacity<=8.3.0"
-RUN pip install "protobuf<5.0.0"
+RUN pip install "numpy<2.0.0" "tenacity<=8.3.0" "protobuf<5.0.0"
 
 ENV FLYTE_SDK_LOGGING_LEVEL 20
 
