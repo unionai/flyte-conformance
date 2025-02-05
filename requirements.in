@@ -17,7 +17,6 @@ flytekitplugins-kftensorflow
 flytekitplugins-kfpytorch
 flytekitplugins-ray
 flytekitplugins-bigquery
-flytekitplugins-pod
 flytekitplugins-airflow
 flytekitplugins-mlflow
 flytekitplugins-pandera
