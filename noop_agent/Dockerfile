@@ -1,4 +1,4 @@
-FROM python:3.11-slim-buster as agent-base
+FROM python:3.10-slim-buster as agent-base
 
 ENV CLOUDSDK_PYTHON=/usr/local/bin/python
 
@@ -8,16 +8,16 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.
 RUN pip install prometheus_client jsonpickle grpcio-health-checking
 
 # https://github.com/apache/airflow/issues/39437
-RUN pip install apache-airflow \
+RUN pip install apache-airflow==2.9.1 \
                 apache-airflow[slack] \
                 apache-airflow[google] \
-                google-cloud-orchestration-airflow<12.0.0 \
-                apache-airflow-providers-amazon \
+                google-cloud-orchestration-airflow==1.9.1 \
+                apache-airflow-providers-amazon==8.20.0 \
                 anyscale
 
 From agent-base as agent
 
-ARG FLYTEKIT_VERSION=9a36b18024e7f3a390f07499230104c60966b40c
+ARG FLYTEKIT_VERSION=cc327c632f1089dd647c2573828bf009ed60b967
 ARG FLYTE_VERSION=ea00864d3731be95f893f2211b8176ed313d7dbb
 
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION"
