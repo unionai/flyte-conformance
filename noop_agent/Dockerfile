@@ -1,4 +1,4 @@
-FROM python:3.10-slim-buster as agent-base
+FROM python:3.11-slim-buster as agent-base
 
 ENV CLOUDSDK_PYTHON=/usr/local/bin/python
 
