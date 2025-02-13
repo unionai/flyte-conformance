@@ -24,7 +24,7 @@ image_spec = ImageSpec(
 def create_bq_table() -> StructuredDataset:
     df = pd.DataFrame(data={"name": ["Alice", "bob"], "age": [5, 6]})
     return StructuredDataset(
-        dataframe=df, uri="bq://dogfood-gcp-dataplane:dataset.flyte_table3"
+        dataframe=df, uri="bq://dogfood-gcp-dataplane:dataset.flyte_table333"
     )
 
 
