@@ -189,7 +189,8 @@ def flyte_agent_wf():
     airflow_wf()
     bigquery_wf()
     sensor_wf()
-    json_iterator_wf(json_vals=jsons())
+    # Temporary disabled
+    # json_iterator_wf(json_vals=jsons())
     noop_agents_wf()
 
 
