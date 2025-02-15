@@ -25,10 +25,10 @@ def jsons():
 
 it_batch = create_batch(
     name="gpt-3.5-turbo",
-    secret=Secret(key="union-openai-api-key"),
+    secret=Secret(key="union_openai_api_key"),
 )
 
 
 @workflow
-def json_iterator_wf(json_vals: Iterator[JSON]) -> BatchResult:
+def json_iterator_wf(json_vals: Iterator[JSON] = jsons()) -> BatchResult:
     return it_batch(jsonl_in=json_vals)
