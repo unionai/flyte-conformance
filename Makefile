@@ -47,9 +47,9 @@ flyteagents:  # Register and run flyte agents example
 flyte-conformance:  # Register and run flyte conformance example
 	pyflyte run --remote workflow/integration_tests.py flyte_conformance_wf
 
-.PHONY: build_agent_image
-build_agent_image:  # Build and push the image for the agent
-	docker buildx build --push --platform linux/amd64 -t ghcr.io/unionai/flyte-conformance-agent:nightly -f noop_agent/Dockerfile .
+.PHONY: build_connector_image
+build_connector_image:  # Build and push the image for the agent
+	docker buildx build --push --platform linux/amd64 -t ghcr.io/unionai/flyte-conformance-connector:nightly -f noop_connector/Dockerfile .
 
 .PHONY: build_flytekit_image
 build_flytekit_image: # Build and push the default image for the flyte task

@@ -1,5 +1,5 @@
 from flytekit import workflow
-from flytekitplugins.noop_agent import NoopAgentAsyncTask, NoopAgentSyncTask
+from flytekitplugins.noop_connector import NoopAgentAsyncTask, NoopAgentSyncTask
 from typing import Optional, List
 from pydantic import BaseModel, Field
 
@@ -71,10 +71,10 @@ sync_task = NoopAgentSyncTask(name="sync_task", inputs={"person": Human})
 
 
 @workflow()
-def noop_agents_wf():
+def noop_connectors_wf():
     async_task(person=person)
     sync_task(person=person)
 
 
 if __name__ == "__main__":
-    print(noop_agents_wf())
+    print(noop_connectors_wf())

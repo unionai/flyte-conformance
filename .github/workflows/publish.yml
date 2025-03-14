@@ -43,6 +43,6 @@ jobs:
           platforms: linux/amd64
           push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.image-names.outputs.tags }}
-          file: noop_agent/Dockerfile
+          file: noop_connector/Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
