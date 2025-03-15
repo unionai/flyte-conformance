@@ -14,10 +14,10 @@ from core.artifact_primitives import artifact_primitives_wf
 from core.artifact_files import artifacts_files_wf
 
 # from agent.airflow_agent import airflow_wf
-from agent.bigquery_agent import bigquery_wf
-from agent.flyte_sensors import sensor_wf
-from agent.openai_batch import json_iterator_wf, jsons
-from agent.noop_agents import noop_connectors_wf
+from connector.bigquery_connector import bigquery_wf
+from connector.flyte_sensors import sensor_wf
+from connector.openai_batch import json_iterator_wf, jsons
+from connector.noop_connector import noop_connectors_wf
 
 from flytesnacks.examples.advanced_composition.advanced_composition.chain_entities import (
     chain_tasks_wf,

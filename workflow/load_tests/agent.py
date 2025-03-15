@@ -98,7 +98,7 @@ def echo_wf():
 
 @workflow()
 def video_wf():
-    from flytekitplugins.noop_agent import NoopAgentAsyncTask
+    from flytekitplugins.noop_connector import NoopAgentAsyncTask
 
     async_task = NoopAgentAsyncTask(
         name="video_task", duration=90, inputs={"person": Human}
@@ -119,7 +119,7 @@ def video_wf():
 
 @workflow()
 def text_wf():
-    from flytekitplugins.noop_agent import NoopAgentAsyncTask
+    from flytekitplugins.noop_connector import NoopAgentAsyncTask
 
     async_task = NoopAgentAsyncTask(
         name="text_task", duration=40, inputs={"person": Human}
@@ -133,7 +133,7 @@ def text_wf():
 
 @workflow()
 def image_wf():
-    from flytekitplugins.noop_agent import NoopAgentAsyncTask
+    from flytekitplugins.noop_connector import NoopAgentAsyncTask
 
     async_task = NoopAgentAsyncTask(
         name="image_task", duration=40, inputs={"person": Human}
