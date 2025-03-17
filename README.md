@@ -21,10 +21,10 @@ make flytesnacks
 make flyteplugins
 ```
 
-### FlyteAgents
-Test all the agents in flytekit, including BigQuery, Airflow, sensor, OpenAI, etc.
+### FlyteConnectors
+Test all the connectors in flytekit, including BigQuery, Airflow, sensor, OpenAI, etc.
 ```bash
-make flyteagents
+make flyteconnectors
 ```
 
 ### FlyteConformance Integration Tests

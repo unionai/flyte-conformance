@@ -1,4 +1,4 @@
-FROM python:3.10-slim-buster as agent-base
+FROM python:3.10-slim-buster as connector-base
 
 ENV CLOUDSDK_PYTHON=/usr/local/bin/python
 
@@ -15,10 +15,10 @@ RUN pip install apache-airflow==2.9.1 \
                 apache-airflow-providers-amazon==8.20.0 \
                 anyscale
 
-From agent-base as agent
+From connector-base as connector
 
-ARG FLYTEKIT_VERSION=f03cec8af903f7553a4118865693f80d1f9c760a
-ARG FLYTE_VERSION=8fc1a30cfd28e6bc813522800adb2c82eb26757d
+ARG FLYTEKIT_VERSION=78a4aa29ff46383cd2c0d04223d9e45ffa79aa2d
+ARG FLYTE_VERSION=a7676624015f00fed335b05e3db1382a122513e2
 
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION"
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-airflow"
@@ -30,10 +30,10 @@ RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSI
 RUN pip install -U "git+https://github.com/flyteorg/flytekit.git@$FLYTEKIT_VERSION#subdirectory=plugins/flytekit-ray"
 RUN pip install -U "git+https://github.com/flyteorg/flyte.git@$FLYTE_VERSION#subdirectory=flyteidl"
 
-COPY noop_agent /root/noop_agent
-RUN pip install /root/noop_agent
+COPY noop_connector /root/noop_connector
+RUN pip install /root/noop_connector
 RUN pip install "numpy<2.0.0" "tenacity<=8.3.0" "protobuf<5.0.0"
 
 ENV FLYTE_SDK_LOGGING_LEVEL 20
 
-CMD pyflyte serve agent --port 8000
+CMD pyflyte serve connector --port 8000

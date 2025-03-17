@@ -33,12 +33,12 @@ class NoopMetadata(ResourceMeta):
         return cloudpickle.loads(data)
 
 
-class NoopAsyncAgent(AsyncAgentBase):
+class NoopAsyncConnector(AsyncAgentBase):
     """
     Noop async agent that does nothing but wait for a specified duration before completing
     """
 
-    name = "Noop async Agent"
+    name = "Noop async Connector"
 
     def __init__(self):
         super().__init__(
@@ -80,12 +80,12 @@ class NoopAsyncAgent(AsyncAgentBase):
         return
 
 
-class NoopSyncAgent(SyncAgentBase):
+class NoopSyncConnector(SyncAgentBase):
     """
     Noop sync agent that does nothing but wait for a specified duration before completing
     """
 
-    name = "Noop Sync Agent"
+    name = "Noop Sync Connector"
 
     def __init__(self):
         super().__init__(task_type_name="noop_sync_agent_task")
@@ -102,5 +102,5 @@ class NoopSyncAgent(SyncAgentBase):
         return Resource(phase=TaskExecution.SUCCEEDED, outputs=inputs)
 
 
-AgentRegistry.register(NoopSyncAgent(), override=True)
-AgentRegistry.register(NoopAsyncAgent(), override=True)
+AgentRegistry.register(NoopSyncConnector(), override=True)
+AgentRegistry.register(NoopAsyncConnector(), override=True)

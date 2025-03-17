@@ -26,4 +26,4 @@ google-cloud-bigquery-storage
 google-cloud-bigquery
 envd==0.3.45
 union
-./noop_agent
+./noop_connector

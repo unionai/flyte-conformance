@@ -13,11 +13,11 @@ from core.gcp_secret import gcp_secret_wf
 from core.artifact_primitives import artifact_primitives_wf
 from core.artifact_files import artifacts_files_wf
 
-from agent.airflow_agent import airflow_wf
-from agent.bigquery_agent import bigquery_wf
-from agent.flyte_sensors import sensor_wf
-from agent.openai_batch import json_iterator_wf, jsons
-from agent.noop_agents import noop_agents_wf
+# from connector.airflow_connector import airflow_wf
+from connector.bigquery_connector import bigquery_wf
+from connector.flyte_sensors import sensor_wf
+from connector.openai_batch import json_iterator_wf, jsons
+from connector.noop_connector import noop_connectors_wf
 
 from flytesnacks.examples.advanced_composition.advanced_composition.chain_entities import (
     chain_tasks_wf,
@@ -185,13 +185,12 @@ def case_study_wf():
 
 
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
-def flyte_agent_wf():
-    airflow_wf()
+def flyte_connector_wf():
+    # airflow_wf()
     bigquery_wf()
     sensor_wf()
-    # Temporary disabled
-    # json_iterator_wf(json_vals=jsons())
-    noop_agents_wf()
+    json_iterator_wf(json_vals=jsons())
+    noop_connectors_wf()
 
 
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
@@ -222,9 +221,9 @@ flyte_plugin_lp = LaunchPlan.get_or_create(
 )
 
 
-flyte_agent_lp = LaunchPlan.get_or_create(
-    name="flyte_agent_lp",
-    workflow=flyte_agent_wf,
+flyte_connector_lp = LaunchPlan.get_or_create(
+    name="flyte_connector_lp",
+    workflow=flyte_connector_wf,
     schedule=FixedRate(duration=timedelta(hours=6)),
     max_parallelism=100,
 )

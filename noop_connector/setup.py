@@ -1,8 +1,8 @@
 from setuptools import setup
 
-PLUGIN_NAME = "noop_agent"
+PLUGIN_NAME = "noop_connector"
 
-microlib_name = "flytekitplugins-noop-agent"
+microlib_name = "flytekitplugins-noop-connector"
 
 plugin_requires = []
 
