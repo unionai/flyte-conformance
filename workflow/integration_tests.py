@@ -171,7 +171,7 @@ def flyte_plugin_wf():
     - mnist_tensorflow_workflow
     """
     pytorch_training_wf()
-    ray_workflow(n=3)
+    # ray_workflow(n=3)
     process_data()
     pipeline(data_random_state=42, model_random_state=42)
     ml_pipeline(epochs=5)
