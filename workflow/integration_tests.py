@@ -176,7 +176,7 @@ def flyte_plugin_wf():
     pipeline(data_random_state=42, model_random_state=42)
     ml_pipeline(epochs=5)
     spark_to_pandas_wf()
-    my_spark()
+    # my_spark()
 
 
 @workflow(failure_policy=WorkflowFailurePolicy.FAIL_AFTER_EXECUTABLE_NODES_COMPLETE)
